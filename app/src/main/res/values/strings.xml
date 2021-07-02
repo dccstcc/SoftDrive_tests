@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SoftDrive</string>
+    <string name="welcome">Welcome</string>
+    <string name="mob_data_str">Mobile internet data enable is need</string>
+    <string name="ap_submit">I activate Wifi router</string>
+    <string name="data_submit">I activate mobile data network</string>
+</resources>
