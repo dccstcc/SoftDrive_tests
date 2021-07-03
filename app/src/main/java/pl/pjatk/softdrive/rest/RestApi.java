@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 public interface RestApi {
 
     @GET("api/distance")
-    Call<Integer> getDistanceEndpoint(@Header("Accept") String dataType);
+    Call<Distance> getDistanceEndpoint(@Header("Accept") String dataType);
 
     @GET("api/rplidar")
     Call<Float[]> getScan2dEndpoint(@Header("Accept") String dataType);

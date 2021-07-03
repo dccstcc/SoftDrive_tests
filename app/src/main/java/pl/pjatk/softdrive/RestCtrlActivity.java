@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import pl.pjatk.softdrive.rest.RestDistanceService;
 import pl.pjatk.softdrive.rest.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
@@ -102,8 +103,8 @@ public class RestCtrlActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Intent restService = new Intent(getApplicationContext(), RestScan2dService.class);
-                startService(restService);
+                Intent restService2d = new Intent(getApplicationContext(), RestScan2dService.class);
+                startService(restService2d);
 
                 //new JsonTask().execute("http://192.168.43.21:8080/api/distance/");
             }
@@ -113,7 +114,11 @@ public class RestCtrlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isDistanceActive = false;
-                new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
+
+                Intent restServiceDistance = new Intent(getApplicationContext(), RestDistanceService.class);
+                startService(restServiceDistance);
+
+                //new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
             }
         });
 

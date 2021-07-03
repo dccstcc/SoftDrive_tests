@@ -7,15 +7,15 @@ import java.io.Serializable;
 
 public class Distance implements Serializable {
 
-    @SerializedName("")
+    @SerializedName("distance")
     @Expose
-    Integer distance;
+    int distance;
 
-    public Integer getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 }

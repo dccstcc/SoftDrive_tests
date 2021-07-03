@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestCtrl extends Application {
 
-    static final String DISTANCE_URL = "http://192.168.43.21:8080";
+    static final String DISTANCE_URL = "http://192.168.13.229:8080";
     static final String SCAN2D_URL = "http://192.168.146.82:5000";
 
 

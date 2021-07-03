@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestDistanceCtrl extends RestCtrl implements Callback<Integer> {
+public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
     Distance distance;
 
@@ -20,17 +20,17 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Integer> {
 
         distance = new Distance();
 
-        Call<Integer> call = restApi.getDistanceEndpoint("application/json");
+        Call<Distance> call = restApiDistance.getDistanceEndpoint("application/json");
 
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<Integer> call, Response<Integer> response) {
+    public void onResponse(Call<Distance> call, Response<Distance> response) {
 
         if (response.isSuccessful()) {
 
-            distance.setDistance(response.body());
+            distance = response.body();
 
             try {
                 Thread.sleep(100);
@@ -44,8 +44,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Integer> {
     }
 
     @Override
-    public void onFailure(Call<Integer> call, Throwable t){
-        Log.e("REST error Scan2d", "onFailure method error Distance");
+    public void onFailure(Call<Distance> call, Throwable t){
+        Log.e("REST error Distance", "onFailure method error Distance");
         t.printStackTrace();
     }
 }
