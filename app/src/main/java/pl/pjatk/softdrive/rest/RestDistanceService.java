@@ -10,13 +10,6 @@ public class RestDistanceService extends IntentService {
         super("RestDistanceService");
     }
 
-    public static Context context;
-
-    public static Context getContext() {
-        return context;
-    }
-
-    int count;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -30,8 +23,6 @@ public class RestDistanceService extends IntentService {
 
             @Override
             public void getDistanceResponse(Distance value) {
-
-                context = getApplicationContext();
 
                 System.out.println("Distance: " + value.getDistance());
             }
