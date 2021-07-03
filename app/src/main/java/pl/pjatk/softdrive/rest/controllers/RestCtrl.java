@@ -1,6 +1,9 @@
 package pl.pjatk.softdrive.rest.controllers;
 
 import android.app.Application;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,22 +18,61 @@ import pl.pjatk.softdrive.rest.RestApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RestCtrl extends Application {
 
-    static final String DISTANCE_URL = "http://192.168.13.229:8080";
-    static final String SCAN2D_URL = "http://192.168.146.82:5000";
+    private static final String protocol = "http://";
+    private static final String portDistance = ":8080";
+    private static final String portScan2d = ":5000";
+    private static String DISTANCE_URL = "";
+    private static String SCAN2D_URL = "";
+    private static String thirdPartIp = "";
 
+    private FindAddressIp ip;
 
     RestApi restApiScan2d;
     RestApi restApiDistance;
 
     public void start() {
+        prepareFirstIp();
 
         Gson gson = initGson();
         OkHttpClient.Builder clientBuilder = initLogBuilder();
         OkHttpClient httpHeaderConf = initHttpHeader();
         this.restApiScan2d = initRetrofit(httpHeaderConf, gson, clientBuilder);
         this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
+    }
+
+    private void prepareFirstIp() {
+        ip = new FindAddressIp();
+        thirdPartIp = ip.getIp();
+
+        DISTANCE_URL += protocol;
+        DISTANCE_URL += thirdPartIp;
+        DISTANCE_URL += "1";
+        DISTANCE_URL += portDistance;
+
+        SCAN2D_URL += protocol;
+        SCAN2D_URL += thirdPartIp;
+        SCAN2D_URL += "1";
+        SCAN2D_URL += portScan2d;
+    }
+
+
+    public static String getDistanceUrl() {
+        return DISTANCE_URL;
+    }
+
+    public static String getScan2dUrl() {
+        return SCAN2D_URL;
+    }
+
+    public static void setDistancePartialUrl(String fourthPartIp) {
+        DISTANCE_URL = protocol + thirdPartIp + fourthPartIp + portDistance;
+    }
+
+    public static void setScan2dPartialUrl(String fourthPartIp) {
+        SCAN2D_URL = protocol + thirdPartIp + fourthPartIp + portScan2d;
     }
 
     private RestApi initRetrofit(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {

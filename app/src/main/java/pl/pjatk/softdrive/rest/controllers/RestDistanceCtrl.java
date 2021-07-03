@@ -1,6 +1,9 @@
 package pl.pjatk.softdrive.rest.controllers;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Distance;
@@ -14,6 +17,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
     pl.pjatk.softdrive.rest.IFromRestCallback IFromRestCallback;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public RestDistanceCtrl(IFromRestCallback IFromRestCallback) {
 
         super.start();
@@ -27,6 +31,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         call.enqueue(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResponse(Call<Distance> call, Response<Distance> response) {
 
@@ -39,9 +44,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-
-
+        } else {
+            getDistanceUrl();
         }
     }
 
