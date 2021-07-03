@@ -1,4 +1,4 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.controllers;
 
 import android.app.Application;
 
@@ -11,6 +11,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import pl.pjatk.softdrive.rest.RestApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -20,7 +21,7 @@ public class RestCtrl extends Application {
     static final String SCAN2D_URL = "http://192.168.146.82:5000";
 
 
-    RestApi restApi;
+    RestApi restApiScan2d;
     RestApi restApiDistance;
 
     public void start() {
@@ -28,7 +29,7 @@ public class RestCtrl extends Application {
         Gson gson = initGson();
         OkHttpClient.Builder clientBuilder = initLogBuilder();
         OkHttpClient httpHeaderConf = initHttpHeader();
-        this.restApi = initRetrofit(httpHeaderConf, gson, clientBuilder);
+        this.restApiScan2d = initRetrofit(httpHeaderConf, gson, clientBuilder);
         this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
     }
 
@@ -39,8 +40,8 @@ public class RestCtrl extends Application {
                 .baseUrl(SCAN2D_URL)
                 .client(clientBuilder.build())
                 .build();
-        restApi = retrofit.create(RestApi.class);
-        return restApi;
+        restApiScan2d = retrofit.create(RestApi.class);
+        return restApiScan2d;
     }
 
     private RestApi initRetrofitDistance(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {

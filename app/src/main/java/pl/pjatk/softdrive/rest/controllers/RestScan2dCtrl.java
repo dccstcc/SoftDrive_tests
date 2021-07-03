@@ -1,7 +1,9 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.controllers;
 
 import android.util.Log;
 
+import pl.pjatk.softdrive.rest.IFromRestCallback;
+import pl.pjatk.softdrive.rest.domain.Scan2d;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -10,7 +12,7 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
 
     Scan2d scan2d;
 
-    IFromRestCallback IFromRestCallback;
+    pl.pjatk.softdrive.rest.IFromRestCallback IFromRestCallback;
 
     public RestScan2dCtrl(IFromRestCallback IFromRestCallback) {
 
@@ -20,7 +22,7 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
 
         scan2d = new Scan2d();
 
-        Call<Float[]> call = restApi.getScan2dEndpoint("application/json");
+        Call<Float[]> call = restApiScan2d.getScan2dEndpoint("application/json");
 
         call.enqueue(this);
     }

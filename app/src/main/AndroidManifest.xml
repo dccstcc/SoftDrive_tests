@@ -34,8 +34,8 @@
         <activity android:name=".EnableRouterActivity" />
         <activity android:name=".RestCtrlActivity" />
 
-        <service android:name=".rest.RestDistanceService"></service>
-        <service android:name=".rest.RestScan2dService"></service>
+        <service android:name=".rest.services.RestDistanceService"></service>
+        <service android:name=".rest.services.RestScan2dService"></service>
 
 
 

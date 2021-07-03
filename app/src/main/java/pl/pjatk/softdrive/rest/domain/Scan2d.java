@@ -1,4 +1,4 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.domain;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

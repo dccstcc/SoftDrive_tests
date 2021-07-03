@@ -1,8 +1,12 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.services;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
+
+import pl.pjatk.softdrive.rest.IFromRestCallback;
+import pl.pjatk.softdrive.rest.controllers.RestScan2dCtrl;
+import pl.pjatk.softdrive.rest.domain.Distance;
+import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 public class RestScan2dService extends IntentService {
 

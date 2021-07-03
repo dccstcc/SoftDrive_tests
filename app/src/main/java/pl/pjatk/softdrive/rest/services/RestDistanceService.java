@@ -1,8 +1,12 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.services;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
+
+import pl.pjatk.softdrive.rest.IFromRestCallback;
+import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
+import pl.pjatk.softdrive.rest.domain.Distance;
+import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 public class RestDistanceService extends IntentService {
 

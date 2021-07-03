@@ -30,8 +30,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import pl.pjatk.softdrive.rest.RestDistanceService;
-import pl.pjatk.softdrive.rest.RestScan2dService;
+import pl.pjatk.softdrive.rest.services.RestDistanceService;
+import pl.pjatk.softdrive.rest.services.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
 

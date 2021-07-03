@@ -1,7 +1,9 @@
-package pl.pjatk.softdrive.rest;
+package pl.pjatk.softdrive.rest.controllers;
 
 import android.util.Log;
 
+import pl.pjatk.softdrive.rest.IFromRestCallback;
+import pl.pjatk.softdrive.rest.domain.Distance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -10,7 +12,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
     Distance distance;
 
-    IFromRestCallback IFromRestCallback;
+    pl.pjatk.softdrive.rest.IFromRestCallback IFromRestCallback;
 
     public RestDistanceCtrl(IFromRestCallback IFromRestCallback) {
 
