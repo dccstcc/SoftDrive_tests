@@ -2,6 +2,7 @@ package pl.pjatk.softdrive;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -28,7 +29,8 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import pl.pjatk.softdrive.rest.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
 
@@ -100,9 +102,10 @@ public class RestCtrlActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Intent restService = new Intent(getApplicationContext(), RestScan2dService.class);
+                startService(restService);
 
-
-                new JsonTask().execute("http://192.168.43.21:8080/api/distance/");
+                //new JsonTask().execute("http://192.168.43.21:8080/api/distance/");
             }
         });
 
