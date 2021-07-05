@@ -24,7 +24,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public RestDistanceCtrl(int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
 
-        super.start();
+        //super.start();
 
         this.IFromRestCallback = IFromRestCallback;
 
@@ -34,14 +34,41 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
         distance = new Distance();
 
-        Call<Distance> call = restApiDistance.getDistanceEndpoint("application/json");
-
-        call.enqueue(this);
+//        Call<Distance> call = restApiDistance.getDistanceEndpoint("application/json");
+//
+//        call.enqueue(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void start() {
-        super.start();
+    public RestDistanceCtrl prepareFirstIp() {
+        ip = new FindAddressIp();
+        thirdPartIp = ip.getIp();
+
+        DISTANCE_URL = "";
+        DISTANCE_URL += protocol;
+        DISTANCE_URL += thirdPartIp;
+        DISTANCE_URL += "1";
+        DISTANCE_URL += portDistance;
+
+        SCAN2D_URL = "";
+        SCAN2D_URL += protocol;
+        SCAN2D_URL += thirdPartIp;
+        SCAN2D_URL += "1";
+        SCAN2D_URL += portScan2d;
+
+        return this;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public RestDistanceCtrl prepareCall() {
+        start();
+        return this;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void call() {
+        Call<Distance> call = restApiDistance.getDistanceEndpoint("application/json");
+        call.enqueue(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -83,8 +110,12 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         setDistancePartialUrl(String.valueOf(fourthIp));
         updateDistanceRetrofit();
         fourthIp++;
-        if(fourthIp > this.ipAddrEnd) return;
+        if(fourthIp > this.ipAddrEnd) {
+            call.cancel();
+            return;
+        }
         System.out.println("4 IP: " + fourthIp);
+        //call.cancel();
         call.enqueue(this);
     }
 }

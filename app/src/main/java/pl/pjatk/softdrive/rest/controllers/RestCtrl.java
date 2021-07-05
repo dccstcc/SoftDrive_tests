@@ -21,14 +21,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RestCtrl extends Application {
 
-    private static final String protocol = "http://";
-    private static final String portDistance = ":8080";
-    private static final String portScan2d = ":5000";
-    private static String DISTANCE_URL = "";
-    private static String SCAN2D_URL = "";
-    private static String thirdPartIp = "";
+    protected static final String protocol = "http://";
+    protected static final String portDistance = ":8080";
+    protected static final String portScan2d = ":5000";
+    protected static String DISTANCE_URL = "";
+    protected static String SCAN2D_URL = "";
+    protected static String thirdPartIp = "";
 
-    private FindAddressIp ip;
+    protected FindAddressIp ip;
 
     private Gson gson;
     private OkHttpClient.Builder clientBuilder;
@@ -38,7 +38,7 @@ public class RestCtrl extends Application {
     RestApi restApiDistance;
 
     public void start() {
-        prepareFirstIp();
+        //prepareFirstIp();
 
         this.gson = initGson();
         this.clientBuilder = initLogBuilder();
@@ -55,22 +55,24 @@ public class RestCtrl extends Application {
         this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
     }
 
-    private void prepareFirstIp() {
-        ip = new FindAddressIp();
-        thirdPartIp = ip.getIp();
-
-        DISTANCE_URL = "";
-        DISTANCE_URL += protocol;
-        DISTANCE_URL += thirdPartIp;
-        DISTANCE_URL += "1";
-        DISTANCE_URL += portDistance;
-
-        SCAN2D_URL = "";
-        SCAN2D_URL += protocol;
-        SCAN2D_URL += thirdPartIp;
-        SCAN2D_URL += "1";
-        SCAN2D_URL += portScan2d;
-    }
+//    public RestDistanceCtrl prepareFirstIp() {
+//        ip = new FindAddressIp();
+//        thirdPartIp = ip.getIp();
+//
+//        DISTANCE_URL = "";
+//        DISTANCE_URL += protocol;
+//        DISTANCE_URL += thirdPartIp;
+//        DISTANCE_URL += "1";
+//        DISTANCE_URL += portDistance;
+//
+//        SCAN2D_URL = "";
+//        SCAN2D_URL += protocol;
+//        SCAN2D_URL += thirdPartIp;
+//        SCAN2D_URL += "1";
+//        SCAN2D_URL += portScan2d;
+//
+//        return this;
+//    }
 
 
     public static String getDistanceUrl() {
