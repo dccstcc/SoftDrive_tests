@@ -2,6 +2,9 @@ package pl.pjatk.softdrive.rest.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestScan2dCtrl;
@@ -14,6 +17,7 @@ public class RestScan2dService extends IntentService {
         super("RestScan2dService");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onHandleIntent(Intent intent) {
 

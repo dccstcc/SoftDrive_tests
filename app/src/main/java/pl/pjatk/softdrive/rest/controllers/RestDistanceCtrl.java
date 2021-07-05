@@ -40,20 +40,20 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public RestDistanceCtrl prepareFirstIp() {
+    public RestDistanceCtrl prepareIp(int fourthIp) {
         ip = new FindAddressIp();
         thirdPartIp = ip.getIp();
 
         DISTANCE_URL = "";
         DISTANCE_URL += protocol;
         DISTANCE_URL += thirdPartIp;
-        DISTANCE_URL += "1";
+        DISTANCE_URL += String.valueOf(fourthIp);
         DISTANCE_URL += portDistance;
 
         SCAN2D_URL = "";
         SCAN2D_URL += protocol;
         SCAN2D_URL += thirdPartIp;
-        SCAN2D_URL += "1";
+        SCAN2D_URL += String.valueOf(fourthIp);
         SCAN2D_URL += portScan2d;
 
         return this;
@@ -107,6 +107,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 //
 //        call.enqueue(this);
 
+        call = call.clone();
+
         setDistancePartialUrl(String.valueOf(fourthIp));
         updateDistanceRetrofit();
         fourthIp++;
@@ -114,9 +116,10 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
             call.cancel();
             return;
         }
+        this.prepareIp(fourthIp).prepareCall().call();
         System.out.println("4 IP: " + fourthIp);
-        //call.cancel();
-        call.enqueue(this);
+        //call.enqueue(this);
+        //call.enqueue(this);
     }
 }
 

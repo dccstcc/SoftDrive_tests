@@ -54,7 +54,7 @@ public class RestDistanceService extends IntentService {
             }
 
 
-        }).prepareFirstIp().prepareCall().call();
+        }).prepareIp(1).prepareCall().call();
 
         new RestDistanceCtrl(21, 40, new IFromRestCallback() {
 
@@ -68,6 +68,6 @@ public class RestDistanceService extends IntentService {
                 System.out.println("Distance 2 : " + value.getDistance());
             }
 
-        }).prepareCall().call();
+        }).prepareIp(21).prepareCall().call();
     }
 }
