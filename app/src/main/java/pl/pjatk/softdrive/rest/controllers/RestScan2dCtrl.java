@@ -1,6 +1,9 @@
 package pl.pjatk.softdrive.rest.controllers;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Scan2d;
@@ -14,6 +17,7 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
 
     pl.pjatk.softdrive.rest.IFromRestCallback IFromRestCallback;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public RestScan2dCtrl(IFromRestCallback IFromRestCallback) {
 
         super.start();

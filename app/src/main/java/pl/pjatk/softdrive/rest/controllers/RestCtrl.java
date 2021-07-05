@@ -30,28 +30,42 @@ public class RestCtrl extends Application {
 
     private FindAddressIp ip;
 
+    private Gson gson;
+    private OkHttpClient.Builder clientBuilder;
+    private OkHttpClient httpHeaderConf;
+
     RestApi restApiScan2d;
     RestApi restApiDistance;
 
     public void start() {
         prepareFirstIp();
 
-        Gson gson = initGson();
-        OkHttpClient.Builder clientBuilder = initLogBuilder();
-        OkHttpClient httpHeaderConf = initHttpHeader();
-        this.restApiScan2d = initRetrofit(httpHeaderConf, gson, clientBuilder);
+        this.gson = initGson();
+        this.clientBuilder = initLogBuilder();
+        this.httpHeaderConf = initHttpHeader();
+        this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
         this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
+    }
+
+    public void updateDistanceRetrofit() {
+        this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
+    }
+
+    public void updateScan2dRetrofit() {
+        this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
     }
 
     private void prepareFirstIp() {
         ip = new FindAddressIp();
         thirdPartIp = ip.getIp();
 
+        DISTANCE_URL = "";
         DISTANCE_URL += protocol;
         DISTANCE_URL += thirdPartIp;
         DISTANCE_URL += "1";
         DISTANCE_URL += portDistance;
 
+        SCAN2D_URL = "";
         SCAN2D_URL += protocol;
         SCAN2D_URL += thirdPartIp;
         SCAN2D_URL += "1";
@@ -75,7 +89,7 @@ public class RestCtrl extends Application {
         SCAN2D_URL = protocol + thirdPartIp + fourthPartIp + portScan2d;
     }
 
-    private RestApi initRetrofit(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {
+    private RestApi initRetrofitScan2d(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpHeaderConf)
                 .addConverterFactory(GsonConverterFactory.create(gson))

@@ -17,18 +17,31 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
     pl.pjatk.softdrive.rest.IFromRestCallback IFromRestCallback;
 
+    private int fourthIp = 2;
+    private int ipAddrStart;
+    private int ipAddrEnd;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public RestDistanceCtrl(IFromRestCallback IFromRestCallback) {
+    public RestDistanceCtrl(int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
 
         super.start();
 
         this.IFromRestCallback = IFromRestCallback;
+
+        this.ipAddrStart = ipAddrStart;
+        this.ipAddrEnd = ipAddrEnd;
+        fourthIp = ipAddrStart;
 
         distance = new Distance();
 
         Call<Distance> call = restApiDistance.getDistanceEndpoint("application/json");
 
         call.enqueue(this);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void start() {
+        super.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -45,14 +58,34 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                 e.printStackTrace();
             }
         } else {
-            getDistanceUrl();
+
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onFailure(Call<Distance> call, Throwable t){
         Log.e("REST error Distance", "onFailure method error Distance");
-        t.printStackTrace();
+//        t.printStackTrace();
+//
+//        setDistancePartialUrl(String.valueOf(fourthIp));
+//        updateDistanceRetrofit();
+//        fourthIp++;
+//        if(fourthIp == 255) fourthIp = 1;
+//        System.out.println("4 IP: " + fourthIp);
+//
+//        call.cancel();
+//
+//        call = restApiDistance.getDistanceEndpoint("application/json");
+//
+//        call.enqueue(this);
+
+        setDistancePartialUrl(String.valueOf(fourthIp));
+        updateDistanceRetrofit();
+        fourthIp++;
+        if(fourthIp > this.ipAddrEnd) return;
+        System.out.println("4 IP: " + fourthIp);
+        call.enqueue(this);
     }
 }
 
