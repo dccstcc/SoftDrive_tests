@@ -2,6 +2,8 @@ package pl.pjatk.softdrive.rest.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
+
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
@@ -9,15 +11,14 @@ import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 public class RestDistanceService extends IntentService {
 
-    int distance;
+    String routerIp = "no read";
 
     public RestDistanceService(){
         super("RestDistanceService");
     }
 
-    private void FindRouterIp(int ratio) {
-        //distance = -1;
-        //int ipAddrRatio = ratio;
+    private String FindRouterIp(int ratio) {
+
         int startIp = 1;
         int endIp = startIp + ratio-1;
 
@@ -35,6 +36,7 @@ public class RestDistanceService extends IntentService {
 
                     System.out.println("Distance was found : " + value.getDistance());
 
+                    routerIp = RestDistanceCtrl.routerDistanceIp;
                 }
 
             }).prepareCall().call();
@@ -45,13 +47,17 @@ public class RestDistanceService extends IntentService {
             if(startIp>254) startIp=254;
         }
 
-        //return distance;
+        return routerIp;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        FindRouterIp(20);
+        String routerIp = FindRouterIp(10);
+
+        System.out.println("READ ROUTER IP = " + routerIp);
+        Log.i("router ip","READ ROUTER IP = " + routerIp);
+
 
 //        new RestDistanceCtrl(1, 20, new IFromRestCallback() {
 //

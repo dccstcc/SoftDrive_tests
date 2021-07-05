@@ -18,6 +18,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     private int ipAddrStart;
     private int ipAddrEnd;
 
+    public static String routerDistanceIp = "none";
+
     public RestDistanceCtrl(int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
 
         this.IFromRestCallback = IFromRestCallback;
@@ -69,6 +71,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
             distance = response.body();
 
+            routerDistanceIp = prepareIp(fourthIp).ip.getIp();
+
             call.cancel();
 
             try {
@@ -79,6 +83,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         } else {
 
         }
+
+        return;
     }
 
     @Override
