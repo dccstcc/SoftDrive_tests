@@ -69,6 +69,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
             distance = response.body();
 
+            call.cancel();
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
