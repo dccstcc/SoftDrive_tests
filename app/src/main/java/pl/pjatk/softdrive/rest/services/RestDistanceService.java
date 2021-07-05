@@ -53,7 +53,7 @@ public class RestDistanceService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        String routerIp = FindRouterIp(10);
+        String routerIp = FindRouterIp(1);
 
         System.out.println("READ ROUTER IP = " + routerIp);
         Log.i("router ip","READ ROUTER IP = " + routerIp);
