@@ -2,14 +2,9 @@ package pl.pjatk.softdrive.rest.controllers;
 
 import android.app.Application;
 import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,7 +13,6 @@ import pl.pjatk.softdrive.rest.RestApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class RestCtrl extends Application {
 
     protected static final String protocol = "http://";
@@ -38,7 +32,6 @@ public class RestCtrl extends Application {
     RestApi restApiDistance;
 
     public void start() {
-        //prepareFirstIp();
 
         this.gson = initGson();
         this.clientBuilder = initLogBuilder();
@@ -54,26 +47,6 @@ public class RestCtrl extends Application {
     public void updateScan2dRetrofit() {
         this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
     }
-
-//    public RestDistanceCtrl prepareFirstIp() {
-//        ip = new FindAddressIp();
-//        thirdPartIp = ip.getIp();
-//
-//        DISTANCE_URL = "";
-//        DISTANCE_URL += protocol;
-//        DISTANCE_URL += thirdPartIp;
-//        DISTANCE_URL += "1";
-//        DISTANCE_URL += portDistance;
-//
-//        SCAN2D_URL = "";
-//        SCAN2D_URL += protocol;
-//        SCAN2D_URL += thirdPartIp;
-//        SCAN2D_URL += "1";
-//        SCAN2D_URL += portScan2d;
-//
-//        return this;
-//    }
-
 
     public static String getDistanceUrl() {
         return DISTANCE_URL;
