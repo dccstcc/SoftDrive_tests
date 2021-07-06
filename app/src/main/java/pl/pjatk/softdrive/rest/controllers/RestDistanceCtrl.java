@@ -1,11 +1,8 @@
 package pl.pjatk.softdrive.rest.controllers;
 
-import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Distance;
-import pl.pjatk.softdrive.rest.services.RestDistanceService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,8 +16,6 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     private int fourthIp = 2;
     private int ipAddrStart;
     private int ipAddrEnd;
-
-    public static String routerDistanceIp = "none";
 
     public RestDistanceCtrl(int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
 
@@ -71,13 +66,15 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
         if (response.isSuccessful()) {
 
-            prepareIp(fourthIp).ip.getIp();
+                prepareIp(fourthIp).ip.getIp();
 
-            IFromRestCallback.getDistanceRouterIp(fourthIp);
+                IFromRestCallback.getDistanceRouterIp(fourthIp);
+                IFromRestCallback.getDistanceResponse(response.body());
 
-            call.cancel();
+                call.cancel();
 
-            return;
+                return;
+
         }
     }
 
