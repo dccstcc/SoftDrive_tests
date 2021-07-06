@@ -142,7 +142,7 @@ public class RestDistanceService extends IntentService {
             System.out.println("test from service time " + newData);
 
             ////timeToFetchData = 5000;
-            scheduleAlarm(10000L);
+            //scheduleAlarm(10000L);
         }
     }
 
