@@ -37,6 +37,11 @@ public class RestScan2dService extends IntentService {
 
             }
 
+            @Override
+            public void getDistanceRouterIp(int partIpAddress) {
+
+            }
+
         });
     }
 }

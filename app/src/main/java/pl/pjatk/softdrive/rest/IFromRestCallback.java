@@ -8,5 +8,5 @@ public interface IFromRestCallback {
 
     void getScan2dResponse(Scan2d value);
     void getDistanceResponse(Distance value);
-
+    void getDistanceRouterIp(int partIpAddress);
 }

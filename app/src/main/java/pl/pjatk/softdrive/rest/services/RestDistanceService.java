@@ -36,22 +36,13 @@ public class RestDistanceService extends IntentService {
                 @Override
                 public void getDistanceResponse(Distance value) {
 
-                    System.out.println("Distance was found : " + value.getDistance());
+                }
 
-                    //routerIp = RestDistanceCtrl.routerDistanceIp;
+                @Override
+                public void getDistanceRouterIp(int partIpAddress) {
 
-//                    try {
-//                        Thread.sleep(7000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    System.out.println("part ip was found : " + partIpAddress);
 
-//                    Intent intent = new Intent();
-//                    Bundle bundle = intent.getExtras();
-//                    assert bundle != null;
-//                    String routerDistanceIp = bundle.getString("ipAddress");
-//                    Log.i("router ip address", routerDistanceIp);
-//                    System.out.println("ip proper: " + routerDistanceIp);
                 }
 
             }).prepareCall().call();
@@ -66,8 +57,6 @@ public class RestDistanceService extends IntentService {
     }
 
 
-
-
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -76,32 +65,5 @@ public class RestDistanceService extends IntentService {
         System.out.println("READ ROUTER IP = " + routerIp);
         Log.i("router ip","READ ROUTER IP = " + routerIp);
 
-        String newString;
-
-
-        assert intent != null;
-        Bundle extras = intent.getExtras();
-            if(extras == null) {
-                newString= null;
-            } else {
-                newString= extras.getString(Intent.EXTRA_TEXT);
-            }
-
-        System.out.println("READ ROUTER IP EXTRA = " + newString);
-        Log.i("router ip","READ ROUTER IP EXTRA = " + newString);
-
-
-//        Intent intent2 = new Intent();
-//        assert intent2 != null;
-//        Bundle bundle = intent2.getExtras();
-//        assert bundle != null;
-//        String routerDistanceIp = bundle.getString("ipAddress");
-//        assert routerDistanceIp != null;
-//        Log.i("router ip address", routerDistanceIp);
-//        System.out.println("ip proper: " + routerDistanceIp);
-
-
     }
-
-    //mTourName = intent.getStringExtra("tour_name");
 }

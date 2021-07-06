@@ -71,26 +71,9 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
         if (response.isSuccessful()) {
 
-            distance = response.body();
-
-
-
             prepareIp(fourthIp).ip.getIp();
 
-            Log.i("router ip address bef 0", getDistanceUrl());
-
-            IFromRestCallback.getDistanceResponse(distance);
-
-//
-//            Intent sendIntent = new Intent(RestDistanceCtrl.this, RestDistanceService.class);
-//            //sendIntent.setAction(Intent.ACTION_SEND);
-//            sendIntent.putExtra(Intent.EXTRA_TEXT, getDistanceUrl());
-//            //sendIntent.setType("text/plain");
-//            bindService(sendIntent, getApplicationContext, BIND_AUTO_CREATE);
-
-//            Intent shareIntent = Intent.createChooser(sendIntent, null);
-//            getBaseContext().startActivity(shareIntent);
-
+            IFromRestCallback.getDistanceRouterIp(fourthIp);
 
             call.cancel();
 
