@@ -10,13 +10,11 @@ import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 public class RestDistanceService extends IntentService {
 
-    String routerIp = "no read";
-
     public RestDistanceService(){
         super("RestDistanceService");
     }
 
-    private String FindRouterIp(int ratio) {
+    private void FindRouterIp(int ratio) {
 
         int startIp = 1;
         int endIp = startIp + ratio-1;
@@ -52,8 +50,6 @@ public class RestDistanceService extends IntentService {
             if(endIp>255) endIp=255;
             if(startIp>254) startIp=254;
         }
-
-        return routerIp;
     }
 
 
