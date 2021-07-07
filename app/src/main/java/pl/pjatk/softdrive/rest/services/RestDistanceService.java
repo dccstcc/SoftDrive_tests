@@ -24,7 +24,7 @@ public class RestDistanceService extends IntentService {
             new RestDistanceCtrl(startIp, endIp, new IFromRestCallback() {
 
                 @Override
-                public void getScan2dResponse(Scan2d value) {
+                public void getScan2dResponse(Float[] value) {
 
                 }
 
@@ -44,6 +44,11 @@ public class RestDistanceService extends IntentService {
                     System.out.println("part ip was found : " + partIpAddress);
 
                     sendPartIp(String.valueOf(partIpAddress));
+                }
+
+                @Override
+                public void getScan2dRouterIp(int partIpAddress) {
+
                 }
 
             }).prepareCall().call();
@@ -70,6 +75,7 @@ public class RestDistanceService extends IntentService {
         sendBroadcast(broadcastIntent);
     }
 
+    // check names !!!
     private void sendPartIp(String partIp){
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("SendPartIpDataAction");

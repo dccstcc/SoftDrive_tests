@@ -2,6 +2,9 @@ package pl.pjatk.softdrive.rest.controllers;
 
 import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +16,7 @@ public class FindAddressIp {
 
     String ip = "192.168.";
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public FindAddressIp() {
         ip += get3rdPartOfIp();
     }
@@ -21,6 +25,7 @@ public class FindAddressIp {
         return ip;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private String get3rdPartOfIp() {
 
         String ip3Byte = "";

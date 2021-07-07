@@ -42,11 +42,11 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         DISTANCE_URL += String.valueOf(fourthIp);
         DISTANCE_URL += portDistance;
 
-        SCAN2D_URL = "";
-        SCAN2D_URL += protocol;
-        SCAN2D_URL += thirdPartIp;
-        SCAN2D_URL += String.valueOf(fourthIp);
-        SCAN2D_URL += portScan2d;
+//        SCAN2D_URL = "";
+//        SCAN2D_URL += protocol;
+//        SCAN2D_URL += thirdPartIp;
+//        SCAN2D_URL += String.valueOf(fourthIp);
+//        SCAN2D_URL += portScan2d;
 
         return this;
     }
@@ -95,7 +95,6 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         }
 
         this.prepareIp(fourthIp).prepareCall().call();
-        System.out.println("4 IP: " + fourthIp);
     }
 }
 

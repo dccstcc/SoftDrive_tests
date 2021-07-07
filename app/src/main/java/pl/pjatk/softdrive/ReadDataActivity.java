@@ -78,7 +78,7 @@ public class ReadDataActivity extends AppCompatActivity {
                         new RestDistanceCtrl(distanceIpInt, distanceIpInt, new IFromRestCallback() {
 
                             @Override
-                            public void getScan2dResponse(Scan2d value) {
+                            public void getScan2dResponse(Float[] value) {
 
                             }
 
@@ -90,6 +90,11 @@ public class ReadDataActivity extends AppCompatActivity {
 
                             @Override
                             public void getDistanceRouterIp(int partIpAddress) {
+
+                            }
+
+                            @Override
+                            public void getScan2dRouterIp(int partIpAddress) {
 
                             }
 
