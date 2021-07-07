@@ -31,6 +31,7 @@ public class RestDistanceService extends IntentService {
                 @Override
                 public void getDistanceResponse(Distance value) {
                     // send broadcast distance data after call RestDistanceCtrl
+                    // receiver in ReadDataActivity
                     System.out.println("distance was found : " + value.getDistance());
                     sendDistance(String.valueOf(value.getDistance()));
 
@@ -39,6 +40,7 @@ public class RestDistanceService extends IntentService {
                 @Override
                 public void getDistanceRouterIp(int partIpAddress) {
                     // send broadcast 4th part of ip address
+                    // receiver in ReadDataActivity
                     System.out.println("part ip was found : " + partIpAddress);
 
                     sendPartIp(String.valueOf(partIpAddress));
