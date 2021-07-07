@@ -59,7 +59,7 @@ public class ReadDataActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // for read proper ip broadcast
-                IntentFilter intentFilterDistanceIp = new IntentFilter("SendProperIpAction");
+                IntentFilter intentFilterDistanceIp = new IntentFilter("SendPartIpDataAction");
 
                 // receive distance by proper ip address from rest call
                 BroadcastReceiver distanceIpReceiver = new BroadcastReceiver() {
@@ -71,7 +71,7 @@ public class ReadDataActivity extends AppCompatActivity {
                         assert notificationData != null;
 
                         // read proper ip address from firstSendPoperIp(ip)
-                        distanceIp  = notificationData.getString("ProperIpData");
+                        distanceIp  = notificationData.getString("PartIpData");
                         int distanceIpInt = Integer.parseInt(distanceIp);
 
                         // call rest service for read distance data by proper ip
@@ -118,8 +118,8 @@ public class ReadDataActivity extends AppCompatActivity {
 
     private void firstSendPoperIp(String partIp){
         Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("SendProperIpAction");
-        broadcastIntent.putExtra("ProperIpData", partIp);
+        broadcastIntent.setAction("SendPartIpDataAction");
+        broadcastIntent.putExtra("PartIpData", partIp);
         sendBroadcast(broadcastIntent);
     }
 
