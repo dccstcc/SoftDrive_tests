@@ -40,6 +40,7 @@ public class RestDistanceService extends IntentService {
                 public void getDistanceRouterIp(int partIpAddress) {
                     // send broadcast 4th part of ip address
                     System.out.println("part ip was found : " + partIpAddress);
+
                     sendPartIp(String.valueOf(partIpAddress));
                 }
 
