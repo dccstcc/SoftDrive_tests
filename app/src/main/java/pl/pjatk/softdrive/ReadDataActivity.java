@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import pl.pjatk.softdrive.rest.IFromRestCallback;
+import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
+import pl.pjatk.softdrive.rest.domain.Distance;
+import pl.pjatk.softdrive.rest.domain.Scan2d;
+
 
 public class ReadDataActivity extends AppCompatActivity {
 
@@ -36,17 +41,17 @@ public class ReadDataActivity extends AppCompatActivity {
 
                 Bundle notificationData = intent.getExtras();
                 assert notificationData != null;
-                String distance  = notificationData.getString("DistanceData");
-                System.out.println("test from activity " + distance);
+//                String distance  = notificationData.getString("DistanceData");
+//                System.out.println("test from activity " + distance);
 
-//                distanceIp  = notificationData.getString("PartIpData");
-//                System.out.println("test from activity ip data " + distanceIp);
+                distanceIp  = notificationData.getString("PartIpData");
+                System.out.println("test from activity ip data " + distanceIp);
 
             }
         };
 
 
-        IntentFilter intentFilterDistance = new IntentFilter("SendDistanceDataAction");
+        IntentFilter intentFilterDistance = new IntentFilter("SendPartIpDataAction");
         registerReceiver(distanceReceiver, intentFilterDistance);
 
 
@@ -68,13 +73,39 @@ public class ReadDataActivity extends AppCompatActivity {
 
                         distanceIp  = notificationData.getString("PartIpData");
                         System.out.println("test from activity ip data " + distanceIp);
+                        int distanceIpInt = Integer.parseInt(distanceIp);
+
+                        new RestDistanceCtrl(distanceIpInt, distanceIpInt, new IFromRestCallback() {
+
+                            @Override
+                            public void getScan2dResponse(Scan2d value) {
+
+                            }
+
+                            @Override
+                            public void getDistanceResponse(Distance value) {
+                                // send broadcast distance data after call RestDistanceCtrl
+                                System.out.println("distance was found !!! : " + value.getDistance());
+                                sendDistance(String.valueOf(value.getDistance()));
+
+                            }
+
+                            @Override
+                            public void getDistanceRouterIp(int partIpAddress) {
+                                // send broadcast 4th part of ip address
+                                System.out.println("part ip was found ???? : " + partIpAddress);
+
+
+                            }
+
+                        }).prepareCall().call();
 
                     }
                 };
 
                 registerReceiver(distanceIpReceiver, intentFilterDistanceIp);
 
-                sendPartIp("123");
+                sendPartIp(distanceIp);
 
                 distanceTxt.setText("after call " + distanceIp);
             }
@@ -92,6 +123,12 @@ public class ReadDataActivity extends AppCompatActivity {
         sendBroadcast(broadcastIntent);
     }
 
+    private void sendDistance(String distance){
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("SendDistanceDataAction");
+        broadcastIntent.putExtra("DistanceData", distance);
+        sendBroadcast(broadcastIntent);
+    }
 
 
     @Override
