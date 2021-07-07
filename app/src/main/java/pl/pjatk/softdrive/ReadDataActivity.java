@@ -17,6 +17,8 @@ public class ReadDataActivity extends AppCompatActivity {
     TextView distanceTxt;
     Button distanceBtn;
 
+    String distanceIp;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -37,8 +39,8 @@ public class ReadDataActivity extends AppCompatActivity {
                 String distance  = notificationData.getString("DistanceData");
                 System.out.println("test from activity " + distance);
 
-                String distanceIp  = notificationData.getString("PartIpData");
-                System.out.println("test from activity ip data " + distanceIp);
+//                distanceIp  = notificationData.getString("PartIpData");
+//                System.out.println("test from activity ip data " + distanceIp);
 
             }
         };
@@ -47,15 +49,34 @@ public class ReadDataActivity extends AppCompatActivity {
         IntentFilter intentFilterDistance = new IntentFilter("SendDistanceDataAction");
         registerReceiver(distanceReceiver, intentFilterDistance);
 
-        IntentFilter intentFilterDistanceIp = new IntentFilter("SendPartIpDataAction");
-        registerReceiver(distanceReceiver, intentFilterDistanceIp);
 
 
         View.OnClickListener distanceListener =  new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("on click listener");
-                distanceTxt.setText("after call");
+
+                IntentFilter intentFilterDistanceIp = new IntentFilter("SendPartIpDataAction");
+
+                BroadcastReceiver distanceIpReceiver = new BroadcastReceiver() {
+
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+
+                        Bundle notificationData = intent.getExtras();
+                        assert notificationData != null;
+
+                        distanceIp  = notificationData.getString("PartIpData");
+                        System.out.println("test from activity ip data " + distanceIp);
+
+                    }
+                };
+
+                registerReceiver(distanceIpReceiver, intentFilterDistanceIp);
+
+                sendPartIp("123");
+
+                distanceTxt.setText("after call " + distanceIp);
             }
         };
 
@@ -64,7 +85,12 @@ public class ReadDataActivity extends AppCompatActivity {
 
     }
 
-
+    private void sendPartIp(String partIp){
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("SendPartIpDataAction");
+        broadcastIntent.putExtra("PartIpData", partIp);
+        sendBroadcast(broadcastIntent);
+    }
 
 
 
