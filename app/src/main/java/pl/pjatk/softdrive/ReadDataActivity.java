@@ -44,10 +44,8 @@ public class ReadDataActivity extends AppCompatActivity {
                 Bundle notificationData = intent.getExtras();
                 assert notificationData != null;
 
-                // set global value of ip
+                // set global value of ip for firstSendPoperIp(ip) method
                 distanceIp  = notificationData.getString("PartIpData");
-                System.out.println("read proper ip ######## " + distanceIp);
-
             }
         };
         // register proper ip address receiver
@@ -59,9 +57,9 @@ public class ReadDataActivity extends AppCompatActivity {
         View.OnClickListener distanceListener =  new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("on click listener");
 
-                IntentFilter intentFilterDistanceIp = new IntentFilter("SendPartIpDataAction");
+                // for read proper ip broadcast
+                IntentFilter intentFilterDistanceIp = new IntentFilter("SendProperIpAction");
 
                 // receive distance by proper ip address from rest call
                 BroadcastReceiver distanceIpReceiver = new BroadcastReceiver() {
@@ -72,9 +70,8 @@ public class ReadDataActivity extends AppCompatActivity {
                         Bundle notificationData = intent.getExtras();
                         assert notificationData != null;
 
-                        // read proper ip address
-                        distanceIp  = notificationData.getString("PartIpData");
-                        System.out.println("test from activity ip data " + distanceIp);
+                        // read proper ip address from firstSendPoperIp(ip)
+                        distanceIp  = notificationData.getString("ProperIpData");
                         int distanceIpInt = Integer.parseInt(distanceIp);
 
                         // call rest service for read distance data by proper ip
@@ -87,19 +84,12 @@ public class ReadDataActivity extends AppCompatActivity {
 
                             @Override
                             public void getDistanceResponse(Distance value) {
-                                // send broadcast distance data after call RestDistanceCtrl
-                                System.out.println("distance was found !!! : " + value.getDistance());
-                                //sendDistance(String.valueOf(value.getDistance()));
-
                                 // global value assign
                                 distance = value.getDistance();
                             }
 
                             @Override
                             public void getDistanceRouterIp(int partIpAddress) {
-                                // send broadcast 4th part of ip address
-                                //System.out.println("part ip was found ???? : " + partIpAddress);
-
 
                             }
 
@@ -111,9 +101,11 @@ public class ReadDataActivity extends AppCompatActivity {
                 // register data receiver for read distance on demand
                 registerReceiver(distanceIpReceiver, intentFilterDistanceIp);
 
-                // call broadcast send the ip
-                sendPartIp(distanceIp);
+                // run all receiver callback logic
+                // call once broadcast send the proper ip
+                firstSendPoperIp(distanceIp);
 
+                // distance is here
                 distanceTxt.setText("after call: " + distance);
             }
         };
@@ -124,17 +116,10 @@ public class ReadDataActivity extends AppCompatActivity {
 
     }
 
-    private void sendPartIp(String partIp){
+    private void firstSendPoperIp(String partIp){
         Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("SendPartIpDataAction");
-        broadcastIntent.putExtra("PartIpData", partIp);
-        sendBroadcast(broadcastIntent);
-    }
-
-    private void sendDistance(String distance){
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("SendDistanceDataAction");
-        broadcastIntent.putExtra("DistanceData", distance);
+        broadcastIntent.setAction("SendProperIpAction");
+        broadcastIntent.putExtra("ProperIpData", partIp);
         sendBroadcast(broadcastIntent);
     }
 
@@ -143,7 +128,6 @@ public class ReadDataActivity extends AppCompatActivity {
     protected void onDestroy() {
 
         super.onDestroy();
-        //unregisterReceiver(serviceReceiver);
     }
 
 }
