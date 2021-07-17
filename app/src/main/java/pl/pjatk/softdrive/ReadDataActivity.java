@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +20,9 @@ import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 
 public class ReadDataActivity extends AppCompatActivity {
+
+    SurfaceView surfaceView;
+    SurfaceHolder surfaceHolder;
 
     TextView distanceTxt;
     Button distanceBtn;
@@ -34,6 +39,21 @@ public class ReadDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_read_data);
+
+//        surfaceView = (SurfaceView) findViewById(R.id.trafficView);
+//        surfaceHolder = surfaceView.getHolder();
+//
+//        surfaceHolder.addCallback((SurfaceHolder.Callback) this);
+//
+//        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+
+
+
+
+
+
+
 
         distanceBtn = (Button) findViewById(R.id.distanceBtn);
         distanceTxt = (TextView) findViewById(R.id.distanceTextView);

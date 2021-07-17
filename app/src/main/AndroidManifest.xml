@@ -34,6 +34,8 @@
         <activity android:name=".RestCtrlActivity" />
         <activity android:name=".ReadDataActivity" />
 
+        <activity android:name=".view.MainViewActivity" />
+
         <service android:name=".rest.services.RestDistanceService"></service>
         <service android:name=".rest.services.RestScan2dService"></service>
         <service android:name=".rest.services.RestDataSendService"></service>
