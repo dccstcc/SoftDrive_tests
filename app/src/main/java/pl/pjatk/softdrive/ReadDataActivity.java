@@ -25,6 +25,9 @@ public class ReadDataActivity extends AppCompatActivity {
     String distanceIp;
     int distance;
 
+    String scan2dIp;
+    float[] scan2d;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
