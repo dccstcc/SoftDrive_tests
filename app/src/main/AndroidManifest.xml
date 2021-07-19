@@ -34,7 +34,9 @@
         <activity android:name=".RestCtrlActivity" />
         <activity android:name=".ReadDataActivity" />
 
-        <activity android:name=".view.MainViewActivity" />
+        <activity android:name=".view.MainViewActivity"
+            android:screenOrientation="portrait" />
+
 
         <service android:name=".rest.services.RestDistanceService"></service>
         <service android:name=".rest.services.RestScan2dService"></service>
