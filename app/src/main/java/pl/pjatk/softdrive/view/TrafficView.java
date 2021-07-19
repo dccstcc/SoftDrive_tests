@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
@@ -29,26 +28,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import pl.pjatk.softdrive.Exit;
-import pl.pjatk.softdrive.MainActivity;
 import pl.pjatk.softdrive.R;
-import pl.pjatk.softdrive.ReadDataActivity;
 
 public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "trafficView"; // for logging errors
-
-    // constants for game play
-    public static final int MISS_PENALTY = 2; // seconds deducted on a miss
-    public static final int HIT_REWARD = 3; // seconds added on a hit
-
-    // constants for the Cannon
-    public static final double CANNON_BASE_RADIUS_PERCENT = 3.0 / 40;
-    public static final double CANNON_BARREL_WIDTH_PERCENT = 3.0 / 40;
-    public static final double CANNON_BARREL_LENGTH_PERCENT = 1.0 / 10;
-
-    // constants for the Cannonball
-    public static final double CANNONBALL_RADIUS_PERCENT = 3.0 / 80;
-    public static final double CANNONBALL_SPEED_PERCENT = 3.0 / 2;
 
     // constants for the Targets
     public static final double TARGET_WIDTH_PERCENT = 1.0 / 40;
@@ -101,22 +85,15 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     /////////////////////////////my constant
-    public static final double MOTORCYCLE_COORDINATE_X = 1.0;
-    public static final double MOTORCYCLE_COORDINATE_Y = 1.0;
-    public static final double MOTORCYCLE_WIDTH = 1.0;
-    public static final double MOTORCYCLE_LENGTH = 1.0;
-    private Motorcycle motor;
+    protected Motorcycle motor;
     private ForwardVehicle forwardVehicle;
     private Display display;
-    int displayWidth;
-    int displayHeight;
+    private int displayWidth;
+    private int displayHeight;
 
     // constants for the forward vehicle
     public static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
     public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
-//    public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 4;
-//    public static final double BLOCKER_X_PERCENT = 1.0 / 2;
-//    public static final double BLOCKER_SPEED_PERCENT = 1.0;
 
     public static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
     public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
@@ -156,7 +133,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.WHITE);
 
-        ///////////////////////////my constructor
 
     }
 
@@ -191,11 +167,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     // reset all the screen elements and start a new game
     public void newGame() {
-        // construct a new Cannon
-//        cannon = new Cannon(this,
-//                (int) (CANNON_BASE_RADIUS_PERCENT * screenHeight),
-//                (int) (CANNON_BARREL_LENGTH_PERCENT * screenWidth),
-//                (int) (CANNON_BARREL_WIDTH_PERCENT * screenHeight));
 
         Random random = new Random(); // for determining random velocities
         targets = new ArrayList<>(); // construct a new Target list
@@ -226,7 +197,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             velocity *= -1; // reverse the initial velocity for next Target
 
             // create and add a new Target to the Target list
-            targets.add(new Target(this, color, HIT_REWARD, targetX, targetY,
+            targets.add(new Target(this, color, 10, targetX, targetY,
                     (int) (TARGET_WIDTH_PERCENT * screenWidth),
                     (int) (TARGET_LENGTH_PERCENT * screenHeight),
                     (int) velocity));
@@ -238,7 +209,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         // create a new Blocker
-        blocker = new Blocker(this, Color.BLACK, MISS_PENALTY,
+        blocker = new Blocker(this, Color.BLACK, 7,
                 (int) (BLOCKER_X_PERCENT * screenWidth),
                 (int) ((0.5 - BLOCKER_LENGTH_PERCENT / 2) * screenHeight),
                 (int) (BLOCKER_WIDTH_PERCENT * screenWidth),
@@ -288,10 +259,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private void updatePositions(double elapsedTimeMS) {
         double interval = elapsedTimeMS / 1000.0; // convert to seconds
 
-        // update cannonball's position if it is on the screen
-//        if (cannon.getCannonball() != null)
-//            cannon.getCannonball().update(interval);
-
         blocker.update(0,interval); // update the blocker's position
 
         for (GameElement target : targets)
@@ -323,30 +290,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // aligns the barrel and fires a Cannonball if a Cannonball is not
     // already on the screen
     public void ExitApp(MotionEvent event) {
-
-//        // get the location of the touch in this view
-//        Point touchPoint = new Point((int) event.getX(),
-//                (int) event.getY());
-//
-//        // compute the touch's distance from center of the screen
-//        // on the y-axis
-//        double centerMinusY = (screenHeight / 2 - touchPoint.y);
-//
-//        double angle = 0; // initialize angle to 0
-//
-//        // calculate the angle the barrel makes with the horizontal
-//        angle = Math.atan2(touchPoint.x, centerMinusY);
-//
-//        // point the barrel at the point where the screen was touched
-//        cannon.align(angle);
-//
-//        // fire Cannonball if there is not already a Cannonball on screen
-//        if (cannon.getCannonball() == null ||
-//                !cannon.getCannonball().isOnScreen()) {
-//            cannon.fireCannonball();
-//            ++shotsFired;
-//        }
-
 
         /////////////////////////////on touch exit app
         cannonThread.setRunning(false);
@@ -413,13 +356,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(getResources().getString(
                 R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
-//        cannon.draw(canvas); // draw the cannon
-//
-//        // draw the GameElements
-//        if (cannon.getCannonball() != null &&
-//                cannon.getCannonball().isOnScreen())
-//            cannon.getCannonball().draw(canvas);
-
         blocker.draw(canvas); // draw the blocker
 
         // draw all of the Targets
@@ -431,43 +367,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         forwardVehicle.draw(canvas);
     }
 
-//    // checks if the ball collides with the Blocker or any of the Targets
-//    // and handles the collisions
-//    public void testForCollisions() {
-//        // remove any of the targets that the Cannonball
-//        // collides with
-//        if (cannon.getCannonball() != null &&
-//                cannon.getCannonball().isOnScreen()) {
-//            for (int n = 0; n < targets.size(); n++) {
-//                if (cannon.getCannonball().collidesWith(targets.get(n))) {
-//                    targets.get(n).playSound(); // play Target hit sound
-//
-//                    // add hit rewards time to remaining time
-//                    timeLeft += targets.get(n).getHitReward();
-//
-//                    cannon.removeCannonball(); // remove Cannonball from game
-//                    targets.remove(n); // remove the Target that was hit
-//                    --n; // ensures that we don't skip testing new target n
-//                    break;
-//                }
-//            }
-//        }
-//        else { // remove the Cannonball if it should not beon the screen
-//            cannon.removeCannonball();
-//        }
-//
-//        // check if ball collides with blocker
-//        if (cannon.getCannonball() != null &&
-//                cannon.getCannonball().collidesWith(blocker)) {
-//            blocker.playSound(); // play Blocker hit sound
-//
-//            // reverse ball direction
-//            cannon.getCannonball().reverseVelocityX();
-//
-//            // deduct blocker's miss penalty from remaining time
-//            timeLeft -= blocker.getMissPenalty();
-//        }
-//    }
 
     // stops the game: called by CannonGameFragment's onPause method
     public void stopGame() {
@@ -520,18 +419,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // called when the user touches the screen in this activity
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-//        // get int representing the type of action which caused this event
-//        int action = e.getAction();
-//
-//        // the user touched the screen or dragged along the screen
-//        if (action == MotionEvent.ACTION_DOWN ||
-//                action == MotionEvent.ACTION_MOVE) {
-////            // fire the cannonball toward the touch point
-////            alignAndFireCannonball(e);
 
-            ///////////////////try to exit on touch
-//
-//        }
         ExitApp(e);
         return true;
     }

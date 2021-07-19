@@ -1,13 +1,10 @@
 package pl.pjatk.softdrive.view;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
 
 public class Motorcycle {
 

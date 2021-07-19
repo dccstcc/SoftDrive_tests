@@ -4,7 +4,6 @@ import android.content.Context;
 
 public class ForwardVehicle extends GameElement{
 
-    Display display;
     int displayWidth;
     int displayHeight;
     int xCoord;
@@ -12,20 +11,6 @@ public class ForwardVehicle extends GameElement{
 
     public ForwardVehicle(Context context, TrafficView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
         super(view, color, soundId, x, y, width, height, velocityX, velocityY);
-
-//        display = new Display(context);
-//        displayWidth = display.getDisplayWidth();
-//        displayHeight = display.getDisplayHeight();
-
-//        xCoord = displayWidth/2 - width/2;
-        //yCoord = displayHeight/2 - height/2;
-
-//        super.setX(xCoord);
-//        super.setY(0);
-
-//        setxCoord(xCoord);
-//        setyCoord(yCoord);
-
     }
 
     public double getDisplayWidth() {
