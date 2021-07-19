@@ -17,6 +17,7 @@ import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
 import pl.pjatk.softdrive.rest.domain.Scan2d;
+import pl.pjatk.softdrive.view.MainViewActivity;
 
 
 public class ReadDataActivity extends AppCompatActivity {
@@ -135,6 +136,12 @@ public class ReadDataActivity extends AppCompatActivity {
 
                 // distance is here
                 distanceTxt.setText("after call: " + distance);
+
+
+                //run view activity
+                Intent drawView = new Intent(getApplicationContext(), MainViewActivity.class);
+                startActivity(drawView);
+
             }
         };
 
