@@ -40,8 +40,8 @@ public class Cannonball extends GameElement {
 
    // updates the Cannonball's position
    @Override
-   public void update(double interval) {
-      super.update(interval); // updates Cannonball's vertical position
+   public void update(double intevalX, double interval) {
+      super.update(0,interval); // updates Cannonball's vertical position
 
       // update horizontal position
       shape.offset((int) (velocityX * interval), 0);

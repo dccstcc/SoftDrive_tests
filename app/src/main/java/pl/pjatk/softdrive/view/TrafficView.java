@@ -23,6 +23,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -96,7 +98,21 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint textPaint; // Paint used to draw text
     private Paint backgroundPaint; // Paint used to clear the drawing area
 
+
+
+    /////////////////////////////my constant
+    public static final double MOTORCYCLE_COORDINATE_X = 1.0;
+    public static final double MOTORCYCLE_COORDINATE_Y = 1.0;
+    public static final double MOTORCYCLE_WIDTH = 1.0;
+    public static final double MOTORCYCLE_LENGTH = 1.0;
+    private Motorcycle motor;
+
+
+
+
+
     // constructor
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public TrafficView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
         activity = (Activity) context; // store reference to MainViewActivity
@@ -126,6 +142,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         textPaint = new Paint();
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.WHITE);
+
+        ///////////////////////////my constructor
+
     }
 
     // called when the size of the SurfaceView changes,
@@ -235,10 +254,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //        if (cannon.getCannonball() != null)
 //            cannon.getCannonball().update(interval);
 
-        blocker.update(interval); // update the blocker's position
+        blocker.update(0,interval); // update the blocker's position
 
         for (GameElement target : targets)
-            target.update(interval); // update the target's position
+            target.update(0,interval); // update the target's position
 
         timeLeft -= interval; // subtract from time left
 
@@ -506,6 +525,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //                        testForCollisions(); // test for GameElement collisions
                         drawGameElements(canvas); // draw using the canvas
                         previousFrameTime = currentTime; // update previous time
+
+                        //////////////my own
+                        motor = new Motorcycle(getContext(), canvas, 20,50);
                     }
                 }
                 finally {

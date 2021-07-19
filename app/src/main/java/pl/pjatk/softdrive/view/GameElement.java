@@ -11,7 +11,14 @@ public class GameElement {
    protected Paint paint = new Paint(); // Paint to draw this GameElement
    protected Rect shape; // the GameElement's rectangular bounds
    private float velocityY; // the vertical velocity of this GameElement
+   private float velocityX; // the vertical velocity of this GameElement
    private int soundId; // the sound associated with this GameElement
+
+   ///////////////////my attrs
+   protected boolean isCollision = false;
+   protected double collisionSensitive = 10.0;
+   //protected Motorcycle motor;
+
 
    // public constructor
    public GameElement(TrafficView view, int color, int soundId, int x,
@@ -24,14 +31,18 @@ public class GameElement {
    }
 
    // update GameElement position and check for wall collisions
-   public void update(double interval) {
+   public void update(double intervalX, double intervalY) {
       // update vertical position
-      shape.offset(0, (int) (velocityY * interval));
+      shape.offset((int) (velocityX * intervalX), (int) (velocityY * intervalY));
 
       // if this GameElement collides with the wall, reverse direction
       if (shape.top < 0 && velocityY < 0 ||
          shape.bottom > view.getScreenHeight() && velocityY > 0)
          velocityY *= -1; // reverse this GameElement's velocity
+
+
+      //////////////////my collisions
+
    }
 
    // draws this GameElement on the given Canvas
