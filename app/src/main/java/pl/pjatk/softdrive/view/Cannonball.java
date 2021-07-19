@@ -13,7 +13,7 @@ public class Cannonball extends GameElement {
    public Cannonball(TrafficView view, int color, int soundId, int x,
       int y, int radius, float velocityX, float velocityY) {
       super(view, color, soundId, x, y,
-         2 * radius, 2 * radius, velocityY);
+         2 * radius, 2 * radius, 0, velocityY);
       this.velocityX = velocityX;
       onScreen = true;
    }

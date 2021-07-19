@@ -8,7 +8,7 @@ public class Blocker extends GameElement {
    // constructor
    public Blocker(TrafficView view, int color, int missPenalty, int x,
       int y, int width, int length, float velocityY) {
-      super(view, color, TrafficView.BLOCKER_SOUND_ID, x, y, width, length,
+      super(view, color, TrafficView.BLOCKER_SOUND_ID, x, y, width, length, 0,
          velocityY);
       this.missPenalty = missPenalty;
    }

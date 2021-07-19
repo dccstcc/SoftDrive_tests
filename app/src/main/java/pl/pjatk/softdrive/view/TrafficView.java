@@ -106,7 +106,20 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public static final double MOTORCYCLE_WIDTH = 1.0;
     public static final double MOTORCYCLE_LENGTH = 1.0;
     private Motorcycle motor;
+    private ForwardVehicle forwardVehicle;
+    private Display display;
+    int displayWidth;
+    int displayHeight;
 
+    // constants for the forward vehicle
+    public static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
+    public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
+//    public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 4;
+//    public static final double BLOCKER_X_PERCENT = 1.0 / 2;
+//    public static final double BLOCKER_SPEED_PERCENT = 1.0;
+
+    public static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
+    public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
 
 
 
@@ -243,6 +256,31 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             cannonThread.start(); // start the game loop thread
         }
 
+
+        ////////////////////////////my own
+
+        display = new Display(getContext());
+        displayWidth = display.getDisplayWidth();
+        displayHeight = display.getDisplayHeight();
+
+        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
+        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
+
+        int x = displayWidth/2 - width/2;
+
+        forwardVehicle = new ForwardVehicle(
+                getContext(),
+                this,
+                Color.GREEN,
+                TARGET_SOUND_ID,
+                x,
+                0,
+                width,
+                height,
+                10,
+                10
+                );
+
         hideSystemBars();
     }
 
@@ -275,6 +313,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             showGameOverDialog(R.string.win); // show winning dialog
             gameOver = true;
         }
+
+
+
+        ////////////////////my own
+        forwardVehicle.update(0,interval);
     }
 
     // aligns the barrel and fires a Cannonball if a Cannonball is not
@@ -382,6 +425,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         // draw all of the Targets
         for (GameElement target : targets)
             target.draw(canvas);
+
+
+        ///////////////////////////////my own
+        forwardVehicle.draw(canvas);
     }
 
 //    // checks if the ball collides with the Blocker or any of the Targets
@@ -527,7 +574,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         previousFrameTime = currentTime; // update previous time
 
                         //////////////my own
-                        motor = new Motorcycle(getContext(), canvas, 20,50);
+                        motor = new Motorcycle(getContext(),
+                                canvas,
+                                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
+                                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight)                        );
                     }
                 }
                 finally {

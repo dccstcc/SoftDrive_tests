@@ -8,7 +8,7 @@ public class Target extends GameElement {
    // constructor
    public Target(TrafficView view, int color, int hitReward, int x, int y,
       int width, int length, float velocityY) {
-      super(view, color, TrafficView.TARGET_SOUND_ID, x, y, width, length,
+      super(view, color, TrafficView.TARGET_SOUND_ID, x, y, width, length, 0,
          velocityY);
       this.hitReward = hitReward;
    }

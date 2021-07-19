@@ -13,6 +13,12 @@ public class GameElement {
    private float velocityY; // the vertical velocity of this GameElement
    private float velocityX; // the vertical velocity of this GameElement
    private int soundId; // the sound associated with this GameElement
+   private int x;
+   private int y;
+   private int width;
+   private int height;
+
+
 
    ///////////////////my attrs
    protected boolean isCollision = false;
@@ -22,11 +28,12 @@ public class GameElement {
 
    // public constructor
    public GameElement(TrafficView view, int color, int soundId, int x,
-      int y, int width, int length, float velocityY) {
+      int y, int width, int height, float velocityX, float velocityY) {
       this.view = view;
       paint.setColor(color);
-      shape = new Rect(x, y, x + width, y + length); // set bounds
+      shape = new Rect(x, y, x + width, y + height); // set bounds
       this.soundId = soundId;
+      this.velocityX = velocityX;
       this.velocityY = velocityY;
    }
 
@@ -53,6 +60,38 @@ public class GameElement {
    // plays the sound that corresponds to this type of GameElement
    public void playSound() {
       view.playSound(soundId);
+   }
+
+   public int getX() {
+      return x;
+   }
+
+   public void setX(int x) {
+      this.x = x;
+   }
+
+   public int getY() {
+      return y;
+   }
+
+   public void setY(int y) {
+      this.y = y;
+   }
+
+   public int getWidth() {
+      return width;
+   }
+
+   public void setWidth(int width) {
+      this.width = width;
+   }
+
+   public int getHeight() {
+      return height;
+   }
+
+   public void setHeight(int height) {
+      this.height = height;
    }
 }
 
