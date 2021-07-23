@@ -1,4 +1,4 @@
-package pl.pjatk.softdrive;
+package pl.pjatk.softdrive.database;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,12 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import pl.pjatk.softdrive.R;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
 
 
-public class ReadDataActivity extends AppCompatActivity {
+public class ReadRestData extends AppCompatActivity {
 
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
@@ -47,21 +48,6 @@ public class ReadDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_read_data);
 
         executorService = Executors.newFixedThreadPool(1);
-
-
-//        surfaceView = (SurfaceView) findViewById(R.id.trafficView);
-//        surfaceHolder = surfaceView.getHolder();
-//
-//        surfaceHolder.addCallback((SurfaceHolder.Callback) this);
-//
-//        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-
-
-
-
-
-
 
 
         distanceBtn = (Button) findViewById(R.id.distanceBtn);

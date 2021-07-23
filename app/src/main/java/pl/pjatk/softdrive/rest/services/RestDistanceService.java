@@ -2,10 +2,16 @@ package pl.pjatk.softdrive.rest.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
-import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 
 public class RestDistanceService extends IntentService {
@@ -14,14 +20,17 @@ public class RestDistanceService extends IntentService {
         super("RestDistanceService");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void FindRouterIp(int ratio) {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
 
         int startIp = 1;
         int endIp = startIp + ratio-1;
 
         for(;endIp<255;) {
 
-            new RestDistanceCtrl(startIp, endIp, new IFromRestCallback() {
+            new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
 
                 @Override
                 public void getScan2dResponse(Float[] value) {
@@ -51,6 +60,7 @@ public class RestDistanceService extends IntentService {
 
                 }
 
+//            }).prepareCall().call();
             }).prepareCall().call();
 
             startIp += ratio;
@@ -61,6 +71,7 @@ public class RestDistanceService extends IntentService {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onHandleIntent(Intent intent) {
 

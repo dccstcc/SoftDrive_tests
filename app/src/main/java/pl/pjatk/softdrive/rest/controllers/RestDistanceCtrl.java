@@ -1,6 +1,12 @@
 package pl.pjatk.softdrive.rest.controllers;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.concurrent.Executor;
+
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Distance;
 import retrofit2.Call;
@@ -17,7 +23,12 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     private int ipAddrStart;
     private int ipAddrEnd;
 
-    public RestDistanceCtrl(int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
+    private final Executor executor;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public RestDistanceCtrl(Executor executor, int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
+
+        this.executor = executor;
 
         this.IFromRestCallback = IFromRestCallback;
 
@@ -26,12 +37,24 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         this.ipAddrEnd = ipAddrEnd;
         fourthIp = ipAddrStart;
 
-        prepareIp(fourthIp);
+
+                prepareIp(fourthIp);
+
 
         distance = new Distance();
 
     }
 
+//    public void runCallThreadBackdround() {
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                prepareCall().call();
+//            }
+//        });
+//    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public RestDistanceCtrl prepareIp(int fourthIp) {
         ip = new FindAddressIp();
         thirdPartIp = ip.getIp();
@@ -66,26 +89,40 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
         if (response.isSuccessful()) {
 
-                prepareIp(fourthIp).ip.getIp();
+            executor.execute(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void run() {
 
-                IFromRestCallback.getDistanceRouterIp(fourthIp);
-                IFromRestCallback.getDistanceResponse(response.body());
+                    prepareIp(fourthIp).ip.getIp();
 
-                call.cancel();
+                    IFromRestCallback.getDistanceRouterIp(fourthIp);
+                    IFromRestCallback.getDistanceResponse(response.body());
 
-                return;
+                    call.cancel();
+
+                    return;
+                }
+            });
+
+
+
+
 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onFailure(Call<Distance> call, Throwable t){
         Log.e("REST error for Distance", "onFailure method - error Distance. IP addr is not exist");
 
         call = call.clone();
 
-        setDistancePartialUrl(String.valueOf(fourthIp));
-        updateDistanceRetrofit();
+
+                setDistancePartialUrl(String.valueOf(fourthIp));
+                updateDistanceRetrofit();
+
 
         fourthIp++;
 
@@ -94,7 +131,9 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
             return;
         }
 
+//        this.prepareIp(fourthIp).prepareCall().call();
         this.prepareIp(fourthIp).prepareCall().call();
+
     }
 }
 
