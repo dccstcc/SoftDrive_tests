@@ -49,33 +49,45 @@ public class ReadRestData extends AppCompatActivity {
 
         executorService = Executors.newFixedThreadPool(1);
 
-        new RestDistanceCtrl(executorService, ip, ip, new IFromRestCallback() {
+        while(ip!=0) {
 
-            @Override
-            public void getScan2dResponse(Float[] value) {
+            new RestDistanceCtrl(executorService, ip, ip, new IFromRestCallback() {
 
-            }
+                @Override
+                public void getScan2dResponse(Float[] value) {
 
-            @Override
-            public void getDistanceResponse(Distance value) {
+                }
 
-                System.out.println("correct distance was found : " + value.getDistance());
+                @Override
+                public void getDistanceResponse(Distance value) {
+
+                    System.out.println("correct distance was found : " + value.getDistance());
 
 
-            }
+                }
 
-            @Override
-            public void getDistanceRouterIp(int partIpAddress) {
+                @Override
+                public void getDistanceRouterIp(int partIpAddress) {
 
-            }
+                }
 
-            @Override
-            public void getScan2dRouterIp(int partIpAddress) {
+                @Override
+                public void getScan2dRouterIp(int partIpAddress) {
 
-            }
+                }
 
 //            }).prepareCall().call();
-        }).prepareCall().call();
+            }).prepareCall().call();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
 //        setContentView(R.layout.activity_read_data);
 //
