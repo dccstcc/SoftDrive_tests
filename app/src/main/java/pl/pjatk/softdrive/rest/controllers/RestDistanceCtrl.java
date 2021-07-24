@@ -94,8 +94,12 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                 @Override
                 public void run() {
 
-                    prepareIp(fourthIp).ip.getIp();
+//                    prepareIp(fourthIp).ip.getIp();
 
+                    String ip3b = prepareIp(fourthIp).ip.getIp();
+                    //String ip = ip3b+fourthIp;
+
+//                    IFromRestCallback.getDistanceRouterIp(fourthIp);
                     IFromRestCallback.getDistanceRouterIp(fourthIp);
                     IFromRestCallback.getDistanceResponse(response.body());
 

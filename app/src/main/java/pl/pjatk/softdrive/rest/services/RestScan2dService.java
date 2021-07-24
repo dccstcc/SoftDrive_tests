@@ -9,10 +9,8 @@ import androidx.annotation.RequiresApi;
 import java.util.Arrays;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
-import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.controllers.RestScan2dCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
-import pl.pjatk.softdrive.rest.domain.Scan2d;
 
 public class RestScan2dService extends IntentService {
 

@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import pl.pjatk.softdrive.database.ReadRestData;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
@@ -41,8 +42,8 @@ public class RestDistanceService extends IntentService {
                 public void getDistanceResponse(Distance value) {
                     // send broadcast distance data after call RestDistanceCtrl
                     // receiver in ReadDataActivity
-                    System.out.println("distance was found : " + value.getDistance());
-                    sendDistance(String.valueOf(value.getDistance()));
+//                    System.out.println("distance was found : " + value.getDistance());
+//                    sendDistance(String.valueOf(value.getDistance()));
 
                 }
 
@@ -52,7 +53,9 @@ public class RestDistanceService extends IntentService {
                     // receiver in ReadDataActivity
                     System.out.println("part ip was found : " + partIpAddress);
 
-                    sendPartIp(String.valueOf(partIpAddress));
+//                    sendPartIp(String.valueOf(partIpAddress));
+                    sendPartIp(partIpAddress);
+
                 }
 
                 @Override
@@ -87,11 +90,15 @@ public class RestDistanceService extends IntentService {
     }
 
     // check names !!!
-    private void sendPartIp(String partIp){
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("SendPartIpDataAction");
-        broadcastIntent.putExtra("PartIpData", partIp);
-        sendBroadcast(broadcastIntent);
+    private void sendPartIp(int partIp){
+//        Intent broadcastIntent = new Intent();
+//        broadcastIntent.setAction("SendPartIpDataAction");
+//        broadcastIntent.putExtra("PartIpData", partIp);
+//        sendBroadcast(broadcastIntent);
+        Intent i = new Intent(this, ReadRestData.class);
+        i.putExtra("ProperIPDistance", partIp);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
 }
