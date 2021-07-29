@@ -3,10 +3,13 @@ package pl.pjatk.softdrive.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class DbManager {
+
+    public static final long MAX_ROW_COUNT = 200;
 
     public DbManager(Context context) {
         this.dbHelper = new DbHelper(context);
@@ -42,6 +45,10 @@ public class DbManager {
         // Gets the data repository in write mode
         SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
 
+        // clear database for more efficiency
+        if(getRowCount(dbWrite) > MAX_ROW_COUNT)
+            clearDb(dbWrite);
+
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
@@ -51,6 +58,15 @@ public class DbManager {
         long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
 
         return newRowId;
+    }
+
+    private void clearDb(SQLiteDatabase dbWritable) {
+        dbWritable.execSQL("delete from "+ CreateTable.TableSensorData.TABLE_NAME);
+    }
+
+    public long getRowCount(SQLiteDatabase dbWritable) {
+        long count = DatabaseUtils.queryNumEntries(dbWritable, CreateTable.TableSensorData.TABLE_NAME);
+        return count;
     }
 
     public int getDbDistance() {
