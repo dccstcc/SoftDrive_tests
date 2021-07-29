@@ -216,17 +216,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 (int) (BLOCKER_LENGTH_PERCENT * screenHeight),
                 (float) (BLOCKER_SPEED_PERCENT * screenHeight));
 
-        timeLeft = 10; // start the countdown at 10 seconds
-
-        shotsFired = 0; // set the initial number of shots fired
-        totalElapsedTime = 0.0; // set the time elapsed to zero
-
-        if (gameOver) { // start a new game after the last game ended
-            gameOver = false; // the game is not over
-            cannonThread = new CannonThread(getHolder()); // create thread
-            cannonThread.start(); // start the game loop thread
-        }
-
 
         ////////////////////////////my own
 
@@ -245,12 +234,27 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 Color.GREEN,
                 TARGET_SOUND_ID,
                 x,
-                0,
+                10,
                 width,
                 height,
-                10,
-                10
-                );
+                0,
+                (float) BLOCKER_SPEED_PERCENT * displayHeight
+        );
+
+
+        timeLeft = 10; // start the countdown at 10 seconds
+
+        shotsFired = 0; // set the initial number of shots fired
+        totalElapsedTime = 0.0; // set the time elapsed to zero
+
+        if (gameOver) { // start a new game after the last game ended
+            gameOver = false; // the game is not over
+            cannonThread = new CannonThread(getHolder()); // create thread
+            cannonThread.start(); // start the game loop thread
+        }
+
+
+
 
         hideSystemBars();
     }
@@ -265,6 +269,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             target.update(0,interval); // update the target's position
 
         timeLeft -= interval; // subtract from time left
+
+
+        //////////////////////////////////////////my own
+        forwardVehicle.update(0,interval);
+
 
         // if the timer reached zero
         if (timeLeft <= 0) {
@@ -283,8 +292,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
-        ////////////////////my own
-        forwardVehicle.update(0,interval);
     }
 
     // aligns the barrel and fires a Cannonball if a Cannonball is not
