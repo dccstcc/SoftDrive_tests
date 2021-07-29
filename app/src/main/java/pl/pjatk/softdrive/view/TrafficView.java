@@ -235,12 +235,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 (float) (BLOCKER_SPEED_PERCENT * screenHeight));
 
 
-        ////////////////////////////my own
-
-//        display = new Display(getContext());
-//        displayWidth = display.getDisplayWidth();
-//        displayHeight = display.getDisplayHeight();
-
 
 
         int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
@@ -309,7 +303,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
         });
-        //forwardVehicle.update(0,interval);
 
 
         // if the timer reached zero
@@ -505,36 +498,19 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = surfaceHolder.lockCanvas(null);
 
 
-
-
                     // lock the surfaceHolder for drawing
                     synchronized(surfaceHolder) {
 
-//                        executor.execute(new Runnable() {
-//                            @Override
-//                            public void run() {
-//
-//                            }
-//                        });
 
                         long currentTime = System.currentTimeMillis();
                         double elapsedTimeMS = currentTime - previousFrameTime;
                         totalElapsedTime += elapsedTimeMS / 1000.0;
                         updatePositions(elapsedTimeMS); // update game state
-//                        testForCollisions(); // test for GameElement collisions
                         drawGameElements(canvas); // draw using the canvas
                         previousFrameTime = currentTime; // update previous time
 
-                        //Thread.sleep(2000);
-
-                        //////////////my own
-//                        motor = new Motorcycle(getContext(),
-//                                canvas,
-//                                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
-//                                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight)                        );
                     }
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
+
                 } finally {
                     // display canvas's contents on the CannonView
                     // and enable other threads to use the Canvas
