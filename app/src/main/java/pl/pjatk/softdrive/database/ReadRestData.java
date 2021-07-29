@@ -48,6 +48,7 @@ public class ReadRestData extends AppCompatActivity {
             @Override
             public void run() {
 
+                runView = new Intent(getApplicationContext(), MainViewActivity.class);
 
                 while(ip!=0) {
 
@@ -67,6 +68,13 @@ public class ReadRestData extends AppCompatActivity {
 
                             db.setDistance(distance);
                             db.dbCommit();
+
+
+                            do {
+                                if(distance!=0)
+                                    startActivity(runView);
+                            }
+                            while(distance==0);
 
 
                             //System.out.println("from db : " + db.getDbDistance());
@@ -92,17 +100,9 @@ public class ReadRestData extends AppCompatActivity {
 
                 }
 
-                runView = new Intent(getApplicationContext(), MainViewActivity.class);
-                do {
-                    if(distance!=0)
-                        startActivity(runView);
-                }
-                while(distance==0);
-
-
             }
-        });
 
+        });
 
 
 
