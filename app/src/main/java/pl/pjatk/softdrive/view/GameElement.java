@@ -26,6 +26,7 @@ public class GameElement {
    //protected Motorcycle motor;
 
 
+
    // public constructor
    public GameElement(TrafficView view, int color, int soundId, int x,
       int y, int width, int height, float velocityX, float velocityY) {
@@ -35,6 +36,7 @@ public class GameElement {
       this.soundId = soundId;
       this.velocityX = velocityX;
       this.velocityY = velocityY;
+
    }
 
    // update GameElement position and check for wall collisions
@@ -45,6 +47,23 @@ public class GameElement {
       // if this GameElement collides with the wall, reverse direction
       if (shape.top < 0 && velocityY < 0 ||
          shape.bottom > view.getScreenHeight() && velocityY > 0)
+         velocityY *= -1; // reverse this GameElement's velocity
+
+
+      //////////////////my collisions
+
+   }
+
+   ///////////////////////////////////my update method
+   // update GameElement position and check for wall collisions
+   public void updateForwardVehiclePosition(int position) {
+      // update vertical position
+      position = (position);
+      shape.offset(0, position);
+
+      // if this GameElement collides with the wall, reverse direction
+      if (shape.top < 0 && velocityY < 0 ||
+              shape.bottom > view.getScreenHeight() && velocityY > 0)
          velocityY *= -1; // reverse this GameElement's velocity
 
 

@@ -26,9 +26,12 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import pl.pjatk.softdrive.Exit;
 import pl.pjatk.softdrive.R;
+import pl.pjatk.softdrive.database.DbManager;
 
 public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -98,6 +101,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
     public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
 
+    private DbManager db;
+    private Executor executor;
+    int forwardDistance = -1;
 
 
 
@@ -133,6 +139,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.WHITE);
 
+
+        //////////////////my own
+        db = new DbManager(getContext());
+        executor = Executors.newFixedThreadPool(2);
 
     }
 
@@ -272,7 +282,24 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         //////////////////////////////////////////my own
-        forwardVehicle.update(0,interval);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                forwardDistance = db.getDbDistance();
+
+                System.out.println("distance from view: " + forwardDistance);
+
+                forwardVehicle.update(0,forwardDistance);
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        //forwardVehicle.update(0,interval);
 
 
         // if the timer reached zero
@@ -458,8 +485,19 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     // get Canvas for exclusive drawing from this thread
                     canvas = surfaceHolder.lockCanvas(null);
 
+
+
+
                     // lock the surfaceHolder for drawing
                     synchronized(surfaceHolder) {
+
+//                        executor.execute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                            }
+//                        });
+
                         long currentTime = System.currentTimeMillis();
                         double elapsedTimeMS = currentTime - previousFrameTime;
                         totalElapsedTime += elapsedTimeMS / 1000.0;
