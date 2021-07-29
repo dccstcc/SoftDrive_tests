@@ -105,6 +105,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private Executor executor;
     int forwardDistance = 0;
 
+    Motorcycle motorcycle;
+    int motorcyclePositionY;
+
 
 
 
@@ -237,6 +240,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //        display = new Display(getContext());
 //        displayWidth = display.getDisplayWidth();
 //        displayHeight = display.getDisplayHeight();
+
+
 
         int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
         int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
@@ -403,6 +408,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         ///////////////////////////////my own
+        motor = new Motorcycle(getContext(),
+                canvas,
+                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
+                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight));
+
+        motorcyclePositionY = motor.getHeight();
+
         forwardVehicle.draw(canvas);
     }
 
@@ -512,10 +524,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         previousFrameTime = currentTime; // update previous time
 
                         //////////////my own
-                        motor = new Motorcycle(getContext(),
-                                canvas,
-                                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
-                                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight)                        );
+//                        motor = new Motorcycle(getContext(),
+//                                canvas,
+//                                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
+//                                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight)                        );
                     }
                 }
                 finally {
