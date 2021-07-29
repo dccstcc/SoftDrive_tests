@@ -29,6 +29,8 @@ public class ReadRestData extends AppCompatActivity {
 
     Intent runView;
 
+    int distance;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,10 +61,13 @@ public class ReadRestData extends AppCompatActivity {
                         @Override
                         public void getDistanceResponse(Distance value) {
 
-                            System.out.println("correct distance was found : " + value.getDistance());
+                            distance = value.getDistance();
 
-                            db.setDistance(value.getDistance());
+                            System.out.println("correct distance was found : " + distance);
+
+                            db.setDistance(distance);
                             db.dbCommit();
+
 
                             //System.out.println("from db : " + db.getDbDistance());
                         }
@@ -87,11 +92,19 @@ public class ReadRestData extends AppCompatActivity {
 
                 }
 
+                runView = new Intent(getApplicationContext(), MainViewActivity.class);
+                do {
+                    if(distance!=0)
+                        startActivity(runView);
+                }
+                while(distance==0);
+
+
             }
         });
 
-        runView = new Intent(this, MainViewActivity.class);
-        startActivity(runView);
+
+
 
     }
 }
