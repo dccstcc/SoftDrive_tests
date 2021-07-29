@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
+import pl.pjatk.softdrive.view.MainViewActivity;
 
 
 public class ReadRestData extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class ReadRestData extends AppCompatActivity {
     int ip;
 
     DbManager db;
+
+    Intent runView;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -61,7 +64,7 @@ public class ReadRestData extends AppCompatActivity {
                             db.setDistance(value.getDistance());
                             db.dbCommit();
 
-                            System.out.println("from db : " + db.getDbDistance());
+                            //System.out.println("from db : " + db.getDbDistance());
                         }
 
                         @Override
@@ -86,6 +89,9 @@ public class ReadRestData extends AppCompatActivity {
 
             }
         });
+
+        runView = new Intent(this, MainViewActivity.class);
+        startActivity(runView);
 
     }
 }
