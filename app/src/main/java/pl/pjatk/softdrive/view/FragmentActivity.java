@@ -41,14 +41,14 @@ public class FragmentActivity extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        trafficView.stopGame(); // terminates the game
+        //trafficView.stopGame(); // terminates the game
     }
 
     // when MainActivity is paused, MainActivityFragment releases resources
     @Override
     public void onDestroy() {
         super.onDestroy();
-        trafficView.releaseResources();
+        //trafficView.releaseResources();
     }
 }
 
