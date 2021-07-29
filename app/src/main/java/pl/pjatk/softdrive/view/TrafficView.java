@@ -103,7 +103,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DbManager db;
     private Executor executor;
-    int forwardDistance = -1;
+    int forwardDistance = 0;
+
 
 
 
@@ -143,6 +144,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         //////////////////my own
         db = new DbManager(getContext());
         executor = Executors.newFixedThreadPool(2);
+
+        display = new Display(getContext());
+        displayWidth = display.getDisplayWidth();
+        displayHeight = display.getDisplayHeight();
 
     }
 
@@ -229,9 +234,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         ////////////////////////////my own
 
-        display = new Display(getContext());
-        displayWidth = display.getDisplayWidth();
-        displayHeight = display.getDisplayHeight();
+//        display = new Display(getContext());
+//        displayWidth = display.getDisplayWidth();
+//        displayHeight = display.getDisplayHeight();
 
         int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
         int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
