@@ -106,7 +106,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     int forwardDistance = 0;
 
     Motorcycle motorcycle;
-    int motorcyclePositionY;
+    int motorcyclePositionY = 0;
 
 
 
@@ -299,7 +299,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                 System.out.println("distance from view: " + forwardDistance);
 
-                forwardVehicle.update(0,forwardDistance);
+                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
 
                 try {
                     Thread.sleep(2000);
