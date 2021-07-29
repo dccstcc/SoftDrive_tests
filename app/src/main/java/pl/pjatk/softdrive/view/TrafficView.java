@@ -261,11 +261,12 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         shotsFired = 0; // set the initial number of shots fired
         totalElapsedTime = 0.0; // set the time elapsed to zero
 
-        if (gameOver) { // start a new game after the last game ended
-            gameOver = false; // the game is not over
-            cannonThread = new CannonThread(getHolder()); // create thread
-            cannonThread.start(); // start the game loop thread
-        }
+//        if (gameOver) { // start a new game after the last game ended
+//            gameOver = false; // the game is not over
+//            cannonThread = new CannonThread(getHolder()); // create thread
+//            cannonThread.start(); // start the game loop thread
+//        }
+
 
 
 
@@ -305,20 +306,20 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         });
 
 
-        // if the timer reached zero
-        if (timeLeft <= 0) {
-            timeLeft = 0.0;
-            gameOver = true; // the game is over
-            cannonThread.setRunning(false); // terminate thread
-            showGameOverDialog(R.string.lose); // show the losing dialog
-        }
-
-        // if all pieces have been hit
-        if (targets.isEmpty()) {
-            cannonThread.setRunning(false); // terminate thread
-            showGameOverDialog(R.string.win); // show winning dialog
-            gameOver = true;
-        }
+//        // if the timer reached zero
+//        if (timeLeft <= 0) {
+//            timeLeft = 0.0;
+//            gameOver = true; // the game is over
+//            cannonThread.setRunning(false); // terminate thread
+//            showGameOverDialog(R.string.lose); // show the losing dialog
+//        }
+//
+//        // if all pieces have been hit
+//        if (targets.isEmpty()) {
+//            cannonThread.setRunning(false); // terminate thread
+//            showGameOverDialog(R.string.win); // show winning dialog
+//            gameOver = true;
+//        }
 
 
 
@@ -490,9 +491,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void run() {
             Canvas canvas = null; // used for drawing
-            long previousFrameTime = System.currentTimeMillis();
+            //long previousFrameTime = System.currentTimeMillis();
+
+            int clock = 1000;
 
             while (threadIsRunning) {
+//            while (true) {
+
                 try {
                     // get Canvas for exclusive drawing from this thread
                     canvas = surfaceHolder.lockCanvas(null);
@@ -502,12 +507,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     synchronized(surfaceHolder) {
 
 
-                        long currentTime = System.currentTimeMillis();
-                        double elapsedTimeMS = currentTime - previousFrameTime;
-                        totalElapsedTime += elapsedTimeMS / 1000.0;
-                        updatePositions(elapsedTimeMS); // update game state
+                        //long currentTime = System.currentTimeMillis();
+                        //double elapsedTimeMS = currentTime - previousFrameTime;
+                        //totalElapsedTime += elapsedTimeMS / 1000.0;
+//                        updatePositions(elapsedTimeMS); // update game state
+                        updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
-                        previousFrameTime = currentTime; // update previous time
+                        //previousFrameTime = currentTime; // update previous time
 
                     }
 
