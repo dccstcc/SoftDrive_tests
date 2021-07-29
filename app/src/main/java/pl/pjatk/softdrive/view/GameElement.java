@@ -54,22 +54,7 @@ public class GameElement {
 
    }
 
-   ///////////////////////////////////my update method
-   // update GameElement position and check for wall collisions
-   public void updateForwardVehiclePosition(int position) {
-      // update vertical position
-      position = (position);
-      shape.offset(0, position);
 
-      // if this GameElement collides with the wall, reverse direction
-      if (shape.top < 0 && velocityY < 0 ||
-              shape.bottom > view.getScreenHeight() && velocityY > 0)
-         velocityY *= -1; // reverse this GameElement's velocity
-
-
-      //////////////////my collisions
-
-   }
 
    // draws this GameElement on the given Canvas
    public void draw(Canvas canvas) {
