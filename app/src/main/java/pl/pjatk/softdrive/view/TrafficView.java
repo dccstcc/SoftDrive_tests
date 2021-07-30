@@ -210,17 +210,38 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //
 //        });
 
-        forwardDistance = db.getDbDistance();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-        System.out.println("distance from view: " + forwardDistance);
+                forwardDistance = db.getDbDistance();
 
-        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
+                System.out.println("distance from view: " + forwardDistance);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+                motorcyclePositionY = motor.getyCoord();
+                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+//        forwardDistance = db.getDbDistance();
+//
+//        System.out.println("distance from view: " + forwardDistance);
+//
+//        motorcyclePositionY = motor.getyCoord();
+//        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
+
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
@@ -357,7 +378,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
-                        Thread.sleep(300);
+                        Thread.sleep(2000);
                     }
 
                 } catch (InterruptedException e) {

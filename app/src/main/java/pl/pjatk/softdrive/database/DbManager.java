@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 public class DbManager {
 
@@ -69,19 +68,48 @@ public class DbManager {
         return count;
     }
 
+//    public int getDbDistance() {
+//
+//        SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
+//
+//        String[] projection = {
+//                BaseColumns._ID,
+//                CreateTable.TableSensorData.COLUMN_NAME_DISTANCE
+//        };
+//
+//        String selection = CreateTable.TableSensorData.COLUMN_NAME_DISTANCE + " = ?";
+//        String[] selectionArgs = { "120" };
+//
+//        String sortOrder = CreateTable.TableSensorData._ID + " DESC";
+//        Cursor cursor = dbRead.query(
+//                CreateTable.TableSensorData.TABLE_NAME,
+//                projection,             // The array of columns to return (pass null to get all)
+//                null,              // The columns for the WHERE clause
+//                null,          // The values for the WHERE clause
+//                null,           // don't group the rows
+//                null,            // don't filter by row groups
+//                sortOrder
+//        );
+//
+//        cursor.moveToFirst();
+//        int distance = cursor.getInt(1);
+//        cursor.close();
+//
+//        return distance;
+//    }
+
     public int getDbDistance() {
 
         SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
 
         String[] projection = {
-                BaseColumns._ID,
                 CreateTable.TableSensorData.COLUMN_NAME_DISTANCE
         };
 
         String selection = CreateTable.TableSensorData.COLUMN_NAME_DISTANCE + " = ?";
         String[] selectionArgs = { "120" };
 
-        String sortOrder = CreateTable.TableSensorData._ID + " DESC";
+        //String sortOrder = CreateTable.TableSensorData._ID + " DESC";
         Cursor cursor = dbRead.query(
                 CreateTable.TableSensorData.TABLE_NAME,
                 projection,             // The array of columns to return (pass null to get all)
@@ -89,11 +117,11 @@ public class DbManager {
                 null,          // The values for the WHERE clause
                 null,           // don't group the rows
                 null,            // don't filter by row groups
-                sortOrder
+                 null
         );
 
-        cursor.moveToFirst();
-        int distance = cursor.getInt(1);
+        cursor.moveToLast();
+        int distance = cursor.getInt(0);
         cursor.close();
 
         return distance;

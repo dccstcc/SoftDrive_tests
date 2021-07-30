@@ -17,11 +17,13 @@ public class ForwardVehicle extends GameElement{
 
     ///////////////////////////////////my update method
     // update GameElement position and check for wall collisions
-    public void updateForwardVehiclePosition(int distance, int motorcyclePositionY) {
+    public void updateForwardVehiclePosition(int restDistance, int motorcyclePositionY) {
         // update vertical position
         // scale sensor distance value to screen height
-        distance = (distance * motorcyclePositionY) / maxDistance;
-        shape.offset(0, distance);
+        double distance = (restDistance * motorcyclePositionY) / maxDistance;
+        distance = Math.floor(distance);
+        int revertDistance = (int) (motorcyclePositionY - distance);
+        shape.offset(0, revertDistance);
 
 //        // if this GameElement collides with the wall, reverse direction
 //        if (shape.top < 0 && velocityY < 0 ||
