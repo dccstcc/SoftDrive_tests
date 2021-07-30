@@ -40,7 +40,7 @@ public class ReadRestData extends AppCompatActivity {
         i = getIntent();
         ip = i.getIntExtra("ProperIPDistance", 0);
 
-        executorService = Executors.newFixedThreadPool(2);
+        executorService = Executors.newFixedThreadPool(7);
 
         db = new DbManager(this);
 
@@ -49,6 +49,14 @@ public class ReadRestData extends AppCompatActivity {
             public void run() {
 
                 runView = new Intent(getApplicationContext(), MainViewActivity.class);
+
+                do {
+                    if(distance!=0) {
+                        startActivity(runView);
+                        break;
+                    }
+                }
+                while(distance==0);
 
                 while(ip!=0) {
 
@@ -69,12 +77,14 @@ public class ReadRestData extends AppCompatActivity {
                             db.setDistance(distance);
                             db.dbCommit();
 
-
-                            do {
-                                if(distance!=0)
-                                    startActivity(runView);
-                            }
-                            while(distance==0);
+//
+//                            do {
+//                                if(distance!=0) {
+//                                    startActivity(runView);
+//                                    break;
+//                                }
+//                            }
+//                            while(distance==0);
 
 
                             //System.out.println("from db : " + db.getDbDistance());
