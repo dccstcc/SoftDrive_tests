@@ -13,7 +13,6 @@ import java.util.concurrent.Executors;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
-import pl.pjatk.softdrive.view.MainViewActivity;
 
 
 public class ReadRestData extends AppCompatActivity {
@@ -31,6 +30,8 @@ public class ReadRestData extends AppCompatActivity {
 
     int distance;
 
+    boolean runViewActivity;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class ReadRestData extends AppCompatActivity {
         i = getIntent();
         ip = i.getIntExtra("ProperIPDistance", 0);
 
-        executorService = Executors.newFixedThreadPool(7);
+        executorService = Executors.newFixedThreadPool(2);
 
         db = new DbManager(this);
 
@@ -48,17 +49,18 @@ public class ReadRestData extends AppCompatActivity {
             @Override
             public void run() {
 
-                runView = new Intent(getApplicationContext(), MainViewActivity.class);
+//                runView = new Intent(getApplicationContext(), MainViewActivity.class);
+                runViewActivity = true;
 
-                do {
-                    if(distance!=0) {
-                        startActivity(runView);
-                        break;
-                    }
-                }
-                while(distance==0);
+//                do {
+//                    if(distance!=0) {
+//                        startActivity(runView);
+//                        break;
+//                    }
+//                }
+//                while(distance==0);
 
-                while(ip!=0) {
+                while (ip != 0) {
 
                     new RestDistanceCtrl(executorService, ip, ip, new IFromRestCallback() {
 
@@ -76,6 +78,7 @@ public class ReadRestData extends AppCompatActivity {
 
                             db.setDistance(distance);
                             db.dbCommit();
+
 
 //
 //                            do {
@@ -108,6 +111,11 @@ public class ReadRestData extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    if (runViewActivity) {
+                        runViewActivity = false;
+//                        startActivity(runView);
+                    }
+
                 }
 
             }
@@ -115,6 +123,12 @@ public class ReadRestData extends AppCompatActivity {
         });
 
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        runView = new Intent(getApplicationContext(), MainViewActivity.class);
+//        startActivity(runView);
     }
 }
