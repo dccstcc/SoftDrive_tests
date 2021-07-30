@@ -30,7 +30,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import pl.pjatk.softdrive.database.ReadRestData;
 import pl.pjatk.softdrive.rest.services.RestDataSendService;
 import pl.pjatk.softdrive.rest.services.RestScan2dService;
 
@@ -119,8 +118,8 @@ public class RestCtrlActivity extends AppCompatActivity {
                 Intent restServiceDataSend = new Intent(getApplicationContext(), RestDataSendService.class);
                 startService(restServiceDataSend);
 
-                Intent i = new Intent(getApplicationContext(), ReadRestData.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(), ReadRestData.class);
+//                startActivity(i);
                 //new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
             }
         });

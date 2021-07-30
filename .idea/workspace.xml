@@ -118,20 +118,20 @@
     <key name="android.template.1634195351">
       <recent name="pl.pjatk.softdrive" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res" />
-      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res\layout" />
-      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\java\pl\pjatk\softdrive" />
-      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res\values" />
-      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\java\pl\pjatk\softdrive\view" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="pl.pjatk.softdrive.view" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="pl.pjatk.softdrive.database" />
       <recent name="pl.pjatk.softdrive" />
       <recent name="pl.pjatk.softdrive.rest" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="pl.pjatk.softdrive.view" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res" />
+      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res\layout" />
+      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\java\pl\pjatk\softdrive" />
+      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\res\values" />
+      <recent name="C:\Users\domin\Documents\Soft_Drive\SoftDrive\app\src\main\java\pl\pjatk\softdrive\view" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -295,6 +295,10 @@
     </state>
     <state x="519" y="41" key="#com.intellij.ide.util.MemberChooser/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627653238592" />
     <state x="830" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625553608681" />
+    <state x="424" y="206" width="432" height="267" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1627655307152">
+      <screen x="0" y="0" width="1280" height="672" />
+    </state>
+    <state x="424" y="206" width="432" height="267" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627655307152" />
     <state x="371" y="84" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1626693141760">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
@@ -316,25 +320,25 @@
     </state>
     <state x="212" y="156" key="FileChooserDialogImpl/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1626802176909" />
     <state x="339" y="218" key="FileChooserDialogImpl/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625246569030" />
-    <state width="1237" height="115" key="GridCell.Tab.0.bottom" timestamp="1627654456733">
+    <state width="1237" height="115" key="GridCell.Tab.0.bottom" timestamp="1627655835755">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="115" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627654456733" />
+    <state width="1237" height="115" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627655835755" />
     <state width="2005" height="168" key="GridCell.Tab.0.bottom/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="115" key="GridCell.Tab.0.center" timestamp="1627654456733">
+    <state width="1237" height="115" key="GridCell.Tab.0.center" timestamp="1627655835755">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="115" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627654456733" />
+    <state width="1237" height="115" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627655835755" />
     <state width="2005" height="168" key="GridCell.Tab.0.center/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="115" key="GridCell.Tab.0.left" timestamp="1627654456732">
+    <state width="1237" height="115" key="GridCell.Tab.0.left" timestamp="1627655835755">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="115" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627654456732" />
+    <state width="1237" height="115" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627655835755" />
     <state width="2005" height="168" key="GridCell.Tab.0.left/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251411" />
-    <state width="1237" height="115" key="GridCell.Tab.0.right" timestamp="1627654456733">
+    <state width="1237" height="115" key="GridCell.Tab.0.right" timestamp="1627655835755">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="115" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627654456733" />
+    <state width="1237" height="115" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1627655835755" />
     <state width="2005" height="168" key="GridCell.Tab.0.right/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
     <state x="235" y="0" key="SettingsEditor" timestamp="1626528745699">
       <screen x="0" y="0" width="1280" height="672" />
