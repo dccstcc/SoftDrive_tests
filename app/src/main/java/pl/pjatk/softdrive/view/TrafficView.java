@@ -486,7 +486,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 
-
         // controls the game loop
         @Override
         public void run() {
@@ -496,7 +495,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             int clock = 1000;
 
             while (threadIsRunning) {
-//            while (true) {
+//                while (true) {
 
                 try {
                     // get Canvas for exclusive drawing from this thread
@@ -514,9 +513,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
                         //previousFrameTime = currentTime; // update previous time
-
+                        Thread.sleep(300);
                     }
 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 } finally {
                     // display canvas's contents on the CannonView
                     // and enable other threads to use the Canvas
