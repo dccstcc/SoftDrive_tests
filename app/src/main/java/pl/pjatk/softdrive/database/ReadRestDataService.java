@@ -38,27 +38,27 @@ public class ReadRestDataService extends IntentService {
     }
 
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-
-
-
-
-        //String userID = intent.getStringExtra("UserID");
-
-//        assert intent != null;
-//        ip = intent.getIntExtra("ProperIPDistance", 0);
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
 //
-//        executorService = Executors.newFixedThreadPool(2);
 //
-//        db = new DbManager(this);
 //
-//        runViewActivity = true;
-
-        return START_STICKY;
-
-    }
+//
+//
+//        //String userID = intent.getStringExtra("UserID");
+//
+////        assert intent != null;
+////        ip = intent.getIntExtra("ProperIPDistance", 0);
+////
+////        executorService = Executors.newFixedThreadPool(2);
+////
+////        db = new DbManager(this);
+////
+////        runViewActivity = true;
+//
+//        return START_STICKY;
+//
+//    }
 
 //    @RequiresApi(api = Build.VERSION_CODES.N)
 //    @Override
@@ -247,17 +247,24 @@ public class ReadRestDataService extends IntentService {
                         e.printStackTrace();
                     }
 
-                    startActivity(runView);
+//                    startActivity(runView);
 
 
                     if (runViewActivity) {
                         runViewActivity = false;
+                        runView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                         startActivity(runView);
                     }
 
                 }
 
-            }
+//        runView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//        startActivity(runView);
+
+
+    }
 
 //        });
 

@@ -107,7 +107,7 @@ public class RestDistanceService extends IntentService {
 //        broadcastIntent.setAction("SendPartIpDataAction");
 //        broadcastIntent.putExtra("PartIpData", partIp);
 //        sendBroadcast(broadcastIntent);
-        Intent i = new Intent(getApplicationContext(), ReadRestDataService.class);
+        Intent i = new Intent(getBaseContext(), ReadRestDataService.class);
         i.putExtra("ProperIPDistance", partIp);
         System.out.println("ProperIPDistance before send: " + partIp);
         //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
