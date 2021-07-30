@@ -1,11 +1,7 @@
 package pl.pjatk.softdrive.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,7 +9,6 @@ import android.graphics.Paint;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -24,8 +19,6 @@ import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -234,50 +227,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         getContext().startActivity(i);
     }
 
-    // display an AlertDialog when the game ends
-    private void showGameOverDialog(final int messageId) {
-        // DialogFragment to display game stats and start new game
-        final DialogFragment gameResult =
-                new DialogFragment() {
-                    // create an AlertDialog and return it
-                    @Override
-                    public Dialog onCreateDialog(Bundle bundle) {
-                        // create dialog displaying String resource for messageId
-                        AlertDialog.Builder builder =
-                                new AlertDialog.Builder(getActivity());
-                        builder.setTitle(getResources().getString(messageId));
-
-                        // display number of shots fired and total time elapsed
-                        builder.setMessage(getResources().getString(
-                                R.string.results_format, shotsFired, totalElapsedTime));
-                        builder.setPositiveButton(R.string.reset_game,
-                                new DialogInterface.OnClickListener() {
-                                    // called when "Reset Game" Button is pressed
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialogIsDisplayed = false;
-                                        newGame(); // set up and start a new game
-                                    }
-                                }
-                        );
-
-                        return builder.create(); // return the AlertDialog
-                    }
-                };
-
-        // in GUI thread, use FragmentManager to display the DialogFragment
-        activity.runOnUiThread(
-                new Runnable() {
-                    public void run() {
-                        showSystemBars();
-                        dialogIsDisplayed = true;
-                        gameResult.setCancelable(false); // modal dialog
-                        gameResult.show(activity.getFragmentManager(), "results");
-                    }
-                }
-        );
-    }
 
     // draws the game to the given Canvas
     public void drawGameElements(Canvas canvas) {
