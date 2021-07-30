@@ -89,6 +89,18 @@ public class RestDistanceService extends IntentService {
         sendBroadcast(broadcastIntent);
     }
 
+//    // check names !!!
+//    private void sendPartIp(int partIp){
+////        Intent broadcastIntent = new Intent();
+////        broadcastIntent.setAction("SendPartIpDataAction");
+////        broadcastIntent.putExtra("PartIpData", partIp);
+////        sendBroadcast(broadcastIntent);
+//        Intent i = new Intent(this, ReadRestData.class);
+//        i.putExtra("ProperIPDistance", partIp);
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(i);
+//    }
+
     // check names !!!
     private void sendPartIp(int partIp){
 //        Intent broadcastIntent = new Intent();
@@ -97,8 +109,8 @@ public class RestDistanceService extends IntentService {
 //        sendBroadcast(broadcastIntent);
         Intent i = new Intent(this, ReadRestData.class);
         i.putExtra("ProperIPDistance", partIp);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+        //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(i);
     }
 
 }

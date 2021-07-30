@@ -33,7 +33,7 @@
         <activity android:name=".EnableRouterActivity" />
         <activity android:name=".RestCtrlActivity" />
         <activity android:name=".ReadDataActivity" />
-        <activity android:name=".database.ReadRestData" />
+<!--        <activity android:name=".database.ReadRestData" />-->
         <activity
             android:name=".view.MainViewActivity"
             android:screenOrientation="portrait" />
@@ -41,6 +41,7 @@
         <service android:name=".rest.services.RestDistanceService" />
         <service android:name=".rest.services.RestScan2dService" />
         <service android:name=".rest.services.RestDataSendService" />
+        <service android:name=".database.ReadRestData" />
     </application>
 
 </manifest>
