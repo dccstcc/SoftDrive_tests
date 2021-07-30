@@ -13,9 +13,10 @@ import java.util.concurrent.Executors;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
+import pl.pjatk.softdrive.view.MainViewActivity;
 
 
-public class ReadRestData extends IntentService {
+public class ReadRestDataService extends IntentService {
 
     private final int restFrequency = 2000;
 
@@ -32,13 +33,10 @@ public class ReadRestData extends IntentService {
 
     boolean runViewActivity;
 
-    public ReadRestData() {
-        super("");
+    public ReadRestDataService() {
+        super("ReadRestDataService");
     }
 
-    public ReadRestData(String name) {
-        super(name);
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -162,8 +160,12 @@ public class ReadRestData extends IntentService {
 ////        startActivity(runView);
 //    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+
+        System.out.println("readrestdata run");
+
 
         assert intent != null;
         ip = intent.getIntExtra("ProperIPDistance",0);
@@ -174,12 +176,14 @@ public class ReadRestData extends IntentService {
 
         db = new DbManager(this);
 
+        runView = new Intent(getApplicationContext(), MainViewActivity.class);
+
         runViewActivity = true;
 
-        executorService.execute(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void run() {
+//        executorService.execute(new Runnable() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void run() {
 
 //                runView = new Intent(getApplicationContext(), MainViewActivity.class);
                 //runViewActivity = true;
@@ -255,7 +259,7 @@ public class ReadRestData extends IntentService {
 
             }
 
-        });
+//        });
 
 
 //        assert intent != null;
@@ -347,4 +351,4 @@ public class ReadRestData extends IntentService {
 //
 //
     }
-}
+

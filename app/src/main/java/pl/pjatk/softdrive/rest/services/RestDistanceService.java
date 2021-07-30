@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import pl.pjatk.softdrive.database.ReadRestData;
+import pl.pjatk.softdrive.database.ReadRestDataService;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
@@ -107,8 +107,9 @@ public class RestDistanceService extends IntentService {
 //        broadcastIntent.setAction("SendPartIpDataAction");
 //        broadcastIntent.putExtra("PartIpData", partIp);
 //        sendBroadcast(broadcastIntent);
-        Intent i = new Intent(this, ReadRestData.class);
+        Intent i = new Intent(getApplicationContext(), ReadRestDataService.class);
         i.putExtra("ProperIPDistance", partIp);
+        System.out.println("ProperIPDistance before send: " + partIp);
         //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(i);
     }
