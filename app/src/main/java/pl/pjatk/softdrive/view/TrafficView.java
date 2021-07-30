@@ -186,53 +186,53 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // reset all the screen elements and start a new game
     public void newGame() {
 
-        Random random = new Random(); // for determining random velocities
-        targets = new ArrayList<>(); // construct a new Target list
+//        Random random = new Random(); // for determining random velocities
+//        targets = new ArrayList<>(); // construct a new Target list
 
-        // initialize targetX for the first Target from the left
-        int targetX = (int) (TARGET_FIRST_X_PERCENT * screenWidth);
-
-        // calculate Y coordinate of Targets
-        int targetY = (int) ((0.5 - TARGET_LENGTH_PERCENT / 2) *
-                screenHeight);
+//        // initialize targetX for the first Target from the left
+//        int targetX = (int) (TARGET_FIRST_X_PERCENT * screenWidth);
+//
+//        // calculate Y coordinate of Targets
+//        int targetY = (int) ((0.5 - TARGET_LENGTH_PERCENT / 2) *
+//                screenHeight);
 
         // add TARGET_PIECES Targets to the Target list
-        for (int n = 0; n < TARGET_PIECES; n++) {
+//        for (int n = 0; n < TARGET_PIECES; n++) {
+//
+//            // determine a random velocity between min and max values
+//            // for Target n
+//            double velocity = screenHeight * (random.nextDouble() *
+//                    (TARGET_MAX_SPEED_PERCENT - TARGET_MIN_SPEED_PERCENT) +
+//                    TARGET_MIN_SPEED_PERCENT);
+//
+//            // alternate Target colors between dark and light
+//            int color =  (n % 2 == 0) ?
+//                    getResources().getColor(R.color.dark,
+//                            getContext().getTheme()) :
+//                    getResources().getColor(R.color.light,
+//                            getContext().getTheme());
+//
+//            velocity *= -1; // reverse the initial velocity for next Target
+//
+//            // create and add a new Target to the Target list
+//            targets.add(new Target(this, color, 10, targetX, targetY,
+//                    (int) (TARGET_WIDTH_PERCENT * screenWidth),
+//                    (int) (TARGET_LENGTH_PERCENT * screenHeight),
+//                    (int) velocity));
+//
+//            // increase the x coordinate to position the next Target more
+//            // to the right
+//            targetX += (TARGET_WIDTH_PERCENT + TARGET_SPACING_PERCENT) *
+//                    screenWidth;
+//        }
 
-            // determine a random velocity between min and max values
-            // for Target n
-            double velocity = screenHeight * (random.nextDouble() *
-                    (TARGET_MAX_SPEED_PERCENT - TARGET_MIN_SPEED_PERCENT) +
-                    TARGET_MIN_SPEED_PERCENT);
-
-            // alternate Target colors between dark and light
-            int color =  (n % 2 == 0) ?
-                    getResources().getColor(R.color.dark,
-                            getContext().getTheme()) :
-                    getResources().getColor(R.color.light,
-                            getContext().getTheme());
-
-            velocity *= -1; // reverse the initial velocity for next Target
-
-            // create and add a new Target to the Target list
-            targets.add(new Target(this, color, 10, targetX, targetY,
-                    (int) (TARGET_WIDTH_PERCENT * screenWidth),
-                    (int) (TARGET_LENGTH_PERCENT * screenHeight),
-                    (int) velocity));
-
-            // increase the x coordinate to position the next Target more
-            // to the right
-            targetX += (TARGET_WIDTH_PERCENT + TARGET_SPACING_PERCENT) *
-                    screenWidth;
-        }
-
-        // create a new Blocker
-        blocker = new Blocker(this, Color.BLACK, 7,
-                (int) (BLOCKER_X_PERCENT * screenWidth),
-                (int) ((0.5 - BLOCKER_LENGTH_PERCENT / 2) * screenHeight),
-                (int) (BLOCKER_WIDTH_PERCENT * screenWidth),
-                (int) (BLOCKER_LENGTH_PERCENT * screenHeight),
-                (float) (BLOCKER_SPEED_PERCENT * screenHeight));
+//        // create a new Blocker
+//        blocker = new Blocker(this, Color.BLACK, 7,
+//                (int) (BLOCKER_X_PERCENT * screenWidth),
+//                (int) ((0.5 - BLOCKER_LENGTH_PERCENT / 2) * screenHeight),
+//                (int) (BLOCKER_WIDTH_PERCENT * screenWidth),
+//                (int) (BLOCKER_LENGTH_PERCENT * screenHeight),
+//                (float) (BLOCKER_SPEED_PERCENT * screenHeight));
 
 
 
@@ -278,13 +278,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private void updatePositions(double elapsedTimeMS) {
         double interval = elapsedTimeMS / 1000.0; // convert to seconds
 
-        blocker.update(0,interval); // update the blocker's position
+//        blocker.update(0,interval); // update the blocker's position
 
-        for (GameElement target : targets)
-            target.update(0,interval); // update the target's position
-
-        timeLeft -= interval; // subtract from time left
-
+//        for (GameElement target : targets)
+//            target.update(0,interval); // update the target's position
+//
+//        timeLeft -= interval; // subtract from time left
+//
 
         //////////////////////////////////////////my own
         executor.execute(new Runnable() {
@@ -394,11 +394,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(getResources().getString(
                 R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
-        blocker.draw(canvas); // draw the blocker
-
-        // draw all of the Targets
-        for (GameElement target : targets)
-            target.draw(canvas);
+//        blocker.draw(canvas); // draw the blocker
+//
+//        // draw all of the Targets
+//        for (GameElement target : targets)
+//            target.draw(canvas);
 
 
         ///////////////////////////////my own
