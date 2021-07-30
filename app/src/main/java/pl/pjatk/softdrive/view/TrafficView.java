@@ -37,20 +37,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "trafficView"; // for logging errors
 
-    // constants for the Targets
-    public static final double TARGET_WIDTH_PERCENT = 1.0 / 40;
-    public static final double TARGET_LENGTH_PERCENT = 3.0 / 20;
-    public static final double TARGET_FIRST_X_PERCENT = 3.0 / 5;
-    public static final double TARGET_SPACING_PERCENT = 1.0 / 60;
-    public static final double TARGET_PIECES = 9;
-    public static final double TARGET_MIN_SPEED_PERCENT = 3.0 / 4;
-    public static final double TARGET_MAX_SPEED_PERCENT = 6.0 / 4;
-
-    // constants for the Blocker
-    public static final double BLOCKER_WIDTH_PERCENT = 1.0 / 40;
-    public static final double BLOCKER_LENGTH_PERCENT = 1.0 / 4;
-    public static final double BLOCKER_X_PERCENT = 1.0 / 2;
-    public static final double BLOCKER_SPEED_PERCENT = 1.0;
 
     // text size 1/18 of screen width
     public static final double TEXT_SIZE_PERCENT = 1.0 / 18;
@@ -59,17 +45,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private Activity activity; // to display Game Over dialog in GUI thread
     private boolean dialogIsDisplayed = false;
 
-    // game objects
-    //private Cannon cannon;
-    private Blocker blocker;
-    private ArrayList<Target> targets;
-
     // dimension variables
     private int screenWidth;
     private int screenHeight;
 
     // variables for the game loop and tracking statistics
-    private boolean gameOver; // is the game over?
     private double timeLeft; // time remaining in seconds
     private int shotsFired; // shots the user has fired
     private double totalElapsedTime; // elapsed seconds
@@ -97,6 +77,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // constants for the forward vehicle
     public static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
     public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
+    public static final double FORWARD_VEHICLE_SPEED_PERCENT = 0.2;
 
     public static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
     public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
@@ -105,7 +86,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private Executor executor;
     int forwardDistance = 0;
 
-    Motorcycle motorcycle;
     int motorcyclePositionY = 0;
 
 
@@ -186,57 +166,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // reset all the screen elements and start a new game
     public void newGame() {
 
-//        Random random = new Random(); // for determining random velocities
-//        targets = new ArrayList<>(); // construct a new Target list
-
-//        // initialize targetX for the first Target from the left
-//        int targetX = (int) (TARGET_FIRST_X_PERCENT * screenWidth);
-//
-//        // calculate Y coordinate of Targets
-//        int targetY = (int) ((0.5 - TARGET_LENGTH_PERCENT / 2) *
-//                screenHeight);
-
-        // add TARGET_PIECES Targets to the Target list
-//        for (int n = 0; n < TARGET_PIECES; n++) {
-//
-//            // determine a random velocity between min and max values
-//            // for Target n
-//            double velocity = screenHeight * (random.nextDouble() *
-//                    (TARGET_MAX_SPEED_PERCENT - TARGET_MIN_SPEED_PERCENT) +
-//                    TARGET_MIN_SPEED_PERCENT);
-//
-//            // alternate Target colors between dark and light
-//            int color =  (n % 2 == 0) ?
-//                    getResources().getColor(R.color.dark,
-//                            getContext().getTheme()) :
-//                    getResources().getColor(R.color.light,
-//                            getContext().getTheme());
-//
-//            velocity *= -1; // reverse the initial velocity for next Target
-//
-//            // create and add a new Target to the Target list
-//            targets.add(new Target(this, color, 10, targetX, targetY,
-//                    (int) (TARGET_WIDTH_PERCENT * screenWidth),
-//                    (int) (TARGET_LENGTH_PERCENT * screenHeight),
-//                    (int) velocity));
-//
-//            // increase the x coordinate to position the next Target more
-//            // to the right
-//            targetX += (TARGET_WIDTH_PERCENT + TARGET_SPACING_PERCENT) *
-//                    screenWidth;
-//        }
-
-//        // create a new Blocker
-//        blocker = new Blocker(this, Color.BLACK, 7,
-//                (int) (BLOCKER_X_PERCENT * screenWidth),
-//                (int) ((0.5 - BLOCKER_LENGTH_PERCENT / 2) * screenHeight),
-//                (int) (BLOCKER_WIDTH_PERCENT * screenWidth),
-//                (int) (BLOCKER_LENGTH_PERCENT * screenHeight),
-//                (float) (BLOCKER_SPEED_PERCENT * screenHeight));
-
-
-
-
         int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
         int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
 
@@ -252,7 +181,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 width,
                 height,
                 0,
-                (float) BLOCKER_SPEED_PERCENT * displayHeight
+                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
         );
 
 
@@ -261,15 +190,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         shotsFired = 0; // set the initial number of shots fired
         totalElapsedTime = 0.0; // set the time elapsed to zero
 
-//        if (gameOver) { // start a new game after the last game ended
-//            gameOver = false; // the game is not over
-//            cannonThread = new CannonThread(getHolder()); // create thread
-//            cannonThread.start(); // start the game loop thread
-//        }
-
-
-
-
 
         hideSystemBars();
     }
@@ -277,14 +197,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // called repeatedly by the CannonThread to update game elements
     private void updatePositions(double elapsedTimeMS) {
         double interval = elapsedTimeMS / 1000.0; // convert to seconds
-
-//        blocker.update(0,interval); // update the blocker's position
-
-//        for (GameElement target : targets)
-//            target.update(0,interval); // update the target's position
-//
-//        timeLeft -= interval; // subtract from time left
-//
 
         //////////////////////////////////////////my own
         executor.execute(new Runnable() {
@@ -304,23 +216,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
         });
-
-
-//        // if the timer reached zero
-//        if (timeLeft <= 0) {
-//            timeLeft = 0.0;
-//            gameOver = true; // the game is over
-//            cannonThread.setRunning(false); // terminate thread
-//            showGameOverDialog(R.string.lose); // show the losing dialog
-//        }
-//
-//        // if all pieces have been hit
-//        if (targets.isEmpty()) {
-//            cannonThread.setRunning(false); // terminate thread
-//            showGameOverDialog(R.string.win); // show winning dialog
-//            gameOver = true;
-//        }
-
 
 
     }
@@ -393,12 +288,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         // display time remaining
         canvas.drawText(getResources().getString(
                 R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
-
-//        blocker.draw(canvas); // draw the blocker
-//
-//        // draw all of the Targets
-//        for (GameElement target : targets)
-//            target.draw(canvas);
 
 
         ///////////////////////////////my own
@@ -505,14 +394,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     // lock the surfaceHolder for drawing
                     synchronized(surfaceHolder) {
 
-
-                        //long currentTime = System.currentTimeMillis();
-                        //double elapsedTimeMS = currentTime - previousFrameTime;
-                        //totalElapsedTime += elapsedTimeMS / 1000.0;
-//                        updatePositions(elapsedTimeMS); // update game state
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
-                        //previousFrameTime = currentTime; // update previous time
                         Thread.sleep(300);
                     }
 
