@@ -192,23 +192,35 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         double interval = elapsedTimeMS / 1000.0; // convert to seconds
 
         //////////////////////////////////////////my own
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                forwardDistance = db.getDbDistance();
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                forwardDistance = db.getDbDistance();
+//
+//                System.out.println("distance from view: " + forwardDistance);
+//
+//                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
+//
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        });
 
-                System.out.println("distance from view: " + forwardDistance);
+        forwardDistance = db.getDbDistance();
 
-                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
+        System.out.println("distance from view: " + forwardDistance);
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
 
-        });
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
