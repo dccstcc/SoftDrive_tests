@@ -132,12 +132,12 @@ public class ReadRestDataService extends Worker {
 
             //startActivity(runView);
 
-
+//
 //                    if (runViewActivity) {
 //                        runViewActivity = false;
 //                        runView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //
-//                        startActivity(runView);
+//                        getApplicationContext().startActivity(runView);
 //                    }
 
         }

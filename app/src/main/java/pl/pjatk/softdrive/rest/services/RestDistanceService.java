@@ -127,6 +127,13 @@ public class RestDistanceService extends IntentService {
         WorkManager
                 .getInstance(getApplicationContext())
                 .enqueue(readRestData.build());
+
+
+
+//        Intent i = new Intent(getApplicationContext(), MainViewActivity.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(i);
+
     }
 }
 
