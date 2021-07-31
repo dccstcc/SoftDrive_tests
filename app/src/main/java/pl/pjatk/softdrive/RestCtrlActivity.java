@@ -29,12 +29,10 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import pl.pjatk.softdrive.rest.services.RestDistanceService;
 import pl.pjatk.softdrive.rest.services.RestScan2dService;
+import pl.pjatk.softdrive.view.MainViewActivity;
 
 public class RestCtrlActivity extends AppCompatActivity {
 
@@ -62,52 +60,57 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                isDistanceActive = true;
 
+                Intent i = new Intent(getApplicationContext(), MainViewActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
 
-
-                try {
-                    byte[] addresses = getGatewayIp().getAddress();
-                    for (byte b :
-                            addresses) {
-                        System.out.println(Integer.toBinaryString(b));
-                    }
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    System.out.println(getGatewayIp().getHostAddress());
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    Process process = Runtime.getRuntime().exec("ip addr show swlan0");
-                    BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    String result = in.lines().collect(Collectors.joining());
-                    System.out.println(result);
-                    String subStr = "inet 192.168.";
-                    int ipEnd = result.lastIndexOf(subStr);
-                    System.out.println(result.substring(ipEnd + subStr.length()));
-
-                    String cutResult = result.substring(ipEnd + subStr.length());
-
-                    String regex = "^\\d{1,3}";
-                    Pattern r = Pattern.compile(regex);
-                    Matcher m = r.matcher(cutResult);
-
-                    if(m.find())
-                    System.out.println("regex " + m.group(0));
-
-                    String ip3Byte = m.group(0);
-
-                } catch (IOException e) {
-                    System.out.println("ERROR");
-                    e.printStackTrace();
-                }
-
-                Intent restService2d = new Intent(getApplicationContext(), RestScan2dService.class);
-                startService(restService2d);
+//                isDistanceActive = true;
+//
+//
+//
+//                try {
+//                    byte[] addresses = getGatewayIp().getAddress();
+//                    for (byte b :
+//                            addresses) {
+//                        System.out.println(Integer.toBinaryString(b));
+//                    }
+//                } catch (UnknownHostException e) {
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    System.out.println(getGatewayIp().getHostAddress());
+//                } catch (UnknownHostException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                try {
+//                    Process process = Runtime.getRuntime().exec("ip addr show swlan0");
+//                    BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//                    String result = in.lines().collect(Collectors.joining());
+//                    System.out.println(result);
+//                    String subStr = "inet 192.168.";
+//                    int ipEnd = result.lastIndexOf(subStr);
+//                    System.out.println(result.substring(ipEnd + subStr.length()));
+//
+//                    String cutResult = result.substring(ipEnd + subStr.length());
+//
+//                    String regex = "^\\d{1,3}";
+//                    Pattern r = Pattern.compile(regex);
+//                    Matcher m = r.matcher(cutResult);
+//
+//                    if(m.find())
+//                    System.out.println("regex " + m.group(0));
+//
+//                    String ip3Byte = m.group(0);
+//
+//                } catch (IOException e) {
+//                    System.out.println("ERROR");
+//                    e.printStackTrace();
+//                }
+//
+//                Intent restService2d = new Intent(getApplicationContext(), RestScan2dService.class);
+//                startService(restService2d);
 
                 //new JsonTask().execute("http://192.168.43.21:8080/api/distance/");
             }
@@ -133,8 +136,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                         .getInstance(getApplicationContext())
                         .enqueue(scan2dWorkRequest);
 
-//                Intent i = new Intent(getApplicationContext(), ReadRestData.class);
-//                startActivity(i);
+
                 //new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
             }
         });
