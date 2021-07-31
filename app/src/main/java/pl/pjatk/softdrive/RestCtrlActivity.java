@@ -127,6 +127,12 @@ public class RestCtrlActivity extends AppCompatActivity {
                         .getInstance(getApplicationContext())
                         .enqueue(distanceWorkRequest);
 
+                WorkRequest scan2dWorkRequest =
+                        new OneTimeWorkRequest.Builder(RestScan2dService.class).build();
+                WorkManager
+                        .getInstance(getApplicationContext())
+                        .enqueue(scan2dWorkRequest);
+
 //                Intent i = new Intent(getApplicationContext(), ReadRestData.class);
 //                startActivity(i);
                 //new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
