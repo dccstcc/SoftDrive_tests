@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import pl.pjatk.softdrive.rest.services.RestDataSendService;
+import pl.pjatk.softdrive.rest.services.RestDistanceService;
 import pl.pjatk.softdrive.rest.services.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
@@ -115,8 +118,14 @@ public class RestCtrlActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isDistanceActive = false;
 
-                Intent restServiceDataSend = new Intent(getApplicationContext(), RestDataSendService.class);
-                startService(restServiceDataSend);
+//                Intent restServiceDataSend = new Intent(getApplicationContext(), RestDataSendService.class);
+//                startService(restServiceDataSend);
+
+                WorkRequest distanceWorkRequest =
+                        new OneTimeWorkRequest.Builder(RestDistanceService.class).build();
+                WorkManager
+                        .getInstance(getApplicationContext())
+                        .enqueue(distanceWorkRequest);
 
 //                Intent i = new Intent(getApplicationContext(), ReadRestData.class);
 //                startActivity(i);
