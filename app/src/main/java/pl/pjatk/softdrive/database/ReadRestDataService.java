@@ -247,15 +247,15 @@ public class ReadRestDataService extends IntentService {
                         e.printStackTrace();
                     }
 
-//                    startActivity(runView);
+                    //startActivity(runView);
 
 
-                    if (runViewActivity) {
-                        runViewActivity = false;
-                        runView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        startActivity(runView);
-                    }
+//                    if (runViewActivity) {
+//                        runViewActivity = false;
+//                        runView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                        startActivity(runView);
+//                    }
 
                 }
 
