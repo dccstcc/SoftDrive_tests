@@ -41,7 +41,7 @@
         <service android:name=".rest.services.RestDistanceService" />
         <service android:name=".rest.services.RestScan2dService" />
         <service android:name=".rest.services.RestDataSendService" />
-        <service android:name=".database.ReadRestDataService" />
+<!--        <service android:name=".database.ReadRestDataService" />-->
     </application>
 
 </manifest>

@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,7 +20,7 @@ import pl.pjatk.softdrive.rest.domain.Distance;
 
 public class RestDistanceService extends IntentService {
 
-    public RestDistanceService(){
+    public RestDistanceService() {
         super("RestDistanceService");
     }
 
@@ -27,9 +30,9 @@ public class RestDistanceService extends IntentService {
         ExecutorService executorService = Executors.newFixedThreadPool(1);
 
         int startIp = 1;
-        int endIp = startIp + ratio-1;
+        int endIp = startIp + ratio - 1;
 
-        for(;endIp<255;) {
+        for (; endIp < 255; ) {
 
             new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
 
@@ -68,8 +71,8 @@ public class RestDistanceService extends IntentService {
 
             startIp += ratio;
             endIp += ratio;
-            if(endIp>255) endIp=255;
-            if(startIp>254) startIp=254;
+            if (endIp > 255) endIp = 255;
+            if (startIp > 254) startIp = 254;
         }
     }
 
@@ -82,7 +85,7 @@ public class RestDistanceService extends IntentService {
 
     }
 
-    private void sendDistance(String distance){
+    private void sendDistance(String distance) {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("SendDistanceDataAction");
         broadcastIntent.putExtra("DistanceData", distance);
@@ -102,18 +105,29 @@ public class RestDistanceService extends IntentService {
 //    }
 
     // check names !!!
-    private void sendPartIp(int partIp){
+    private void sendPartIp(int partIp) {
 //        Intent broadcastIntent = new Intent();
 //        broadcastIntent.setAction("SendPartIpDataAction");
 //        broadcastIntent.putExtra("PartIpData", partIp);
 //        sendBroadcast(broadcastIntent);
-        Intent i = new Intent(getApplicationContext(), ReadRestDataService.class);
-        i.putExtra("ProperIPDistance", partIp);
-        System.out.println("ProperIPDistance before send: " + partIp);
-//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(i);
-    }
 
+
+//        Intent i = new Intent(getApplicationContext(), ReadRestDataService.class);
+//        i.putExtra("ProperIPDistance", partIp);
+//        System.out.println("ProperIPDistance before send: " + partIp);
+////        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startService(i);
+        OneTimeWorkRequest.Builder readRestData = new OneTimeWorkRequest.Builder(ReadRestDataService.class);
+
+        Data.Builder ip = new Data.Builder();
+        ip.putInt("ProperIPDistance", partIp);
+
+        readRestData.setInputData(ip.build());
+
+        WorkManager
+                .getInstance(getApplicationContext())
+                .enqueue(readRestData.build());
+    }
 }
 
 
