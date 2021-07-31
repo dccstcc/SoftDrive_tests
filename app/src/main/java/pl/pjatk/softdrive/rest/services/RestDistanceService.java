@@ -1,13 +1,15 @@
 package pl.pjatk.softdrive.rest.services;
 
-import android.app.IntentService;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,10 +20,12 @@ import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
 import pl.pjatk.softdrive.rest.domain.Distance;
 
 
-public class RestDistanceService extends IntentService {
+public class RestDistanceService extends Worker {
 
-    public RestDistanceService() {
-        super("RestDistanceService");
+    public RestDistanceService(
+            @NonNull Context context,
+            @NonNull WorkerParameters params) {
+        super(context, params);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -77,19 +81,31 @@ public class RestDistanceService extends IntentService {
     }
 
 
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @Override
+//    protected void onHandleIntent(Intent intent) {
+//
+//        FindRouterIp(1);
+//
+//    }
+
+//    private void sendDistance(String distance) {
+//        Intent broadcastIntent = new Intent();
+//        broadcastIntent.setAction("SendDistanceDataAction");
+//        broadcastIntent.putExtra("DistanceData", distance);
+//        sendBroadcast(broadcastIntent);
+//    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public Result doWork() {
+
+        // Do the work here--in this case, upload the images.
 
         FindRouterIp(1);
 
-    }
-
-    private void sendDistance(String distance) {
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("SendDistanceDataAction");
-        broadcastIntent.putExtra("DistanceData", distance);
-        sendBroadcast(broadcastIntent);
+        // Indicate whether the work finished successfully with the Result
+        return Result.success();
     }
 
 //    // check names !!!
