@@ -26,8 +26,8 @@ public class Motorcycle {
         displayWidth = display.getDisplayWidth();
         displayHeight = display.getDisplayHeight();
 
-        xCoord = displayWidth/2 - width/2;
-        yCoord = displayHeight/2 - height/2;
+        xCoord = (int) (displayWidth/2 - width/2);
+        yCoord = (int) (displayHeight/2 - height/2);
 
         motor = new Rect(xCoord, yCoord, xCoord + width, yCoord + height);
         paint.setColor(Color.BLUE);

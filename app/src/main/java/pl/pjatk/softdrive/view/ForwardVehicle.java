@@ -23,7 +23,7 @@ public class ForwardVehicle extends GameElement{
         double distance = (restDistance * motorcyclePositionY) / maxDistance;
         distance = Math.floor(distance);
         int revertDistance = (int) (motorcyclePositionY - distance);
-        shape.offset(0, revertDistance);
+        update(0, revertDistance);
 
 //        // if this GameElement collides with the wall, reverse direction
 //        if (shape.top < 0 && velocityY < 0 ||
