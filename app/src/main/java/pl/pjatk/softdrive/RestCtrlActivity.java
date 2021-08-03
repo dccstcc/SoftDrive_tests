@@ -1,6 +1,8 @@
 package pl.pjatk.softdrive;
 
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.DhcpInfo;
@@ -135,6 +137,13 @@ public class RestCtrlActivity extends AppCompatActivity {
                 WorkManager
                         .getInstance(getApplicationContext())
                         .enqueue(scan2dWorkRequest);
+
+                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(RestCtrlActivity.this);
+                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+                taskStackBuilder.addNextIntentWithParentStack(intent);
+                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                taskStackBuilder.startActivities();
+
 
 
                 //new JsonTask().execute("http://192.168.43.134:5000/api/rplidar");
