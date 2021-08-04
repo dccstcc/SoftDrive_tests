@@ -389,6 +389,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
             this.updateSpeed(myLocation);
+            this.onLocationChanged(myLocation);
             System.out.println("altitude " + myLocation.getAltitude());
             System.out.println("accuracy " + myLocation.getAccuracy());
 
@@ -417,7 +418,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
-
+            updateSpeed(myLocation);
 
             int clock = 1000;
 
@@ -427,12 +428,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     // get Canvas for exclusive drawing from this thread
                     canvas = surfaceHolder.lockCanvas(null);
 
+                    //myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
 
                     // lock the surfaceHolder for drawing
 //                    synchronized(surfaceHolder) {
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
-                        updateSpeed(myLocation);
+                        updateSpeed(myGpsLocation);
                         drawText(canvas, motorcycleSpeed);
                         //Thread.sleep(2000);
 //                    }
@@ -495,18 +497,21 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                     if(location != null)
                     {
-                        CLocation myLocation = new CLocation(location, true);
+                        CLocation myRunnnubleLocation = new CLocation(location, true);
 
-                        myGpsLocation = myLocation;
+                        myGpsLocation = myRunnnubleLocation;
 
-                        updateSpeed(myLocation);
-//                        System.out.println("altitude " + myLocation.getAltitude());
-//                        System.out.println("accuracy " + myLocation.getAccuracy());
+                        updateSpeed(myGpsLocation);
+                        System.out.println("altitude " + myRunnnubleLocation.getAltitude());
+                        System.out.println("accuracy " + myRunnnubleLocation.getAccuracy());
+                        System.out.println("speed raw " + myRunnnubleLocation.getSpeed());
 
                     }
 
                 }
             });
+
+
 
         }
 
