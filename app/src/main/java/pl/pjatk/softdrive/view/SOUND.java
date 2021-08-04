@@ -1,21 +1,21 @@
-// Blocker.java
-// Subclass of GameElement customized for the Blocker
+// Target.java
+// Subclass of GameElement customized for the Target
 package pl.pjatk.softdrive.view;
 
-public class Blocker extends GameElement {
-   private int missPenalty; // the miss penalty for this Blocker
+public class SOUND extends GameElement {
+   private int hitReward; // the hit reward for this target
 
    // constructor
-   public Blocker(TrafficView view, int color, int missPenalty, int x,
-      int y, int width, int length, float velocityY) {
-      super(view, color, TrafficView.BLOCKER_SOUND_ID, x, y, width, length, 0,
+   public SOUND(TrafficView view, int color, int hitReward, int x, int y,
+                int width, int length, float velocityY) {
+      super(view, color, TrafficView.TARGET_SOUND_ID, x, y, width, length, 0,
          velocityY);
-      this.missPenalty = missPenalty;
+      this.hitReward = hitReward;
    }
 
-   // returns the miss penalty for this Blocker
-   public int getMissPenalty() {
-      return missPenalty;
+   // returns the hit reward for this Target
+   public int getHitReward() {
+      return hitReward;
    }
 }
 

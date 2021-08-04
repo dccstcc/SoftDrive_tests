@@ -42,12 +42,6 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
         ip = new FindAddressIp();
         thirdPartIp = ip.getIp();
 
-//        DISTANCE_URL = "";
-//        DISTANCE_URL += protocol;
-//        DISTANCE_URL += thirdPartIp;
-//        DISTANCE_URL += String.valueOf(fourthIp);
-//        DISTANCE_URL += portDistance;
-
         SCAN2D_URL = "";
         SCAN2D_URL += protocol;
         SCAN2D_URL += thirdPartIp;
@@ -67,6 +61,7 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
         call.enqueue(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResponse(Call<Float[]> call, Response<Float[]> response) {
 
@@ -84,6 +79,7 @@ public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onFailure(Call<Float[]> call, Throwable t){
         Log.e("REST error for Scan2d", "onFailure method - error Scan2d. IP addr is not exist");

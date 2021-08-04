@@ -79,11 +79,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     private Executor executor;
     int forwardDistance = 0;
 
-    int motorcyclePositionY = 0;
-
     int motorHeight = 0;
-
-
 
 
     // constructor
@@ -191,38 +187,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     // called repeatedly by the CannonThread to update game elements
     private void updatePositions(double elapsedTimeMS) {
-        double interval = elapsedTimeMS / 1000.0; // convert to seconds
-
-        //////////////////////////////////////////my own
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                forwardDistance = db.getDbDistance();
-//
-//                System.out.println("distance from view: " + forwardDistance);
-//
-//                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
-//
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        });
 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-//
+
                 forwardDistance = db.getDbDistance();
 
                 System.out.println("distance from view: " + forwardDistance);
-
-                //motorcyclePositionY = motor.getyCoord();
-                //forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
-
 
                 try {
                     Thread.sleep(2000);
@@ -232,20 +204,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
             }
         });
-
-//        forwardDistance = db.getDbDistance();
-//
-//        System.out.println("distance from view: " + forwardDistance);
-//
-//        motorcyclePositionY = motor.getyCoord();
-//        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motorcyclePositionY);
-
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
 
     }
 
@@ -268,47 +226,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public void drawGameElements(Canvas canvas) {
         // clear the background
 
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//
-//                canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
-//                        backgroundPaint);
-//
-//                // display time remaining
-//                canvas.drawText(getResources().getString(
-//                        R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
-//
-//
-//                ///////////////////////////////my own
-//                motor = new Motorcycle(getContext(),
-//                        canvas,
-//                        (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
-//                        (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight));
-//
-////        motorcyclePositionY = motor.getHeight();
-////
-////        forwardDistance = db.getDbDistance();
-////
-////        System.out.println("distance from view: " + forwardDistance);
-////
-////        //motorcyclePositionY = motor.getyCoord();
-////        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
-//
-//
-//                forwardVehicle.draw(canvas);
-//
-//
-//            }
-//        });
 
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
                 backgroundPaint);
 
-        // display time remaining
-        canvas.drawText(getResources().getString(
-                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
+//        // display time remaining
+//        canvas.drawText(getResources().getString(
+//                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
 
         ///////////////////////////////my own
@@ -321,15 +245,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         initForwardVehicle();
 
-//        motorcyclePositionY = motor.getHeight();
-//
         forwardDistance = db.getDbDistance();
 
         System.out.println("distance from view: " + forwardDistance);
 
-        //motorcyclePositionY = motor.getyCoord();
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
-
 
         forwardVehicle.draw(canvas);
     }
@@ -433,12 +353,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void run() {
             Canvas canvas = null; // used for drawing
-            //long previousFrameTime = System.currentTimeMillis();
 
             int clock = 1000;
 
             while (threadIsRunning) {
-//                while (true) {
 
                 try {
                     // get Canvas for exclusive drawing from this thread
@@ -447,12 +365,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                     // lock the surfaceHolder for drawing
 //                    synchronized(surfaceHolder) {
-
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
                         //Thread.sleep(2000);
 //                    }
-
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
                 } finally {
@@ -477,14 +393,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
-    // show system bars and app bar
-    private void showSystemBars() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
 }
 
 /*********************************************************************************

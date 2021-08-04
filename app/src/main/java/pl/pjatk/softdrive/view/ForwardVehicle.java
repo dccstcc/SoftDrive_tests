@@ -27,8 +27,6 @@ public class ForwardVehicle extends GameElement{
         distance = Math.floor(distance);
         int revertDistance = (int) (motorcyclePositionY - distance);
         revertDistance -= height;
-//        int motorCarDiffHeight = distanceOffset - height;
-//        revertDistance -= motorCarDiffHeight;
         update(0, revertDistance);
 
 //        // if this GameElement collides with the wall, reverse direction

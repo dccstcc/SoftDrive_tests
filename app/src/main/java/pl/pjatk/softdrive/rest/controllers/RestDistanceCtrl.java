@@ -45,14 +45,6 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
     }
 
-//    public void runCallThreadBackdround() {
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                prepareCall().call();
-//            }
-//        });
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public RestDistanceCtrl prepareIp(int fourthIp) {
@@ -64,12 +56,6 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         DISTANCE_URL += thirdPartIp;
         DISTANCE_URL += String.valueOf(fourthIp);
         DISTANCE_URL += portDistance;
-
-//        SCAN2D_URL = "";
-//        SCAN2D_URL += protocol;
-//        SCAN2D_URL += thirdPartIp;
-//        SCAN2D_URL += String.valueOf(fourthIp);
-//        SCAN2D_URL += portScan2d;
 
         return this;
     }
@@ -94,12 +80,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                 @Override
                 public void run() {
 
-//                    prepareIp(fourthIp).ip.getIp();
-
                     String ip3b = prepareIp(fourthIp).ip.getIp();
-                    //String ip = ip3b+fourthIp;
 
-//                    IFromRestCallback.getDistanceRouterIp(fourthIp);
                     IFromRestCallback.getDistanceRouterIp(fourthIp);
                     IFromRestCallback.getDistanceResponse(response.body());
 

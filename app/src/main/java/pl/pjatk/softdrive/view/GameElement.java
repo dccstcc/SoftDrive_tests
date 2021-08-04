@@ -18,16 +18,6 @@ public class GameElement {
    private int width;
    private int height;
 
-
-
-
-   ///////////////////my attrs
-   protected boolean isCollision = false;
-   protected double collisionSensitive = 10.0;
-   //protected Motorcycle motor;
-
-
-
    // public constructor
    public GameElement(TrafficView view, int color, int soundId, int x,
       int y, int width, int height, float velocityX, float velocityY) {
@@ -44,16 +34,6 @@ public class GameElement {
    public void update(int coordX, int coordY) {
       // update vertical position
       shape.offset(coordX, coordY);
-//   // update GameElement position and check for wall collisions
-//   public void update(double intervalX, double intervalY) {
-//      // update vertical position
-//      shape.offset((int) (velocityX * intervalX), (int) (velocityY * intervalY));
-
-//      // if this GameElement collides with the wall, reverse direction
-//      if (shape.top < 0 && velocityY < 0 ||
-//         shape.bottom > view.getScreenHeight() && velocityY > 0)
-//         velocityY *= -1; // reverse this GameElement's velocity
-
 
       //////////////////my collisions
 

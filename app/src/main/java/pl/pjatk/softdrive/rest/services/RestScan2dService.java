@@ -37,7 +37,6 @@ public class RestScan2dService extends Worker {
                     // send broadcast scan2d data after call RestScan2dCtrl
                     // receiver in ReadDataActivity
                     System.out.println("scan2d was found : " + Arrays.toString(value));
-//                    sendScan2d(value);
                 }
 
                 @Override
@@ -56,8 +55,6 @@ public class RestScan2dService extends Worker {
                     // send broadcast 4th part of ip address
                     // receiver in ReadDataActivity
                     System.out.println("part ip scan2d was found : " + partIpAddress);
-
-//                    sendPartIp(String.valueOf(partIpAddress));
                 }
 
             }).prepareCall().call();
@@ -69,12 +66,6 @@ public class RestScan2dService extends Worker {
         }
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    @Override
-//    protected void onHandleIntent(Intent intent) {
-//
-//        FindRouterIp(1);
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -86,19 +77,4 @@ public class RestScan2dService extends Worker {
         // Indicate whether the work finished successfully with the Result
         return Result.success();
     }
-
-
-//    private void sendScan2d(Float[] scan2d){
-//        Intent broadcastIntent = new Intent();
-//        broadcastIntent.setAction("SendScan2dDataAction");
-//        broadcastIntent.putExtra("Scan2dData", scan2d);
-//        sendBroadcast(broadcastIntent);
-//    }
-//
-//    private void sendPartIp(String partIp){
-//        Intent broadcastIntent = new Intent();
-//        broadcastIntent.setAction("SendPartIpScan2dDataAction");
-//        broadcastIntent.putExtra("PartIpScan2dData", partIp);
-//        sendBroadcast(broadcastIntent);
-//    }
 }

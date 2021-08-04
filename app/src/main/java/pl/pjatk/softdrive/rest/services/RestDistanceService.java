@@ -47,10 +47,6 @@ public class RestDistanceService extends Worker {
 
                 @Override
                 public void getDistanceResponse(Distance value) {
-                    // send broadcast distance data after call RestDistanceCtrl
-                    // receiver in ReadDataActivity
-//                    System.out.println("distance was found : " + value.getDistance());
-//                    sendDistance(String.valueOf(value.getDistance()));
 
                 }
 
@@ -60,9 +56,7 @@ public class RestDistanceService extends Worker {
                     // receiver in ReadDataActivity
                     System.out.println("part ip was found : " + partIpAddress);
 
-//                    sendPartIp(String.valueOf(partIpAddress));
                     sendPartIp(partIpAddress);
-
                 }
 
                 @Override
@@ -70,7 +64,6 @@ public class RestDistanceService extends Worker {
 
                 }
 
-//            }).prepareCall().call();
             }).prepareCall().call();
 
             startIp += ratio;
@@ -81,26 +74,9 @@ public class RestDistanceService extends Worker {
     }
 
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    @Override
-//    protected void onHandleIntent(Intent intent) {
-//
-//        FindRouterIp(1);
-//
-//    }
-
-//    private void sendDistance(String distance) {
-//        Intent broadcastIntent = new Intent();
-//        broadcastIntent.setAction("SendDistanceDataAction");
-//        broadcastIntent.putExtra("DistanceData", distance);
-//        sendBroadcast(broadcastIntent);
-//    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Result doWork() {
-
-        // Do the work here--in this case, upload the images.
 
         FindRouterIp(1);
 
@@ -108,31 +84,10 @@ public class RestDistanceService extends Worker {
         return Result.success();
     }
 
-//    // check names !!!
-//    private void sendPartIp(int partIp){
-////        Intent broadcastIntent = new Intent();
-////        broadcastIntent.setAction("SendPartIpDataAction");
-////        broadcastIntent.putExtra("PartIpData", partIp);
-////        sendBroadcast(broadcastIntent);
-//        Intent i = new Intent(this, ReadRestData.class);
-//        i.putExtra("ProperIPDistance", partIp);
-//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(i);
-//    }
 
     // check names !!!
     private void sendPartIp(int partIp) {
-//        Intent broadcastIntent = new Intent();
-//        broadcastIntent.setAction("SendPartIpDataAction");
-//        broadcastIntent.putExtra("PartIpData", partIp);
-//        sendBroadcast(broadcastIntent);
 
-
-//        Intent i = new Intent(getApplicationContext(), ReadRestDataService.class);
-//        i.putExtra("ProperIPDistance", partIp);
-//        System.out.println("ProperIPDistance before send: " + partIp);
-////        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startService(i);
         OneTimeWorkRequest.Builder readRestData = new OneTimeWorkRequest.Builder(ReadRestDataService.class);
 
         Data.Builder ip = new Data.Builder();
@@ -143,12 +98,6 @@ public class RestDistanceService extends Worker {
         WorkManager
                 .getInstance(getApplicationContext())
                 .enqueue(readRestData.build());
-
-
-
-//        Intent i = new Intent(getApplicationContext(), MainViewActivity.class);
-//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(i);
 
     }
 }
