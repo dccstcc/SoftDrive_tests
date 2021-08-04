@@ -90,6 +90,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     int motorHeight = 0;
 
+    public String motorcycleSpeed = "none";
+
 
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -126,13 +128,29 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         //////////////////my own
         db = new DbManager(getContext());
-        executor = Executors.newFixedThreadPool(3);
+        executor = Executors.newFixedThreadPool(4);
 
         display = new Display(getContext());
         displayWidth = display.getDisplayWidth();
         displayHeight = display.getDisplayHeight();
 
+        motorcycleSpeed = "from constructor";
     }
+
+//    public TrafficView(Context context) {
+//        super(context, null);
+//    }
+
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    private static class Holder {
+//        private static final TrafficView INSTANCE = new TrafficView(TrafficView);
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public static TrafficView getInstance() {
+//        return Holder.INSTANCE;
+//    }
 
     // called when the size of the SurfaceView changes,
     // such as when it's first added to the View hierarchy
@@ -230,6 +248,15 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         getContext().startActivity(i);
     }
 
+    public void drawText(Canvas canvas, String text) {
+                // display time remaining
+//        canvas.drawText(getResources().getString(
+//                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
+
+        canvas.drawText(text, 50, 100, textPaint);
+
+    }
+
 
     // draws the game to the given Canvas
     public void drawGameElements(Canvas canvas) {
@@ -238,10 +265,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
                 backgroundPaint);
-
-//        // display time remaining
-//        canvas.drawText(getResources().getString(
-//                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
 
         ///////////////////////////////my own
@@ -346,8 +369,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
+        CLocation myGpsLocation;
 
         // initializes the surface holder
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
             setName("CannonThread");
@@ -360,11 +385,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                 System.out.println("! NO GPS PERMISSION !");
 
-                ActivityCompat.requestPermissions(null, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            this.updateSpeed(null);
+            CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+            this.updateSpeed(myLocation);
+            System.out.println("altitude " + myLocation.getAltitude());
+            System.out.println("accuracy " + myLocation.getAccuracy());
+
         }
 
         // changes running state
@@ -374,9 +401,23 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         // controls the game loop
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void run() {
             Canvas canvas = null; // used for drawing
+
+            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                System.out.println("! NO GPS PERMISSION in run method!");
+
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+
 
             int clock = 1000;
 
@@ -391,6 +432,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //                    synchronized(surfaceHolder) {
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
+                        updateSpeed(myLocation);
+                        drawText(canvas, motorcycleSpeed);
                         //Thread.sleep(2000);
 //                    }
 //                } catch (InterruptedException e) {
@@ -404,9 +447,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         private void updateSpeed(CLocation location) {
             // TODO Auto-generated method stub
-            float nCurrentSpeed = 0;
+            float nCurrentSpeed = 1;
 
             if(location != null)
             {
@@ -414,6 +458,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 location.setUseMetricunits(true);
                 nCurrentSpeed = location.getSpeed();
             }
+
+            //nCurrentSpeed = location.getSpeed();
+
 
             Formatter fmt = new Formatter(new StringBuilder());
             fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
@@ -428,6 +475,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
             //TextView txtCurrentSpeed = (TextView) this.findViewById(R.id.txtCurrentSpeed);
             System.out.println("SPEED " + strCurrentSpeed + " " + strUnits);
+
+            motorcycleSpeed = strCurrentSpeed;
         }
 
 //        private boolean useMetricUnits() {
@@ -439,11 +488,25 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void onLocationChanged(Location location) {
 
-            if(location != null)
-            {
-                CLocation myLocation = new CLocation(location, true);
-                this.updateSpeed(myLocation);
-            }
+            executor.execute(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void run() {
+
+                    if(location != null)
+                    {
+                        CLocation myLocation = new CLocation(location, true);
+
+                        myGpsLocation = myLocation;
+
+                        updateSpeed(myLocation);
+//                        System.out.println("altitude " + myLocation.getAltitude());
+//                        System.out.println("accuracy " + myLocation.getAccuracy());
+
+                    }
+
+                }
+            });
 
         }
 
