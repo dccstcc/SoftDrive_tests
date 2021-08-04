@@ -1,14 +1,19 @@
 package pl.pjatk.softdrive.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -18,13 +23,18 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
+import java.util.Formatter;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import pl.pjatk.softdrive.Exit;
 import pl.pjatk.softdrive.R;
 import pl.pjatk.softdrive.database.DbManager;
+import pl.pjatk.softdrive.gps.CLocation;
+import pl.pjatk.softdrive.gps.IBaseGpsListener;
 
 public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -57,7 +67,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // Paint variables used when drawing each item on the screen
     private Paint textPaint; // Paint used to draw text
     private Paint backgroundPaint; // Paint used to clear the drawing area
-
 
 
     /////////////////////////////my constant
@@ -157,10 +166,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // reset all the screen elements and start a new game
     public void newGame() {
 
-        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
-        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
+        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
+        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
 
-        int x = displayWidth/2 - width/2;
+        int x = displayWidth / 2 - width / 2;
 
         forwardVehicle = new ForwardVehicle(
                 getContext(),
@@ -238,10 +247,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         ///////////////////////////////my own
         motor = new Motorcycle(getContext(),
                 canvas,
-                (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
-                (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight));
+                (int) (MOTORCYCLE_WIDTH_PERCENT * displayWidth),
+                (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight));
 
-        motorHeight = (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight);
+        motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
 
         initForwardVehicle();
 
@@ -270,10 +279,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     protected void initForwardVehicle() {
 
-        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
-        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
+        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
+        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
 
-        int x = displayWidth/2 - width/2;
+        int x = displayWidth / 2 - width / 2;
 
         forwardVehicle = new ForwardVehicle(
                 getContext(),
@@ -293,7 +302,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // called when surface changes size
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format,
-                               int width, int height) { }
+                               int width, int height) {
+    }
 
     // called when surface is first created
     @Override
@@ -317,8 +327,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             try {
                 cannonThread.join(); // wait for cannonThread to finish
                 retry = false;
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 Log.e(TAG, "Thread interrupted", e);
             }
         }
@@ -333,14 +342,29 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     // Thread subclass to control the game loop
-    private class CannonThread extends Thread {
+    private class CannonThread extends Thread implements IBaseGpsListener {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
+
 
         // initializes the surface holder
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
             setName("CannonThread");
+
+            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                System.out.println("! NO GPS PERMISSION !");
+
+                ActivityCompat.requestPermissions(null, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            this.updateSpeed(null);
         }
 
         // changes running state
@@ -378,6 +402,69 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
+        }
+
+        private void updateSpeed(CLocation location) {
+            // TODO Auto-generated method stub
+            float nCurrentSpeed = 0;
+
+            if(location != null)
+            {
+//                location.setUseMetricunits(this.useMetricUnits());
+                location.setUseMetricunits(true);
+                nCurrentSpeed = location.getSpeed();
+            }
+
+            Formatter fmt = new Formatter(new StringBuilder());
+            fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
+            String strCurrentSpeed = fmt.toString();
+            strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
+
+            //String strUnits = "miles/hour";
+            //if(this.useMetricUnits())
+            //{
+                String strUnits = "meters/second";
+            //}
+
+            //TextView txtCurrentSpeed = (TextView) this.findViewById(R.id.txtCurrentSpeed);
+            System.out.println("SPEED " + strCurrentSpeed + " " + strUnits);
+        }
+
+//        private boolean useMetricUnits() {
+//            // TODO Auto-generated method stub
+//            CheckBox chkUseMetricUnits = (CheckBox) this.findViewById(R.id.chkMetricUnits);
+//            return chkUseMetricUnits.isChecked();
+//        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+
+            if(location != null)
+            {
+                CLocation myLocation = new CLocation(location, true);
+                this.updateSpeed(myLocation);
+            }
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onGpsStatusChanged(int event) {
+
         }
     }
 
