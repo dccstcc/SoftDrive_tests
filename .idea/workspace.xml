@@ -39,6 +39,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/ForwardVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/ForwardVehicle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/TrafficView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/TrafficView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -323,25 +324,25 @@
     </state>
     <state x="212" y="156" key="FileChooserDialogImpl/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1626802176909" />
     <state x="339" y="218" key="FileChooserDialogImpl/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625246569030" />
-    <state width="1237" height="157" key="GridCell.Tab.0.bottom" timestamp="1628076783037">
+    <state width="1237" height="157" key="GridCell.Tab.0.bottom" timestamp="1628078200126">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="157" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628076783037" />
+    <state width="1237" height="157" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628078200126" />
     <state width="2005" height="168" key="GridCell.Tab.0.bottom/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="157" key="GridCell.Tab.0.center" timestamp="1628076783037">
+    <state width="1237" height="157" key="GridCell.Tab.0.center" timestamp="1628078200126">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="157" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628076783037" />
+    <state width="1237" height="157" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628078200126" />
     <state width="2005" height="168" key="GridCell.Tab.0.center/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="157" key="GridCell.Tab.0.left" timestamp="1628076783037">
+    <state width="1237" height="157" key="GridCell.Tab.0.left" timestamp="1628078200125">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="157" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628076783037" />
+    <state width="1237" height="157" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628078200125" />
     <state width="2005" height="168" key="GridCell.Tab.0.left/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251411" />
-    <state width="1237" height="157" key="GridCell.Tab.0.right" timestamp="1628076783037">
+    <state width="1237" height="157" key="GridCell.Tab.0.right" timestamp="1628078200126">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="157" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628076783037" />
+    <state width="1237" height="157" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628078200126" />
     <state width="2005" height="168" key="GridCell.Tab.0.right/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
     <state width="1237" height="161" key="GridCell.Tab.1.bottom" timestamp="1628012043822">
       <screen x="0" y="0" width="1280" height="672" />

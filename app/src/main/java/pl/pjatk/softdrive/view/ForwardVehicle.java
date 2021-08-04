@@ -9,20 +9,26 @@ public class ForwardVehicle extends GameElement{
     int xCoord;
     int yCoord;
 
+    int height;
+
     private final int maxDistance = 4000;
 
     public ForwardVehicle(Context context, TrafficView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
         super(view, color, soundId, x, y, width, height, velocityX, velocityY);
+        this.height = height;
     }
 
     ///////////////////////////////////my update method
     // update GameElement position and check for wall collisions
-    public void updateForwardVehiclePosition(int restDistance, int motorcyclePositionY) {
+    public void updateForwardVehiclePosition(int restDistance, int motorcyclePositionY, int distanceOffset) {
         // update vertical position
         // scale sensor distance value to screen height
         double distance = (restDistance * motorcyclePositionY) / maxDistance;
         distance = Math.floor(distance);
         int revertDistance = (int) (motorcyclePositionY - distance);
+        revertDistance -= height;
+//        int motorCarDiffHeight = distanceOffset - height;
+//        revertDistance -= motorCarDiffHeight;
         update(0, revertDistance);
 
 //        // if this GameElement collides with the wall, reverse direction
