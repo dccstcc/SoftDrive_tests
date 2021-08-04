@@ -119,7 +119,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         //////////////////my own
         db = new DbManager(getContext());
-        executor = Executors.newFixedThreadPool(2);
+        executor = Executors.newFixedThreadPool(3);
 
         display = new Display(getContext());
         displayWidth = display.getDisplayWidth();
@@ -213,13 +213,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
+//
                 forwardDistance = db.getDbDistance();
 
                 System.out.println("distance from view: " + forwardDistance);
 
                 //motorcyclePositionY = motor.getyCoord();
                 forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
+
 
                 try {
                     Thread.sleep(2000);
@@ -264,6 +265,42 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // draws the game to the given Canvas
     public void drawGameElements(Canvas canvas) {
         // clear the background
+
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//                canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
+//                        backgroundPaint);
+//
+//                // display time remaining
+//                canvas.drawText(getResources().getString(
+//                        R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
+//
+//
+//                ///////////////////////////////my own
+//                motor = new Motorcycle(getContext(),
+//                        canvas,
+//                        (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
+//                        (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight));
+//
+////        motorcyclePositionY = motor.getHeight();
+////
+////        forwardDistance = db.getDbDistance();
+////
+////        System.out.println("distance from view: " + forwardDistance);
+////
+////        //motorcyclePositionY = motor.getyCoord();
+////        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
+//
+//
+//                forwardVehicle.draw(canvas);
+//
+//
+//            }
+//        });
+
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
                 backgroundPaint);
 
@@ -278,7 +315,17 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 (int)(MOTORCYCLE_WIDTH_PERCENT*displayWidth),
                 (int)(MOTORCYCLE_HEIGHT_PERCENT*displayHeight));
 
-        motorcyclePositionY = motor.getHeight();
+        initForwardVehicle();
+
+//        motorcyclePositionY = motor.getHeight();
+//
+        forwardDistance = db.getDbDistance();
+
+        System.out.println("distance from view: " + forwardDistance);
+
+        //motorcyclePositionY = motor.getyCoord();
+        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
+
 
         forwardVehicle.draw(canvas);
     }
@@ -296,6 +343,27 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         soundPool = null;
     }
 
+
+    protected void initForwardVehicle() {
+
+        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT*displayWidth);
+        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT*displayHeight);
+
+        int x = displayWidth/2 - width/2;
+
+        forwardVehicle = new ForwardVehicle(
+                getContext(),
+                this,
+                Color.GREEN,
+                TARGET_SOUND_ID,
+                x,
+                10,
+                width,
+                height,
+                0,
+                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
+        );
+    }
 
 
     // called when surface changes size
@@ -374,15 +442,15 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
                     // lock the surfaceHolder for drawing
-                    synchronized(surfaceHolder) {
+//                    synchronized(surfaceHolder) {
 
                         updatePositions(++clock); // update game state
                         drawGameElements(canvas); // draw using the canvas
-                        Thread.sleep(2000);
-                    }
+                        //Thread.sleep(2000);
+//                    }
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
                 } finally {
                     // display canvas's contents on the CannonView
                     // and enable other threads to use the Canvas

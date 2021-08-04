@@ -20,6 +20,7 @@ public class GameElement {
 
 
 
+
    ///////////////////my attrs
    protected boolean isCollision = false;
    protected double collisionSensitive = 10.0;
@@ -40,20 +41,23 @@ public class GameElement {
    }
 
    // update GameElement position and check for wall collisions
-   public void update(double intervalX, double intervalY) {
+   public void update(int coordX, int coordY) {
       // update vertical position
-      shape.offset((int) (velocityX * intervalX), (int) (velocityY * intervalY));
+      shape.offset(coordX, coordY);
+//   // update GameElement position and check for wall collisions
+//   public void update(double intervalX, double intervalY) {
+//      // update vertical position
+//      shape.offset((int) (velocityX * intervalX), (int) (velocityY * intervalY));
 
-      // if this GameElement collides with the wall, reverse direction
-      if (shape.top < 0 && velocityY < 0 ||
-         shape.bottom > view.getScreenHeight() && velocityY > 0)
-         velocityY *= -1; // reverse this GameElement's velocity
+//      // if this GameElement collides with the wall, reverse direction
+//      if (shape.top < 0 && velocityY < 0 ||
+//         shape.bottom > view.getScreenHeight() && velocityY > 0)
+//         velocityY *= -1; // reverse this GameElement's velocity
 
 
       //////////////////my collisions
 
    }
-
 
 
    // draws this GameElement on the given Canvas
