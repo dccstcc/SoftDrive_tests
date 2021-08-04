@@ -219,7 +219,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                 System.out.println("distance from view: " + forwardDistance);
 
                 //motorcyclePositionY = motor.getyCoord();
-                forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
+                //forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord());
 
 
                 try {
