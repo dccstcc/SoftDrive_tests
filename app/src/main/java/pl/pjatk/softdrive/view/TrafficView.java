@@ -90,6 +90,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     public String motorcycleSpeed = "none";
 
+    float speed = 0f;
+
 
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -284,6 +286,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         forwardVehicle.draw(canvas);
     }
 
+    public void setSpeed(float motorcycleSpeed) {
+        this.speed = motorcycleSpeed;
+        Log.v("processed speed ", String.valueOf(speed));
+
+    }
 
     // stops the game: called by CannonGameFragment's onPause method
     public void stopGame() {
@@ -407,6 +414,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     updatePositions(++clock); // update game state
                     drawGameElements(canvas); // draw using the canvas
                     drawText(canvas, String.valueOf(nCurrentSpeed));
+                    setSpeed(nCurrentSpeed);
                     //Thread.sleep(2000);
 //                    }
 //                } catch (InterruptedException e) {
