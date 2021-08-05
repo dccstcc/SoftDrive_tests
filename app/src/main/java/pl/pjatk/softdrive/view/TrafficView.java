@@ -25,6 +25,7 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import java.util.ConcurrentModificationException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.concurrent.Executor;
@@ -380,6 +381,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             surfaceHolder = holder;
             setName("CannonThread");
 
+            initCLocation(null);
+
 //            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 //            if (ActivityCompat.checkSelfPermission(getContext(),
 //                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -394,9 +397,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //            //this.updateSpeed(myGpsLocation);
 //            //this.onLocationChanged(myGpsLocation);
 
-            myGpsLocation = initCLocation(executor);
-            System.out.println("altitude first " + myGpsLocation.getAltitude());
-            System.out.println("accuracy first " + myGpsLocation.getAccuracy());
+            //myGpsLocation = initCLocation(executor);
+//            System.out.println("altitude first " + myGpsLocation.getAltitude());
+//            System.out.println("accuracy first " + myGpsLocation.getAccuracy());
 
         }
 
@@ -439,7 +442,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //                    synchronized(surfaceHolder) {
                     updatePositions(++clock); // update game state
                     drawGameElements(canvas); // draw using the canvas
-                    drawText(canvas, String.valueOf(updateSpeed(executor, myGpsLocation)));
+                    drawText(canvas, String.valueOf(nCurrentSpeed));
                     //Thread.sleep(2000);
 //                    }
 //                } catch (InterruptedException e) {
@@ -453,7 +456,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        private CLocation initCLocation(Executor executor) {
+        private void initCLocation(Executor executor) {
 
 
 //            executor.execute(new Runnable() {
@@ -472,14 +475,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
-                    myGpsLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+                    //myGpsLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
 
 
 
 //            });
 
 
-            return myGpsLocation;
         }
 
         float test = 1.0f;
@@ -487,9 +489,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         private float updateSpeed(Executor executor, CLocation location) {
             // TODO Auto-generated method stub
 
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
 
                     nCurrentSpeed = 1000;
 
@@ -498,10 +500,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         location.setUseMetricunits(true);
                         nCurrentSpeed = location.getSpeed();
                     }
-
-                }
-
-            });
+//
+//                }
+//
+//            });
 
             System.out.println("SPEED " + nCurrentSpeed);
             return nCurrentSpeed;
@@ -570,9 +572,15 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //
 //                }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onLocationChanged(Location location) {
             Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
+
+            myGpsLocation = new CLocation(location, true);
+            nCurrentSpeed = updateSpeed(executor, myGpsLocation);
+            
         }
 
         @Override
