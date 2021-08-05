@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pl.pjatk.softdrive.Exit;
@@ -249,7 +250,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawText(Canvas canvas, String text) {
-                // display time remaining
+        // display time remaining
 //        canvas.drawText(getResources().getString(
 //                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
@@ -370,6 +371,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         private boolean threadIsRunning = true; // running by default
 
         CLocation myGpsLocation;
+        float nCurrentSpeed;
+
 
         // initializes the surface holder
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -377,21 +380,23 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             surfaceHolder = holder;
             setName("CannonThread");
 
-            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+//            if (ActivityCompat.checkSelfPermission(getContext(),
+//                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(getContext(),
+//                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                System.out.println("! NO GPS PERMISSION !");
+//
+//            }
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//            myGpsLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+//            //this.updateSpeed(myGpsLocation);
+//            //this.onLocationChanged(myGpsLocation);
 
-                System.out.println("! NO GPS PERMISSION !");
-
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
-            this.updateSpeed(myLocation);
-            this.onLocationChanged(myLocation);
-            System.out.println("altitude " + myLocation.getAltitude());
-            System.out.println("accuracy " + myLocation.getAccuracy());
+            myGpsLocation = initCLocation(executor);
+            System.out.println("altitude first " + myGpsLocation.getAltitude());
+            System.out.println("accuracy first " + myGpsLocation.getAccuracy());
 
         }
 
@@ -407,18 +412,18 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         public void run() {
             Canvas canvas = null; // used for drawing
 
-            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                System.out.println("! NO GPS PERMISSION in run method!");
-
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
-            updateSpeed(myLocation);
+//            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+//            if (ActivityCompat.checkSelfPermission(getContext(),
+//                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(getContext(),
+//                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                System.out.println("! NO GPS PERMISSION in run method!");
+//
+//            }
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//            CLocation myLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+//            updateSpeed(myLocation);
 
             int clock = 1000;
 
@@ -432,11 +437,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                     // lock the surfaceHolder for drawing
 //                    synchronized(surfaceHolder) {
-                        updatePositions(++clock); // update game state
-                        drawGameElements(canvas); // draw using the canvas
-                        updateSpeed(myGpsLocation);
-                        drawText(canvas, motorcycleSpeed);
-                        //Thread.sleep(2000);
+                    updatePositions(++clock); // update game state
+                    drawGameElements(canvas); // draw using the canvas
+                    drawText(canvas, String.valueOf(updateSpeed(executor, myGpsLocation)));
+                    //Thread.sleep(2000);
 //                    }
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
@@ -449,37 +453,87 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        private void updateSpeed(CLocation location) {
-            // TODO Auto-generated method stub
-            float nCurrentSpeed = 1;
+        private CLocation initCLocation(Executor executor) {
 
-            if(location != null)
-            {
+
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+
+                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                    if (ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        System.out.println("! NO GPS PERMISSION !");
+
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+
+                    myGpsLocation = new CLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), true);
+
+
+
+//            });
+
+
+            return myGpsLocation;
+        }
+
+        float test = 1.0f;
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private float updateSpeed(Executor executor, CLocation location) {
+            // TODO Auto-generated method stub
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    nCurrentSpeed = 1000;
+
+                    if (location != null) {
 //                location.setUseMetricunits(this.useMetricUnits());
-                location.setUseMetricunits(true);
-                nCurrentSpeed = location.getSpeed();
-            }
+                        location.setUseMetricunits(true);
+                        nCurrentSpeed = location.getSpeed();
+                    }
+
+                }
+
+            });
+
+            System.out.println("SPEED " + nCurrentSpeed);
+            return nCurrentSpeed;
+        }
+
+//            if(location != null)
+//            {
+////                location.setUseMetricunits(this.useMetricUnits());
+//                location.setUseMetricunits(true);
+//                nCurrentSpeed = location.getSpeed();
+//            }
 
             //nCurrentSpeed = location.getSpeed();
 
 
-            Formatter fmt = new Formatter(new StringBuilder());
-            fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
-            String strCurrentSpeed = fmt.toString();
-            strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
+//            Formatter fmt = new Formatter(new StringBuilder());
+//            fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
+//            String strCurrentSpeed = fmt.toString();
+//            strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
+//
+//            //String strUnits = "miles/hour";
+//            //if(this.useMetricUnits())
+//            //{
+//                String strUnits = "meters/second";
+//            //}
+//
+//            //TextView txtCurrentSpeed = (TextView) this.findViewById(R.id.txtCurrentSpeed);
+//            System.out.println("SPEED " + strCurrentSpeed + " " + strUnits);
+//
+//            motorcycleSpeed = strCurrentSpeed;
+//            return nCurrentSpeed;
 
-            //String strUnits = "miles/hour";
-            //if(this.useMetricUnits())
-            //{
-                String strUnits = "meters/second";
-            //}
-
-            //TextView txtCurrentSpeed = (TextView) this.findViewById(R.id.txtCurrentSpeed);
-            System.out.println("SPEED " + strCurrentSpeed + " " + strUnits);
-
-            motorcycleSpeed = strCurrentSpeed;
-        }
 
 //        private boolean useMetricUnits() {
 //            // TODO Auto-generated method stub
@@ -487,32 +541,38 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //            return chkUseMetricUnits.isChecked();
 //        }
 
+//        @RequiresApi(api = Build.VERSION_CODES.O)
+//        @Override
+//        public void onLocationChanged(Location location) {
+//
+////            executor.execute(new Runnable() {
+////                @RequiresApi(api = Build.VERSION_CODES.O)
+////                @Override
+////                public void run() {
+//
+//                    if(location != null)
+//                    {
+//
+//                        updateSpeed(location);
+////                        myGpsLocation = new CLocation(location, true);
+////
+////                        //myGpsLocation = myRunnnubleLocation;
+////
+////                        updateSpeed(myGpsLocation);
+////                        System.out.println("altitude " + myGpsLocation.getAltitude());
+////                        System.out.println("accuracy " + myGpsLocation.getAccuracy());
+////                        System.out.println("speed raw " + myGpsLocation.getSpeed());
+////                        onLocationChanged(myGpsLocation);
+//
+//                        //updateSpeed(location);
+//
+//                    }
+//
+//                }
+
         @Override
         public void onLocationChanged(Location location) {
-
-            executor.execute(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void run() {
-
-                    if(location != null)
-                    {
-                        CLocation myRunnnubleLocation = new CLocation(location, true);
-
-                        myGpsLocation = myRunnnubleLocation;
-
-                        updateSpeed(myGpsLocation);
-                        System.out.println("altitude " + myRunnnubleLocation.getAltitude());
-                        System.out.println("accuracy " + myRunnnubleLocation.getAccuracy());
-                        System.out.println("speed raw " + myRunnnubleLocation.getSpeed());
-
-                    }
-
-                }
-            });
-
-
-
+            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
         }
 
         @Override
@@ -526,15 +586,38 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
+        public void onGpsStatusChanged(int event) {
 
         }
 
         @Override
-        public void onGpsStatusChanged(int event) {
+        public void onStatusChanged(String provider, int status, Bundle extras) {
 
         }
     }
+//            });
+
+
+//        @Override
+//        public void onProviderDisabled(String provider) {
+//
+//        }
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {
+//
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//        }
+//
+//        @Override
+//        public void onGpsStatusChanged(int event) {
+//
+//        }
+
 
     // hide system bars and app bar
     private void hideSystemBars() {
@@ -547,8 +630,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             View.SYSTEM_UI_FLAG_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
-
 }
+
 
 /*********************************************************************************
  * (C) Copyright 1992-2016 by Deitel & Associates, Inc. and * Pearson Education, *
