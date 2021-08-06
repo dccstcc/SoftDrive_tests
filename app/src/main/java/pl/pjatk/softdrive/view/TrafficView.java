@@ -95,6 +95,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     HashMap<Integer, Integer> speedTable;
 
+    Paint tooFastAlarmPaint;
+
 
 
     // constructor
@@ -141,6 +143,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         motorcycleSpeed = "from constructor";
 
         //speedTable = initSpeedTable();
+        tooFastAlarmPaint = new Paint();
+        tooFastAlarmPaint.setColor(Color.RED);
+
     }
 
 
@@ -274,7 +279,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         System.out.println("distance from view: " + forwardDistance);
 
         if(isTooFast(speed, forwardDistance)) {
-            
+            int safeSpeed = getSafeSpeed(speed, forwardDistance);
+            safeSpeed *= (0.001f / (1f/3600f));
+            canvas.drawText("  " + safeSpeed + "  km/h is safe", 50, 200, tooFastAlarmPaint);
+            forwardVehicle.paint.setColor(Color.RED);
+        } else {
+            forwardVehicle.paint.setColor(Color.GREEN);
+
         }
 
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
@@ -298,7 +309,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         return isTooFast;
     }
 
-    public int getSafeSpeed(int distance) {
+    public int getSafeSpeed(float speed, int distance) {
         // 9 m/s^2
         float breakLatency = 9f;
         // V = at
@@ -306,8 +317,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         // S = at^2 / 2
         float breakDistance = (breakLatency * breakTime * breakTime) / 2;
         int breakDistanceInt = Math.round(breakDistance);
+        // V = s/t
+        if (breakTime == 0) breakTime = 1;
+        int safeSpeed = breakDistanceInt / Math.round(breakTime);
 
-        return breakDistanceInt;
+        return safeSpeed;
     }
 
 //    private HashMap<Integer, Integer> initSpeedTable() {
@@ -491,8 +505,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     }
 
             System.out.println("SPEED " + nCurrentSpeed);
-                    nCurrentSpeed *= (0.001f / (1f/3600f));
-            System.out.println("SPEED km/h" + nCurrentSpeed);
+//                    nCurrentSpeed *= (0.001f / (1f/3600f));
+//            System.out.println("SPEED km/h" + nCurrentSpeed);
 
             return nCurrentSpeed;
         }
