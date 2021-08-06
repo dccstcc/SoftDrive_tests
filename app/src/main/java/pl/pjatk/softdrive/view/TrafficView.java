@@ -25,6 +25,7 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -92,6 +93,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     float speed = 0f;
 
+    HashMap<Integer, Integer> speedTable;
+
+
 
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -135,6 +139,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         displayHeight = display.getDisplayHeight();
 
         motorcycleSpeed = "from constructor";
+
+        //speedTable = initSpeedTable();
     }
 
 
@@ -267,10 +273,54 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         System.out.println("distance from view: " + forwardDistance);
 
+        if(isTooFast(speed, forwardDistance)) {
+            
+        }
+
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
 
         forwardVehicle.draw(canvas);
     }
+
+    public boolean isTooFast(float speed, int distance) {
+        boolean isTooFast = false;
+
+        // 9 m/s^2
+        float breakLatency = 9f;
+        // V = at
+        float breakTime = speed / breakLatency;
+        // S = at^2 / 2
+        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+        int breakDistanceInt = Math.round(breakDistance);
+
+        if(breakDistanceInt >= distance) isTooFast = true;
+
+        return isTooFast;
+    }
+
+    public int getSafeSpeed(int distance) {
+        // 9 m/s^2
+        float breakLatency = 9f;
+        // V = at
+        float breakTime = speed / breakLatency;
+        // S = at^2 / 2
+        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+        int breakDistanceInt = Math.round(breakDistance);
+
+        return breakDistanceInt;
+    }
+
+//    private HashMap<Integer, Integer> initSpeedTable() {
+//        HashMap<Integer, Integer> speedTable = new HashMap<>();
+//        float startDistance = 0.01758f;
+//        for(int i=1; i<120; i*=2) {
+//            startDistance*=4f;
+//            int distance = Math.round(startDistance);
+//            speedTable.put(i, distance);
+//            System.out.println("distance_warn " + i + " " + distance);
+//        }
+//        return speedTable;
+//    }
 
     public void setSpeed(float motorcycleSpeed) {
         this.speed = motorcycleSpeed;
