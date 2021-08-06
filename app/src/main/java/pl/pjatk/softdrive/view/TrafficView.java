@@ -137,20 +137,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         motorcycleSpeed = "from constructor";
     }
 
-//    public TrafficView(Context context) {
-//        super(context, null);
-//    }
-
-
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    private static class Holder {
-//        private static final TrafficView INSTANCE = new TrafficView(TrafficView);
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public static TrafficView getInstance() {
-//        return Holder.INSTANCE;
-//    }
 
     // called when the size of the SurfaceView changes,
     // such as when it's first added to the View hierarchy
@@ -455,6 +441,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     }
 
             System.out.println("SPEED " + nCurrentSpeed);
+                    nCurrentSpeed *= (0.001f / (1f/3600f));
+            System.out.println("SPEED km/h" + nCurrentSpeed);
+
             return nCurrentSpeed;
         }
 
