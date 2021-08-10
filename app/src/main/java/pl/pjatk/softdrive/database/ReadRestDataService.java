@@ -52,7 +52,7 @@ public class ReadRestDataService extends Worker {
 
         System.out.println("ProperIPDistance " + ip);
 
-        executorService = Executors.newFixedThreadPool(1);
+        executorService = Executors.newFixedThreadPool(3);
 
         db = new DbManager(getApplicationContext());
 

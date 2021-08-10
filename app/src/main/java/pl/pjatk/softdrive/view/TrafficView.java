@@ -250,7 +250,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //        canvas.drawText(getResources().getString(
 //                R.string.time_remaining_format, timeLeft), 50, 100, textPaint);
 
-        canvas.drawText(text, 50, 100, textPaint);
+        canvas.drawText("V:  " + text, 50, 100, textPaint);
+        //tooFastAlarmPaint.setTextScaleX(4f);
+//        tooFastAlarmPaint.setTextSize(100);
+//        canvas.drawText("reduce: " + "safeSpeed", 200, 200, tooFastAlarmPaint);
 
     }
 
@@ -277,11 +280,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         forwardDistance = db.getDbDistance();
 
         System.out.println("distance from view: " + forwardDistance);
+        canvas.drawText("dist: " + forwardDistance, 500, 100, textPaint);
+
 
         if(isTooFast(speed, forwardDistance)) {
             int safeSpeed = getSafeSpeed(speed, forwardDistance);
             safeSpeed *= (0.001f / (1f/3600f));
-            canvas.drawText("  " + safeSpeed + "  km/h is safe", 50, 200, tooFastAlarmPaint);
+            tooFastAlarmPaint.setTextSize(100);
+            canvas.drawText("reduce: " + safeSpeed, 200, 300, tooFastAlarmPaint);
             forwardVehicle.paint.setColor(Color.RED);
         } else {
             forwardVehicle.paint.setColor(Color.GREEN);

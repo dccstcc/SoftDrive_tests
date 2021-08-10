@@ -18,6 +18,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import pl.pjatk.softdrive.rest.controllers.IpAddressCtrl;
 import pl.pjatk.softdrive.rest.services.RestDistanceService;
 import pl.pjatk.softdrive.rest.services.RestScan2dService;
 import pl.pjatk.softdrive.view.MainViewActivity;
@@ -55,8 +56,7 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-
-
+                new IpAddressCtrl().findRtrIpB4(1);
             }
         });
 

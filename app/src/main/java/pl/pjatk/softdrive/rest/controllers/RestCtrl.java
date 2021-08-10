@@ -1,10 +1,12 @@
 package pl.pjatk.softdrive.rest.controllers;
 
 import android.app.Application;
-import android.os.Build;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,7 +38,7 @@ public class RestCtrl extends Application {
         this.gson = initGson();
         this.clientBuilder = initLogBuilder();
         this.httpHeaderConf = initHttpHeader();
-        this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
+        //this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
         this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
     }
 

@@ -3,6 +3,7 @@ package pl.pjatk.softdrive.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -49,6 +50,10 @@ public class DbManager {
             ContentValues values = new ContentValues();
             values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, 2000);
             long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
+            setDistance(1);
+            ContentValues v = new ContentValues();
+            v.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
+            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, v);
         }
 
         // Create a new map of values, where column names are the keys
@@ -94,9 +99,15 @@ public class DbManager {
                  null
         );
 
-        cursor.moveToLast();
-        int distance = cursor.getInt(0);
-        cursor.close();
+        try{
+            cursor.moveToLast();
+            int distance = cursor.getInt(0);
+            cursor.close();
+        } catch(CursorIndexOutOfBoundsException e) {
+
+        }
+
+
 
         return distance;
     }

@@ -23,7 +23,11 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     private int ipAddrStart;
     private int ipAddrEnd;
 
-    private final Executor executor;
+    private Executor executor;
+
+    public RestDistanceCtrl() {
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public RestDistanceCtrl(Executor executor, int ipAddrStart, int ipAddrEnd, IFromRestCallback IFromRestCallback) {
