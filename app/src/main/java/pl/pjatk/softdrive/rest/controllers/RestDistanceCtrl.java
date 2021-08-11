@@ -74,26 +74,49 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         call.enqueue(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResponse(Call<Distance> call, Response<Distance> response) {
 
+        System.out.println("Response callback - OK\n");
+
+        getGson().toJson(response.body());
+
         if (response.isSuccessful()) {
 
-            executor.execute(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void run() {
+            if(executor!=null) {
 
-                    String ip3b = prepareIp(fourthIp).ip.getIp();
+                executor.execute(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void run() {
 
-                    IFromRestCallback.getDistanceRouterIp(fourthIp);
-                    IFromRestCallback.getDistanceResponse(response.body());
+                        String ip3b = prepareIp(fourthIp).ip.getIp();
 
-                    call.cancel();
+                        IFromRestCallback.getDistanceRouterIp(fourthIp);
+                        IFromRestCallback.getDistanceResponse(response.body());
 
-                    return;
-                }
-            });
+                        call.cancel();
+
+                        return;
+                    }
+                });
+
+            } else {
+
+                String ip3b = prepareIp(fourthIp).ip.getIp();
+
+                IFromRestCallback.getDistanceRouterIp(fourthIp);
+                System.out.print("response");
+
+                IFromRestCallback.getDistanceResponse(response.body());
+
+                call.cancel();
+
+                return;
+
+            }
+
 
 
 

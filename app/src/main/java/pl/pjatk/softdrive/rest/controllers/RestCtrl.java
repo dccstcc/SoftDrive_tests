@@ -1,7 +1,5 @@
 package pl.pjatk.softdrive.rest.controllers;
 
-import android.app.Application;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,7 +13,7 @@ import pl.pjatk.softdrive.rest.RestApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestCtrl extends Application {
+public class RestCtrl {
 
     protected static final String protocol = "http://";
     protected static final String portDistance = ":8080";
@@ -115,4 +113,7 @@ public class RestCtrl extends Application {
                 .create();
     }
 
+    public Gson getGson() {
+        return gson;
+    }
 }

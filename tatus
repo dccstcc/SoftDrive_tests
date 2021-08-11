@@ -1,0 +1,563 @@
+[33mcommit c009531c60600d150cef0712722e418cbbfeb05c[m[33m ([m[1;36mHEAD -> [m[1;32mforward_car_alert_system[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Aug 6 17:52:02 2021 +0200
+
+    init communication error system
+
+[33mcommit 62fe6f0757d495b39953811c0e4e2cff45b7f6fe[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Aug 6 10:42:06 2021 +0200
+
+    add alert system for too big speed
+
+[33mcommit 5b871819184620cc7d9eadcb805bd366fdae76ce[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Aug 6 10:18:44 2021 +0200
+
+    add speed too fast detection
+
+[33mcommit a92bc9ba5d4b3c8cbe146114c02f389af7838ffd[m[33m ([m[1;32mspeed_phone_sensor[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Aug 6 08:59:14 2021 +0200
+
+    km/h speed unit
+
+[33mcommit f3f09587985ade845b8d1c1eec77b3c4397004dd[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Aug 5 12:43:32 2021 +0200
+
+    forward value of speed
+
+[33mcommit b05b5541f9ba567e913c6f0c1e7c6eb053f87892[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Aug 5 12:32:50 2021 +0200
+
+    refactor
+
+[33mcommit b5394cdc8c4ba5f52444d3993c032bbc42884a71[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Aug 5 12:27:12 2021 +0200
+
+    read speed from callback and display in screen
+
+[33mcommit ba1ed64b3e33ad70c649e569bd5ce4706da8684f[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Aug 5 12:10:42 2021 +0200
+
+    read longitude and latitude from gps callback
+
+[33mcommit bd3c80965f4be6d8f5897b5ad0323ba4ad66e5cf[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 22:02:21 2021 +0200
+
+    need to debug callback for gps
+
+[33mcommit 1f4810886bf5a5aaef1903ddfa1c17e3d25a1913[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 21:38:50 2021 +0200
+
+    can read GPS speed mensurance
+
+[33mcommit dba835cb20cab5f26b2fc2e649b1fa89b8d5c2ac[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 19:01:49 2021 +0200
+
+    initialise GPS speed mensurance
+
+[33mcommit 3fe4851387ad1c956342f4da128c6d8c29efdd4c[m[33m ([m[1;32mTaskStackBuilder_try_v2[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 17:01:46 2021 +0200
+
+    refactor
+
+[33mcommit acdffae0c222f46663eb767164fee266af559c85[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 14:04:02 2021 +0200
+
+    optimize speed of write a distance into db
+
+[33mcommit eaee01da24d887057fa6e4a4cb60715e502fd100[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 13:58:21 2021 +0200
+
+    basic position of forward vehicle and motorcycle
+
+[33mcommit 57a4201023dfe0311d1dfb845982ece40f9a599a[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 13:34:22 2021 +0200
+
+    disbale forward vehicle blinking
+
+[33mcommit 7b04b554c463f3ac58ddf8d60369c063e4a2025b[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Wed Aug 4 13:23:06 2021 +0200
+
+    move forward car position by sensor
+
+[33mcommit 6643487b6d17d9ccdb083bc40c9f9dea36df9261[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Tue Aug 3 19:41:24 2021 +0200
+
+    set forward car position
+
+[33mcommit b6a8fcc9cb7d3963b7b347bc87da8df91e451e7d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Tue Aug 3 18:52:29 2021 +0200
+
+    Communication with synchronisation between rest and view
+
+[33mcommit 88d52aa467444153098a9ec9d7370ef491adfd3c[m[33m ([m[1;32mWorkManager[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Tue Aug 3 13:02:42 2021 +0200
+
+    dev/null
+
+[33mcommit 8c2ea5f92c7fe70d1b6d006e2cae89f25d9f15d1[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 12:38:46 2021 +0200
+
+    two tasks here: for read rest distance and for display view but not synchronise
+
+[33mcommit 1cf57cfbb4b37add063092d4a82b9a7503e6c2c5[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 12:21:47 2021 +0200
+
+    read distance by WorkManager is work here
+
+[33mcommit 3cc1bdf8dcdd5bbe9f4940965974d8c2fece7feb[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 12:18:46 2021 +0200
+
+    transform RestScan2dService to WorkManager
+
+[33mcommit 2d728353cb4ad5404f92f37a50c3a4c6b9630b9c[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 12:07:02 2021 +0200
+
+    transform RestDistanceService to WorkManager
+
+[33mcommit da7d355fbb34215d6377f13bd2c24afba9b0a80b[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 11:59:01 2021 +0200
+
+    initialisation for transform RestDistanceService to WorkManager
+
+[33mcommit fc9d433b3ed7d2b335222f17fbccd0b42091d624[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 11:39:22 2021 +0200
+
+    changed service to workmanager
+
+[33mcommit 0cd88152adf833c1f7df321c7a42afccf4030ead[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 11:09:51 2021 +0200
+
+    add and build gradle dependency for WorkManager
+
+[33mcommit b543424d25dccfcbb1c11d451c404a0ffcc590af[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 31 11:05:30 2021 +0200
+
+    initialise working service
+
+[33mcommit cb159e82000b5a876e18c1d62b1e430c110eb52e[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 17:16:24 2021 +0200
+
+    try run read rest data service is after debug
+
+[33mcommit d5d7a510d747962e3e260d261f9e55297719cf6b[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 16:59:59 2021 +0200
+
+    try run read rest data service is bug
+
+[33mcommit 6a3dcd605c0ee9c37a4358ce6a912ccdb685ba09[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 16:39:13 2021 +0200
+
+    try run loop is bug
+
+[33mcommit 05273b16172783e345ea3c1e1d8558ce4c7ca324[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 16:15:03 2021 +0200
+
+    change activity ReadRestData to service
+
+[33mcommit 435d61c9e810e103c37ae8d59e15dfade6fdfcad[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 15:53:18 2021 +0200
+
+    need to change activity ReadRestData to service
+
+[33mcommit fe501fada8329e9141bf0817c07b3fbead332bdc[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 15:28:51 2021 +0200
+
+    start view activity from ReadRestData problem
+
+[33mcommit 35a3385bcc449bd5c47d595619f42fd1a14b372e[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 14:37:38 2021 +0200
+
+    git database synchronisation problem
+
+[33mcommit bacd0ae5763d1623f200ed5a30980db37941a95d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 10:22:29 2021 +0200
+
+    synchronise read from database
+
+[33mcommit 3285c9a9120b899dc8e75ff11bb1b01e1d366943[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 10:18:27 2021 +0200
+
+    delete unuse methods
+
+[33mcommit 734e87d4ef527e93892ec2c9bf08b157bef5f2be[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 10:16:36 2021 +0200
+
+    refactor
+
+[33mcommit c94cc1a14e67f6b6e88872b2bd93828ae451b3fe[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 10:10:53 2021 +0200
+
+    init remove elements from canvas
+
+[33mcommit a0eb6aa03bb4ae85e4bfb45da86abc25b413de82[m[33m ([m[1;32mtry_disable_game_time[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 30 10:02:47 2021 +0200
+
+    change clock value in main loop
+
+[33mcommit e5009c33a0c4397698587004d38df5049b6c73ba[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 19:24:28 2021 +0200
+
+    disable exit from activity fragment after time period
+
+[33mcommit 9402b8bba7ec9f6195670c00b94b239799ef7e3d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 19:14:22 2021 +0200
+
+    time left option still run but loop renew game
+
+[33mcommit 2d516ceafad5e453e5c30c249915d6d774efe14d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 18:52:24 2021 +0200
+
+    refactor
+
+[33mcommit 8512808403e334f13fd9793dc69e13fc33de368b[m[33m ([m[1;32mview_with_data_from_database[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 18:40:19 2021 +0200
+
+    DEBUG run view activity only if distance != 0
+
+[33mcommit fe089bf3a7683a4282211476fb2e9a5bc7add22b[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 18:26:00 2021 +0200
+
+    clear database if get max row count
+
+[33mcommit 167bd57cb248efedfa020683d3f182dc65ecafb9[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 18:04:32 2021 +0200
+
+    run view activity only if distance != 0
+
+[33mcommit 34da55b6ac7116cc370a4a2fc369ad3b2ef5116d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 13:20:12 2021 +0200
+
+    run distance map method for forward vehicle
+
+[33mcommit 60cc86f773485452f52887ac3d36972e21ad4daa[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 13:11:09 2021 +0200
+
+    extract motorcyclePositionY value
+
+[33mcommit b69d15de1faeb368e75070ab9a32df47d9c446be[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 13:03:01 2021 +0200
+
+    create distance to screen map method
+
+[33mcommit 99e7c7097ffdde704e9e3240b54f04d702975691[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 12:50:05 2021 +0200
+
+    make global variables for display height and width
+
+[33mcommit 4bf2fc439d6afb77759b26820d1126e39b07d88f[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 12:24:58 2021 +0200
+
+    init update distance method for draw canvas
+
+[33mcommit 3e57b293ef65eb2c9e9ae27f442b8f66b50eb710[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 11:42:42 2021 +0200
+
+    move forward vehicle
+
+[33mcommit 215b7f82d13104f497a907a6784afc0a2c7cd093[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Thu Jul 29 11:00:25 2021 +0200
+
+    run view from write database from rest activity
+
+[33mcommit ed8418df0fe20ad36665961e2919478a8fb6179f[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 24 21:53:29 2021 +0200
+
+    add distance database logic
+
+[33mcommit bd489cabc6b05d2105c56353b2a5c2ed66893aa7[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 24 21:17:13 2021 +0200
+
+    init database management
+
+[33mcommit 4140cbf379fb2a1dee9bdac6d434925ab7672497[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 24 13:30:22 2021 +0200
+
+    initial loop
+
+[33mcommit 1717d3dc8f8f99dfca89760d93cce6f3837e7e1d[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 24 13:19:16 2021 +0200
+
+    get the correct ip for read rest distance
+
+[33mcommit 5ece0e8b7c43c3ca62b4a5dd6164e3e563768f4b[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Fri Jul 23 18:54:42 2021 +0200
+
+    initial bg threads commit
+
+[33mcommit 572aa17bb6873f4bae6109e7b821cee5d1a5fa2c[m[33m ([m[1;32msurface_view[m[33m, [m[1;32mloop_integration[m[33m)[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 23:22:12 2021 +0200
+
+    refactor
+
+[33mcommit 527695a3526a5de57462ce5eedac998fe9324dfd[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 23:12:52 2021 +0200
+
+    scale motorcycle and vehicle on canvas
+
+[33mcommit c67e5e0a96a1a4107e6cd4fe7cd3180b9bd703a6[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 21:15:24 2021 +0200
+
+    center motorcycle view on canvas
+
+[33mcommit f5a0c1406dc29c94d38c852fd62fbbd2f7666682[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 18:45:51 2021 +0200
+
+    disasble cannon in game template
+
+[33mcommit 1d02eb8028b25a5d11fde3d649dd78df0f8dd93e[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 14:07:02 2021 +0200
+
+    set portrait screeen orientation
+
+[33mcommit a66ccc11541143e872eeecf073a8f63228f08359[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 13:50:31 2021 +0200
+
+    integrate template with exist code
+
+[33mcommit d6ab68e65934ec70d509cf4f6d9542206bc44dc5[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Mon Jul 19 13:25:38 2021 +0200
+
+    add CannonGame templete
+
+[33mcommit 6229c6722177f81bd2365a86056733346bead9e4[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 17 17:02:29 2021 +0200
+
+    surface and fragment view init
+
+[33mcommit 8acb7dac2b8e5e7a0318e195e43a81e419025f53[m
+Author: dccstcc <dccstcc@gmail.com>
+Date:   Sat Jul 17 16:10:37 2021 +0200
+
+    add surfaceView
+
+[33mcommit 72a616da0763fc82dbdec341d308560064809a43[m[33m ([m[1;32mscan2d_data_flow[m[33m)[m
+Author: root <root@Asus-ZenBook-Duo.localdomain>
+Date:   Sat Jul 17 15:57:45 2021 +0200
+
+    change development platform
+
+[33mcommit b20cd919a791203460f866df498ecbc2a017f25a[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 19:35:41 2021 +0200
+
+    read scan2d data from rest
+
+[33mcommit 084c77a33495c18dceb8c24054494c20ec6ecab3[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 18:19:53 2021 +0200
+
+    initial commit
+
+[33mcommit e07c2e1cef1db804307a04944f74cc956adc75c4[m[33m ([m[1;32mdata_flow[m[33m)[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 14:54:36 2021 +0200
+
+    refactor
+
+[33mcommit fcc43c93365df88218dda8d577f2913d048d2fea[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 14:37:52 2021 +0200
+
+    add comments
+
+[33mcommit 8f1d786a1c9943a23d29d086b6cb2b68b819ed74[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 14:04:43 2021 +0200
+
+    read distance by onclick button in activity
+
+[33mcommit de73f1e637f9bddef56df628ee4459fa9d1031b5[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 13:48:02 2021 +0200
+
+    create listener for response data
+
+[33mcommit 5d093bfa8c2a85ff9954b65a59b41f9fdd18c9e2[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Wed Jul 7 13:27:37 2021 +0200
+
+    read data flow in activity
+
+[33mcommit 499c18a9b7caeac01bf02160a71907a56f578c22[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 19:48:57 2021 +0200
+
+    refactor
+
+[33mcommit 87e00061c35df0dd4eabc2d72ff9b62d9a39ca5b[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 19:46:21 2021 +0200
+
+    refactor
+
+[33mcommit 0e215c7ee38b53a33f6792346bce929f2559a0d5[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 19:41:16 2021 +0200
+
+    receive broadcast data from service to activity
+
+[33mcommit 439bedc1870bbc09b41f747db3d2ae339e3141a5[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 12:52:59 2021 +0200
+
+    try to flow data between services and activities
+
+[33mcommit c8da9d1defe2ced238c52da7a93c12a130248050[m[33m ([m[1;32mmaster[m[33m)[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 08:55:20 2021 +0200
+
+    change callback return value
+
+[33mcommit 5eb7a995bc292f2c7c719b4ce7dc502e6f49074f[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Tue Jul 6 08:35:55 2021 +0200
+
+    add callback for distance read
+
+[33mcommit 53eab11732b9fdbb6f5c538f6094fecb3b543a5b[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 15:49:50 2021 +0200
+
+    rest distance read by hidden ip is proper
+
+[33mcommit 5fea79dd6ff894ec776c76b6f14bf5f7f335f242[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 15:24:58 2021 +0200
+
+    create read proper router ip implementation
+
+[33mcommit c5c385aa01017c15444a73f35cf9f9e87d5f78a2[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 14:34:46 2021 +0200
+
+    create findIp method with loo and ratio
+
+[33mcommit 9ae923b048f98417b811e59360ebb8a6f63dbe50[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 13:59:57 2021 +0200
+
+    refactor
+
+[33mcommit b10ed278a57eba0f699cc3bc81e4f6c38b7e7d3e[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 13:43:08 2021 +0200
+
+    eliminate RxJava requirements becouse clone() method was used
+
+[33mcommit 469226b8d33f10add62edba31c4f2f77d9c9ae04[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 13:13:15 2021 +0200
+
+    prepare call and enqueue for GET rest
+
+[33mcommit 79f9ffc31a49acaecf6bcd595672aeb6878a1c3e[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Mon Jul 5 12:42:34 2021 +0200
+
+    intoduction into RxJava
+
+[33mcommit f68871ea9bd3c512f5fb48db58e18db4bb5dd517[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 16:01:44 2021 +0200
+
+    construct initial IP address
+
+[33mcommit 7c795170c0abc430b976115f534f44af0b35b053[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 15:27:56 2021 +0200
+
+    Find 3rd quarter od ip address for Android WiFi router
+
+[33mcommit ba5a3e182c8ac1870b590604ee7d75e2e7c9a013[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 14:53:36 2021 +0200
+
+    change project catalogs structure
+
+[33mcommit d1a6f34abc71dcdde5c89066c86039a3a577ef01[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 14:37:59 2021 +0200
+
+    refactor
+
+[33mcommit cc1756e8eb8f0589a9c125c44ba5db58d811b436[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 14:34:49 2021 +0200
+
+    debug distance read
+
+[33mcommit 9974dc649a77f57736c9c17bcd0cfc8cc1425ca5[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Sat Jul 3 13:35:52 2021 +0200
+
+    configure rest for read a distance
+
+[33mcommit 48b48c8cc77c5015e7effb47cc69a6c8d11752de[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: dominiqxiqx <domste.domste@gmail.com>
+Date:   Fri Jul 2 17:55:21 2021 +0200
+
+    initial commit

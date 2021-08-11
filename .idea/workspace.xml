@@ -6,7 +6,6 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="distance" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -33,6 +32,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/gps/CLocation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/gps/IBaseGpsListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/IpAddressCtrl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tatus" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -41,13 +44,14 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/DbHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/DbHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/DbManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/DbManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/ReadRestDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/database/ReadRestDataService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestDistanceCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestDistanceCtrl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/TrafficView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/TrafficView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/services/RestDataSendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/services/RestDataSendService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/services/RestDistanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/services/RestDistanceService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,10 +302,10 @@
       <screen x="0" y="0" width="2048" height="824" />
     </state>
     <state x="751" y="158" key="#Console/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625215192334" />
-    <state x="519" y="41" key="#com.intellij.ide.util.MemberChooser" timestamp="1628592515657">
+    <state x="519" y="41" key="#com.intellij.ide.util.MemberChooser" timestamp="1628680426031">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state x="519" y="41" key="#com.intellij.ide.util.MemberChooser/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628592515657" />
+    <state x="519" y="41" key="#com.intellij.ide.util.MemberChooser/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628680426031" />
     <state x="830" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625553608681" />
     <state x="424" y="206" width="432" height="267" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1627655307152">
       <screen x="0" y="0" width="1280" height="672" />
@@ -336,25 +340,25 @@
     </state>
     <state x="212" y="156" key="FileChooserDialogImpl/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1626802176909" />
     <state x="339" y="218" key="FileChooserDialogImpl/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625246569030" />
-    <state width="1237" height="129" key="GridCell.Tab.0.bottom" timestamp="1628596911035">
+    <state width="1237" height="129" key="GridCell.Tab.0.bottom" timestamp="1628681780520">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="129" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628596911035" />
+    <state width="1237" height="129" key="GridCell.Tab.0.bottom/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628681780520" />
     <state width="2005" height="168" key="GridCell.Tab.0.bottom/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="129" key="GridCell.Tab.0.center" timestamp="1628596911035">
+    <state width="1237" height="129" key="GridCell.Tab.0.center" timestamp="1628681780520">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="129" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628596911035" />
+    <state width="1237" height="129" key="GridCell.Tab.0.center/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628681780520" />
     <state width="2005" height="168" key="GridCell.Tab.0.center/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
-    <state width="1237" height="129" key="GridCell.Tab.0.left" timestamp="1628596911035">
+    <state width="1237" height="129" key="GridCell.Tab.0.left" timestamp="1628681780520">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="129" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628596911035" />
+    <state width="1237" height="129" key="GridCell.Tab.0.left/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628681780520" />
     <state width="2005" height="168" key="GridCell.Tab.0.left/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251411" />
-    <state width="1237" height="129" key="GridCell.Tab.0.right" timestamp="1628596911035">
+    <state width="1237" height="129" key="GridCell.Tab.0.right" timestamp="1628681780520">
       <screen x="0" y="0" width="1280" height="672" />
     </state>
-    <state width="1237" height="129" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628596911035" />
+    <state width="1237" height="129" key="GridCell.Tab.0.right/0.0.1280.672/0.1620.1920.515@0.0.1280.672" timestamp="1628681780520" />
     <state width="2005" height="168" key="GridCell.Tab.0.right/0.0.2048.824/2560.0.2048.824@0.0.2048.824" timestamp="1625679251412" />
     <state width="1237" height="161" key="GridCell.Tab.1.bottom" timestamp="1628103058057">
       <screen x="0" y="0" width="1280" height="672" />

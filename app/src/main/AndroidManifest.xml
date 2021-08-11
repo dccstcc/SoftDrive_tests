@@ -34,9 +34,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EnableRouterActivity" />
-        <activity android:name=".RestCtrlActivity"
-            android:parentActivityName=".view.MainViewActivity"/>
+        <activity android:name=".RestCtrlActivity" />
+<!--            android:parentActivityName=".view.MainViewActivity"/>-->
 <!--        <activity android:name=".database.ReadRestData" />-->
+
         <activity
             android:name=".view.MainViewActivity"
             android:screenOrientation="portrait" />
