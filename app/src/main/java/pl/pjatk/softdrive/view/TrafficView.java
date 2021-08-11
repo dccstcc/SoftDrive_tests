@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -213,7 +214,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     // called repeatedly by the CannonThread to update game elements
-    private void updatePositions(double elapsedTimeMS) {
+    private void updatePositions(double elapsedTimeMS) throws ExecutionException, InterruptedException {
 
 //        executor.execute(new Runnable() {
 //            @Override
@@ -264,7 +265,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // draws the game to the given Canvas
-    public void drawGameElements(Canvas canvas) throws InterruptedException {
+    public void drawGameElements(Canvas canvas) throws InterruptedException, ExecutionException {
         // clear the background
 
         int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
@@ -508,7 +509,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 //                    }
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         } finally {
                             // display canvas's contents on the CannonView

@@ -7,9 +7,19 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 public class DbManager {
 
     public static final long MAX_ROW_COUNT = 200;
+
+    ExecutorService ex;
 
     public DbManager(Context context) {
         this.dbHelper = new DbHelper(context);
@@ -17,6 +27,7 @@ public class DbManager {
         distance = 0;
         scan2d = "null";
 
+        ex = Executors.newCachedThreadPool();
     }
 
     DbHelper dbHelper;
@@ -40,22 +51,25 @@ public class DbManager {
         this.scan2d = scan2d;
     }
 
-    public long dbCommit() {
-        // Gets the data repository in write mode
-        SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
+    public boolean dbCommit() throws ExecutionException, InterruptedException {
+
+        Callable<Long> ctask = () -> {
+
+            // Gets the data repository in write mode
+            SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
 
 
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
-        //values.put(CreateTable.TableSensorData.COLUMN_NAME_SCAN_2D, scan2d);
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
+            //values.put(CreateTable.TableSensorData.COLUMN_NAME_SCAN_2D, scan2d);
 
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
 
-        // clear database for more efficiency
-        if(getRowCount(dbWrite) > MAX_ROW_COUNT) {
-            clearDb(dbWrite);
+            // clear database for more efficiency
+            if (getRowCount(dbWrite) > MAX_ROW_COUNT) {
+                clearDb(dbWrite);
 //            ContentValues valuesDel = new ContentValues();
 //            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, 2000);
 //            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, valuesDel);
@@ -63,15 +77,38 @@ public class DbManager {
 //            ContentValues v = new ContentValues();
 //            v.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
 //            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, v);
+            }
+
+            dbWrite.close();
+
+            return newRowId;
+
+        };
+
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+
+        ScheduledFuture<Long> sf = ses.schedule(ctask, 250, TimeUnit.MILLISECONDS);
+
+//        boolean ret = false;
+//        if (sf.isDone()) {
+//            if(sf.get() > 0) {
+//                ret = true;
+//            }
+//        }
+//        return ret;
+
+        int count = 0;
+        while(! sf.isDone()) {
+            Thread.sleep(100);
+            ++count;
+            if(count>20) return false;
         }
 
-        dbWrite.close();
-
-        return newRowId;
+        return true;
     }
 
     private void clearDb(SQLiteDatabase dbWritable) {
-        dbWritable.execSQL("delete from "+ CreateTable.TableSensorData.TABLE_NAME);
+        dbWritable.execSQL("delete from " + CreateTable.TableSensorData.TABLE_NAME);
     }
 
     public long getRowCount(SQLiteDatabase dbWritable) {
@@ -80,39 +117,58 @@ public class DbManager {
     }
 
 
-    public int getDbDistance() {
+    public int getDbDistance() throws ExecutionException, InterruptedException {
 
-        SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
 
-        String[] projection = {
-                CreateTable.TableSensorData.COLUMN_NAME_DISTANCE
+        Callable<Integer> ctask = () -> {
+
+            SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
+
+            String[] projection = {
+                    CreateTable.TableSensorData.COLUMN_NAME_DISTANCE
+            };
+
+            String selection = CreateTable.TableSensorData.COLUMN_NAME_DISTANCE + " = ?";
+            String[] selectionArgs = {"120"};
+
+            //String sortOrder = CreateTable.TableSensorData._ID + " DESC";
+            Cursor cursor = dbRead.query(
+                    CreateTable.TableSensorData.TABLE_NAME,
+                    projection,             // The array of columns to return (pass null to get all)
+                    null,              // The columns for the WHERE clause
+                    null,          // The values for the WHERE clause
+                    null,           // don't group the rows
+                    null,            // don't filter by row groups
+                    null
+            );
+
+            int distance = -2;
+
+            try {
+                cursor.moveToLast();
+                distance = cursor.getInt(0);
+                cursor.close();
+            } catch (CursorIndexOutOfBoundsException e) {
+                distance = -3;
+            }
+
+            dbRead.close();
+
+            return distance;
+
         };
 
-        String selection = CreateTable.TableSensorData.COLUMN_NAME_DISTANCE + " = ?";
-        String[] selectionArgs = { "120" };
+        ScheduledFuture<Integer> sf = ses.schedule(ctask, 250, TimeUnit.MILLISECONDS);
 
-        //String sortOrder = CreateTable.TableSensorData._ID + " DESC";
-        Cursor cursor = dbRead.query(
-                CreateTable.TableSensorData.TABLE_NAME,
-                projection,             // The array of columns to return (pass null to get all)
-                null,              // The columns for the WHERE clause
-                null,          // The values for the WHERE clause
-                null,           // don't group the rows
-                null,            // don't filter by row groups
-                 null
-        );
-
-        try{
-            cursor.moveToLast();
-            int distance = cursor.getInt(0);
-            cursor.close();
-        } catch(CursorIndexOutOfBoundsException e) {
-
+        int count = 0;
+        while(! sf.isDone()) {
+            Thread.sleep(100);
+            ++count;
+            if(count>20) return -4;
         }
 
-        dbRead.close();
+        return sf.get();
 
-        return distance;
     }
-
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
@@ -96,7 +97,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                         IFromRestCallback.getDistanceRouterIp(fourthIp);
                         try {
                             IFromRestCallback.getDistanceResponse(response.body());
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
 
@@ -115,7 +116,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
 
                 try {
                     IFromRestCallback.getDistanceResponse(response.body());
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
 

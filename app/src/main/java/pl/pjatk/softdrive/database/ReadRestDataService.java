@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -71,7 +72,7 @@ public class ReadRestDataService extends Worker {
                 }
 
                 @Override
-                public void getDistanceResponse(Distance value) {
+                public void getDistanceResponse(Distance value) throws ExecutionException, InterruptedException {
 
                     distance = value.getDistance();
 

@@ -5,6 +5,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,12 +68,12 @@ public class IpAddressCtrl extends Application {
                                     public void getScan2dResponse(Float[] value) {}
 
                                     @Override
-                                    public void getDistanceResponse(Distance value) throws InterruptedException {
+                                    public void getDistanceResponse(Distance value) throws InterruptedException, ExecutionException {
 
                                         System.out.print("Distance to write: " + value.getDistance() + "\n");
                                         db.setDistance(value.getDistance());
                                         db.dbCommit();
-                                        Thread.sleep(1);
+//                                        while(! db.dbCommit()) Thread.sleep(150);
                                         System.out.print("Distance wrote.\n");
 
                                     }
