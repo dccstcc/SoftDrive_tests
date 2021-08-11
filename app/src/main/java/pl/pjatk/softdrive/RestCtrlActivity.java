@@ -18,6 +18,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import pl.pjatk.softdrive.rest.controllers.IpAddressCtrl;
 import pl.pjatk.softdrive.rest.services.RestScan2dService;
 import pl.pjatk.softdrive.view.MainViewActivity;
@@ -56,9 +59,28 @@ public class RestCtrlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                new IpAddressCtrl().findRtrIpB4(1);
-                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
-                startActivity(intent);
+                ExecutorService e1 = Executors.newCachedThreadPool();
+                e1.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        new IpAddressCtrl().findRtrIpB4(1);
+                    }
+                });
+//                new IpAddressCtrl().findRtrIpB4(1);
+
+                ExecutorService e2 = Executors.newCachedThreadPool();
+                e2.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(7000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
             }
         });

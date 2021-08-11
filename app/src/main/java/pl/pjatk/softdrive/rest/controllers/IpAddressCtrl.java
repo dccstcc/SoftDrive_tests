@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import pl.pjatk.softdrive.database.DbManager;
 import pl.pjatk.softdrive.rest.IFromRestCallback;
@@ -33,8 +35,9 @@ public class IpAddressCtrl extends Application {
 
         db = new DbManager(this);
 
+        isDone = false;
 
-        for (; endIp < 255; ) {
+        for (; endIp < 255 || ! isDone; ) {
 
             new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
 
@@ -50,13 +53,13 @@ public class IpAddressCtrl extends Application {
                     byteIp4 = partIpAddress;
                     executorService.shutdownNow();
 
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    ScheduledExecutorService schedExecutor = Executors.newScheduledThreadPool(3);
 
-                    executor.execute(new Runnable() {
+                    Runnable rtask = new Runnable() {
                         @Override
                         public void run() {
 
-                            do {
+//                            do {
 
                                 new RestDistanceCtrl(null, partIpAddress, partIpAddress, new IFromRestCallback() {
 
@@ -83,17 +86,19 @@ public class IpAddressCtrl extends Application {
                                 }).prepareCall().call();
 
 
-                                try{
-                                    Thread.sleep(250);
-                                } catch(InterruptedException exc) {
-                                    exc.printStackTrace();
-                                }
+//                                try{
+//                                    Thread.sleep(250);
+//                                } catch(InterruptedException exc) {
+//                                    exc.printStackTrace();
+//                                }
 
-                            } while(true);
+//                            } while(true);
 
                         }
-                    });
+                    };
 
+                    schedExecutor.scheduleAtFixedRate(rtask, 0, 250, TimeUnit.MILLISECONDS);
+                    isDone = true;
 
                 }
 

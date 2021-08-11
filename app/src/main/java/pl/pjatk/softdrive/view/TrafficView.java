@@ -184,23 +184,23 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // reset all the screen elements and start a new game
     public void newGame() {
 
-        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
-        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
-
-        int x = displayWidth / 2 - width / 2;
-
-        forwardVehicle = new ForwardVehicle(
-                getContext(),
-                this,
-                Color.GREEN,
-                TARGET_SOUND_ID,
-                x,
-                10,
-                width,
-                height,
-                0,
-                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
-        );
+//        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
+//        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
+//
+//        int x = displayWidth / 2 - width / 2;
+//
+//        forwardVehicle = new ForwardVehicle(
+//                getContext(),
+//                this,
+//                Color.GREEN,
+//                TARGET_SOUND_ID,
+//                x,
+//                10,
+//                width,
+//                height,
+//                0,
+//                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
+//        );
 
 
         timeLeft = 10; // start the countdown at 10 seconds
@@ -223,11 +223,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                 System.out.println("distance from view: " + forwardDistance);
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
 
 //            }
 //        });
@@ -246,6 +246,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getContext().startActivity(i);
+
+
     }
 
     public void drawText(Canvas canvas, String text) {
@@ -265,6 +267,23 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public void drawGameElements(Canvas canvas) throws InterruptedException {
         // clear the background
 
+        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
+        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
+
+        int x = displayWidth / 2 - width / 2;
+
+        forwardVehicle = new ForwardVehicle(
+                getContext(),
+                this,
+                Color.GREEN,
+                TARGET_SOUND_ID,
+                x,
+                10,
+                width,
+                height,
+                0,
+                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
+        );
 
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
                 backgroundPaint);

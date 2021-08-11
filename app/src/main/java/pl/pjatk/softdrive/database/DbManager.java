@@ -65,6 +65,8 @@ public class DbManager {
 //            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, v);
         }
 
+        dbWrite.close();
+
         return newRowId;
     }
 
@@ -108,7 +110,7 @@ public class DbManager {
 
         }
 
-
+        dbRead.close();
 
         return distance;
     }
