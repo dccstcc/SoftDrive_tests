@@ -55,7 +55,11 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+
                 new IpAddressCtrl().findRtrIpB4(1);
+                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+                startActivity(intent);
+
             }
         });
 

@@ -27,7 +27,10 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.HashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import pl.pjatk.softdrive.Exit;
 import pl.pjatk.softdrive.R;
@@ -84,7 +87,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
 
     private DbManager db;
-    private Executor executor;
+    ExecutorService executor;
     int forwardDistance = 0;
 
     int motorHeight = 0;
@@ -97,7 +100,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     Paint tooFastAlarmPaint;
 
-
+    ScheduledExecutorService schedExecutor;
 
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -212,9 +215,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     // called repeatedly by the CannonThread to update game elements
     private void updatePositions(double elapsedTimeMS) {
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
 
                 forwardDistance = db.getDbDistance();
 
@@ -226,8 +229,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     e.printStackTrace();
                 }
 
-            }
-        });
+//            }
+//        });
 
     }
 
@@ -259,7 +262,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // draws the game to the given Canvas
-    public void drawGameElements(Canvas canvas) {
+    public void drawGameElements(Canvas canvas) throws InterruptedException {
         // clear the background
 
 
@@ -278,6 +281,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         initForwardVehicle();
 
         forwardDistance = db.getDbDistance();
+
+        //Thread.sleep(150);
 
         System.out.println("distance from view: " + forwardDistance);
         canvas.drawText("dist: " + forwardDistance, 500, 100, textPaint);
@@ -393,41 +398,44 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (!dialogIsDisplayed) {
+//        if (!dialogIsDisplayed) {
             newGame(); // set up and start a new game
             cannonThread = new CannonThread(holder); // create thread
-            cannonThread.setRunning(true); // start game running
+            //cannonThread.setRunning(true); // start game running
             cannonThread.start(); // start the game loop thread
-        }
+        //}
     }
 
     // called when the surface is destroyed
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // ensure that thread terminates properly
-        boolean retry = true;
-        cannonThread.setRunning(false); // terminate cannonThread
-
-        while (retry) {
-            try {
-                cannonThread.join(); // wait for cannonThread to finish
-                retry = false;
-            } catch (InterruptedException e) {
-                Log.e(TAG, "Thread interrupted", e);
-            }
-        }
+        executor.shutdownNow();
+        schedExecutor.shutdownNow();
+//        // ensure that thread terminates properly
+//        boolean retry = true;
+//        cannonThread.setRunning(false); // terminate cannonThread
+//
+//        while (retry) {
+//            try {
+//                cannonThread.join(); // wait for cannonThread to finish
+//                retry = false;
+//            } catch (InterruptedException e) {
+//                Log.e(TAG, "Thread interrupted", e);
+//            }
+//        }
     }
 
     // called when the user touches the screen in this activity
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-
+        executor.shutdownNow();
+        schedExecutor.shutdownNow();
         ExitApp(e);
         return true;
     }
 
     // Thread subclass to control the game loop
-    private class CannonThread extends Thread implements IBaseGpsListener {
+    private class CannonThread implements IBaseGpsListener {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
@@ -435,13 +443,17 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         float nCurrentSpeed;
 
 
+
         // initializes the surface holder
         @RequiresApi(api = Build.VERSION_CODES.O)
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
-            setName("CannonThread");
+            //setName("CannonThread");
 
             initCLocation(null);
+
+            executor = Executors.newCachedThreadPool();
+            schedExecutor = Executors.newScheduledThreadPool(1);
 
         }
 
@@ -450,39 +462,82 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             threadIsRunning = running;
         }
 
+        public void start() {
 
-        // controls the game loop
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void run() {
-            Canvas canvas = null; // used for drawing
+            Runnable rtask = new Runnable() {
 
-            int clock = 1000;
+                @Override
+                public void run() {
 
-            while (threadIsRunning) {
+                    Canvas canvas = null; // used for drawing
 
-                try {
-                    // get Canvas for exclusive drawing from this thread
-                    canvas = surfaceHolder.lockCanvas(null);
+                    int clock = 1000;
 
-                    // lock the surfaceHolder for drawing
+//                    while (true) {
+
+                        try {
+                            // get Canvas for exclusive drawing from this thread
+                            canvas = surfaceHolder.lockCanvas(null);
+
+                            // lock the surfaceHolder for drawing
 //                    synchronized(surfaceHolder) {
-                    updatePositions(++clock); // update game state
-                    drawGameElements(canvas); // draw using the canvas
-                    drawText(canvas, String.valueOf(nCurrentSpeed));
-                    setSpeed(nCurrentSpeed);
-                    //Thread.sleep(2000);
+                            drawGameElements(canvas); // draw using the canvas
+                            updatePositions(++clock); // update game state
+                            Thread.sleep(1);
+                            drawText(canvas, String.valueOf(nCurrentSpeed));
+                            setSpeed(nCurrentSpeed);
 //                    }
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
-                } finally {
-                    // display canvas's contents on the CannonView
-                    // and enable other threads to use the Canvas
-                    if (canvas != null)
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                }
-            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            // display canvas's contents on the CannonView
+                            // and enable other threads to use the Canvas
+                            if (canvas != null)
+                                surfaceHolder.unlockCanvasAndPost(canvas);
+                        }
+                    }
+
+//                }
+            };
+
+            schedExecutor.schedule(rtask, 250, TimeUnit.MILLISECONDS);
+
         }
+
+        // controls the game loop
+//        @RequiresApi(api = Build.VERSION_CODES.O)
+//        @Override
+//        public void run() {
+//            Canvas canvas = null; // used for drawing
+//
+//            int clock = 1000;
+//
+//            while (threadIsRunning) {
+//
+//                try {
+//                    // get Canvas for exclusive drawing from this thread
+//                    canvas = surfaceHolder.lockCanvas(null);
+//
+//                    // lock the surfaceHolder for drawing
+////                    synchronized(surfaceHolder) {
+//                    updatePositions(++clock); // update game state
+//                    drawGameElements(canvas); // draw using the canvas
+//                    drawText(canvas, String.valueOf(nCurrentSpeed));
+//                    setSpeed(nCurrentSpeed);
+//                    //Thread.sleep(2000);
+////                    }
+////                } catch (InterruptedException e) {
+////                    e.printStackTrace();
+//                } finally {
+//                    // display canvas's contents on the CannonView
+//                    // and enable other threads to use the Canvas
+//                    if (canvas != null)
+//                        surfaceHolder.unlockCanvasAndPost(canvas);
+//                }
+//            }
+//        }
 
         private void initCLocation(Executor executor) {
 
@@ -524,8 +579,20 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
             Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
 
-            myGpsLocation = new CLocation(location, true);
-            nCurrentSpeed = updateSpeed(executor, myGpsLocation);
+            executor = Executors.newSingleThreadExecutor();
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    myGpsLocation = new CLocation(location, true);
+                    nCurrentSpeed = updateSpeed(executor, myGpsLocation);
+
+                }
+            });
+
+            executor.shutdown();
+
 
         }
 

@@ -48,7 +48,7 @@ public class DbManager {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
-        values.put(CreateTable.TableSensorData.COLUMN_NAME_SCAN_2D, scan2d);
+        //values.put(CreateTable.TableSensorData.COLUMN_NAME_SCAN_2D, scan2d);
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
@@ -56,13 +56,13 @@ public class DbManager {
         // clear database for more efficiency
         if(getRowCount(dbWrite) > MAX_ROW_COUNT) {
             clearDb(dbWrite);
-            ContentValues valuesDel = new ContentValues();
-            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, 2000);
-            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, valuesDel);
-            setDistance(1);
-            ContentValues v = new ContentValues();
-            v.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
-            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, v);
+//            ContentValues valuesDel = new ContentValues();
+//            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, 2000);
+//            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, valuesDel);
+//            setDistance(1);
+//            ContentValues v = new ContentValues();
+//            v.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, distance);
+//            dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, v);
         }
 
         return newRowId;

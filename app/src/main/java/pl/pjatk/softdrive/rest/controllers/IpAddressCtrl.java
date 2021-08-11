@@ -1,5 +1,6 @@
 package pl.pjatk.softdrive.rest.controllers;
 
+import android.app.Application;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -12,17 +13,14 @@ import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Distance;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class IpAddressCtrl {
+public class IpAddressCtrl extends Application {
 
     private int byteIp4;
     boolean isDone;
     DbManager db;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public IpAddressCtrl() {
-        //super();
-        //db = new DbManager(getApplicationContext());
-    }
+    public IpAddressCtrl() {}
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void findRtrIpB4(int ratio) {
@@ -33,20 +31,18 @@ public class IpAddressCtrl {
         int startIp = 1;
         int endIp = startIp + ratio - 1;
 
+        db = new DbManager(this);
+
+
         for (; endIp < 255; ) {
 
             new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
 
                 @Override
-                public void getScan2dResponse(Float[] value) {
-
-                }
+                public void getScan2dResponse(Float[] value) {}
 
                 @Override
-                public void getDistanceResponse(Distance value) {
-                    System.out.print("distanceresp " + value.getDistance());
-
-                }
+                public void getDistanceResponse(Distance value) {}
 
                 @Override
                 public void getDistanceRouterIp(int partIpAddress) {
@@ -55,7 +51,6 @@ public class IpAddressCtrl {
                     executorService.shutdownNow();
 
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    //db = new DbManager();
 
                     executor.execute(new Runnable() {
                         @Override
@@ -69,22 +64,18 @@ public class IpAddressCtrl {
                                     public void getScan2dResponse(Float[] value) {}
 
                                     @Override
-                                    public void getDistanceResponse(Distance value) {
+                                    public void getDistanceResponse(Distance value) throws InterruptedException {
 
-                                        //db = new DbManager();
-
-                                        System.out.print("distancebefore  " + value.getDistance());
-//                                db.setDistance(value.getDistance());
-//                                db.dbCommit();
-                                        System.out.print("distancedb  ");
+                                        System.out.print("Distance to write: " + value.getDistance() + "\n");
+                                        db.setDistance(value.getDistance());
+                                        db.dbCommit();
+                                        Thread.sleep(1);
+                                        System.out.print("Distance wrote.\n");
 
                                     }
 
                                     @Override
-                                    public void getDistanceRouterIp(int partIpAddress) {
-                                        System.out.print("distancertr ");
-
-                                    }
+                                    public void getDistanceRouterIp(int partIpAddress) {}
 
                                     @Override
                                     public void getScan2dRouterIp(int partIpAddress) {}
@@ -107,9 +98,7 @@ public class IpAddressCtrl {
                 }
 
                 @Override
-                public void getScan2dRouterIp(int partIpAddress) {
-
-                }
+                public void getScan2dRouterIp(int partIpAddress) {}
 
             }).prepareCall().call();
 
