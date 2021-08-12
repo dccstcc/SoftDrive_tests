@@ -107,6 +107,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     int counterplus;
 
+    int speedRegulator;
+
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TrafficView(Context context, AttributeSet attrs) {
@@ -155,6 +157,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         tooFastAlarmPaint.setColor(Color.RED);
 
         counterplus = 0;
+
+        speedRegulator = 1;
 
     }
 
@@ -259,7 +263,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
 
-        forwardDistance = db.getDbDistance();
+        speedRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : speedRegulator;
+//        forwardDistance = db.getDbDistance();
+//        if(forwardDistance > 0) {
+//            speedRegulator = forwardDistance;
+//        }
         //forwardDistance = ++counterplus;
         //Thread.sleep(150);
 
@@ -373,7 +381,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             public void handleMessage(Message message) {
                 newGame(); // set up and start a new game
                 hideSystemBars();
-                TrafficView trvi = new TrafficView(getContext(), null);
+                //TrafficView trvi = new TrafficView(getContext(), null);
                 cannonThread = new CannonThread(holder); // create thread
                 cannonThread.start(); // start the game loop thread
             }
