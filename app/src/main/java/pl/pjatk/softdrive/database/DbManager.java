@@ -148,10 +148,13 @@ public class DbManager extends DbHelper{
             int distance = -2;
 
             try {
+                int count = 0;
                 while(! cursor.moveToLast()) {
-                    distance = cursor.getInt(cursor.getColumnIndex(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE));
                     Thread.sleep(50);
+                    count++;
+                    if(count>20) return -4;
                 }
+                distance = cursor.getInt(cursor.getColumnIndex(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE));
                 cursor.close();
             } catch (CursorIndexOutOfBoundsException e) {
                 distance = -3;
