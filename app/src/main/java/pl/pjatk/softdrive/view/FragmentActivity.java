@@ -1,6 +1,5 @@
 package pl.pjatk.softdrive.view;
 
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.concurrent.ExecutorService;
+
 import pl.pjatk.softdrive.R;
 
 public class FragmentActivity extends Fragment {
     private TrafficView trafficView;    // custom view to display the game
+
+    ExecutorService executorService;
+
+    View viewRet;
 
     // called when Fragment's view needs to be created
     @Override
@@ -26,6 +31,14 @@ public class FragmentActivity extends Fragment {
         // get a reference to the TrafficView
         trafficView = (TrafficView) view.findViewById(R.id.trafficView);
         return view;
+
+//        // inflate the fragment_main.xml layout
+//        View view =
+//                inflater.inflate(R.layout.fragment_main, container, false);
+//
+//        // get a reference to the TrafficView
+//        trafficView = (TrafficView) view.findViewById(R.id.trafficView);
+//        return view;
     }
 
     // set up volume control once Activity is created
@@ -34,7 +47,7 @@ public class FragmentActivity extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // allow volume buttons to set game volume
-        getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        //getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
     // when MainActivity is paused, terminate the game

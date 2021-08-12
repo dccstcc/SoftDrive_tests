@@ -14,6 +14,9 @@ import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -103,6 +106,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     ScheduledExecutorService schedExecutor;
 
+    int counterplus;
+
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TrafficView(Context context, AttributeSet attrs) {
@@ -149,6 +154,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         //speedTable = initSpeedTable();
         tooFastAlarmPaint = new Paint();
         tooFastAlarmPaint.setColor(Color.RED);
+
+        counterplus = 0;
 
     }
 
@@ -209,8 +216,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         shotsFired = 0; // set the initial number of shots fired
         totalElapsedTime = 0.0; // set the time elapsed to zero
 
+//        counterplus = 0;
 
-        hideSystemBars();
+        //hideSystemBars();
+
+
     }
 
     // called repeatedly by the CannonThread to update game elements
@@ -275,7 +285,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         forwardVehicle = new ForwardVehicle(
                 getContext(),
-                this,
+                TrafficView.this,
                 Color.GREEN,
                 TARGET_SOUND_ID,
                 x,
@@ -300,8 +310,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         initForwardVehicle();
 
-        forwardDistance = db.getDbDistance();
-
+        //forwardDistance = db.getDbDistance();
+        forwardDistance = ++counterplus;
         //Thread.sleep(150);
 
         System.out.println("distance from view: " + forwardDistance);
@@ -322,6 +332,17 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
 
         forwardVehicle.draw(canvas);
+
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//            }
+//        });
+
+
+
     }
 
     public boolean isTooFast(float speed, int distance) {
@@ -418,11 +439,37 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Handler mHandler;
 //        if (!dialogIsDisplayed) {
-            newGame(); // set up and start a new game
-            cannonThread = new CannonThread(holder); // create thread
-            //cannonThread.setRunning(true); // start game running
-            cannonThread.start(); // start the game loop thread
+
+
+
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                // This is where you do your work in the UI thread.
+                // Your worker tells you in the message what to do.
+                newGame(); // set up and start a new game
+                cannonThread = new CannonThread(holder); // create thread
+                //cannonThread.setRunning(true); // start game running
+                cannonThread.start(); // start the game loop thread
+            }
+        };
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+//                    newGame(); // set up and start a new game
+//                    cannonThread = new CannonThread(holder); // create thread
+//                    //cannonThread.setRunning(true); // start game running
+//                    cannonThread.start(); // start the game loop thread
+
+                Message message = mHandler.obtainMessage(1, "UI handle");
+                message.sendToTarget();
+            }
+        });
+
         //}
     }
 
@@ -617,24 +664,16 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         @Override
-        public void onProviderDisabled(String provider) {
-
-        }
+        public void onProviderDisabled(String provider) {}
 
         @Override
-        public void onProviderEnabled(String provider) {
-
-        }
+        public void onProviderEnabled(String provider) {}
 
         @Override
-        public void onGpsStatusChanged(int event) {
-
-        }
+        public void onGpsStatusChanged(int event) {}
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 
     // hide system bars and app bar
@@ -647,6 +686,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                             View.SYSTEM_UI_FLAG_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_IMMERSIVE);
+
     }
 }
 
