@@ -30,7 +30,6 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -412,6 +411,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
+        ExecutorService es;
         CLocation myGpsLocation;
         float nCurrentSpeed;
 
@@ -421,11 +421,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             surfaceHolder = holder;
             //setName("CannonThread");
 
-            initCLocation(null);
+            initCLocation();
 
             executor = Executors.newCachedThreadPool();
             schedExecutor = Executors.newScheduledThreadPool(5);
-
+            es = Executors.newCachedThreadPool();
         }
 
         // changes running state
@@ -478,7 +478,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 
-        private void initCLocation(Executor executor) {
+        private void initCLocation() {
 
                     LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                     if (ActivityCompat.checkSelfPermission(getContext(),
@@ -495,7 +495,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        private float updateSpeed(Executor executor, CLocation location) {
+        private float updateSpeed(CLocation location) {
 
                     nCurrentSpeed = 9999;
 
@@ -515,22 +515,22 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onLocationChanged(Location location) {
-            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
-            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
 
-            executor = Executors.newSingleThreadExecutor();
+            es = Executors.newCachedThreadPool();
 
-            executor.execute(new Runnable() {
+            es.execute(new Runnable() {
                 @Override
                 public void run() {
+                    Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+                    Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
 
                     myGpsLocation = new CLocation(location, true);
-                    nCurrentSpeed = updateSpeed(executor, myGpsLocation);
+                    nCurrentSpeed = updateSpeed(myGpsLocation);
 
                 }
             });
 
-            executor.shutdown();
+            es.shutdown();
 
 
         }
