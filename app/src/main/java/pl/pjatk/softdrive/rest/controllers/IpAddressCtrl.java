@@ -22,6 +22,16 @@ public class IpAddressCtrl extends Application {
     boolean isDone;
     DbManager db;
 
+    private static IpAddressCtrl singleton;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        singleton = this;
+    }
+
+    public static synchronized IpAddressCtrl getInstance() {return singleton;}
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public IpAddressCtrl() {}
 
@@ -69,6 +79,8 @@ public class IpAddressCtrl extends Application {
 
                                     @Override
                                     public void getDistanceResponse(Distance value) throws InterruptedException, ExecutionException {
+
+                                        db = new DbManager(getInstance());
 
                                         System.out.print("Distance to write: " + value.getDistance() + "\n");
                                         db.setDistance(value.getDistance());

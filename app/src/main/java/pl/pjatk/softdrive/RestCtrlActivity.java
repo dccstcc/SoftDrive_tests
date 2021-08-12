@@ -59,6 +59,8 @@ public class RestCtrlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //new DbManager(RestCtrlActivity.this)
+
                 ExecutorService e1 = Executors.newCachedThreadPool();
                 e1.execute(new Runnable() {
                     @Override

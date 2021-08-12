@@ -260,8 +260,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
         motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
 
-        //forwardDistance = db.getDbDistance();
-        forwardDistance = ++counterplus;
+        forwardDistance = db.getDbDistance();
+        //forwardDistance = ++counterplus;
         //Thread.sleep(150);
 
         System.out.println("distance from view: " + forwardDistance);
