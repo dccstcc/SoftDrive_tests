@@ -10,7 +10,6 @@ public interface IFromRestCallback {
     void getScan2dResponse(Float[] value);
     void getScan2dRouterIp(int partIpAddress);
     void getDistanceResponse(Distance value) throws InterruptedException, ExecutionException;
-//    void getDistanceRouterIp(int partIpAddress);
     void getDistanceRouterIp(int partIpAddress);
 
 }

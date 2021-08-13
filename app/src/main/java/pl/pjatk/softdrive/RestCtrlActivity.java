@@ -1,8 +1,6 @@
 package pl.pjatk.softdrive;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,16 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pl.pjatk.softdrive.rest.controllers.IpAddressCtrl;
-import pl.pjatk.softdrive.rest.services.RestScan2dService;
 import pl.pjatk.softdrive.view.MainViewActivity;
+
+//import pl.pjatk.softdrive.rest.services.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
 
@@ -97,18 +93,18 @@ public class RestCtrlActivity extends AppCompatActivity {
 //                        .getInstance(getApplicationContext())
 //                        .enqueue(distanceWorkRequest);
 
-                WorkRequest scan2dWorkRequest =
-                        new OneTimeWorkRequest.Builder(RestScan2dService.class).build();
-                WorkManager
-                        .getInstance(getApplicationContext())
-                        .enqueue(scan2dWorkRequest);
-
-
-                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(RestCtrlActivity.this);
-                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
-                taskStackBuilder.addNextIntentWithParentStack(intent);
-                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                taskStackBuilder.startActivities();
+//                WorkRequest scan2dWorkRequest =
+//                        new OneTimeWorkRequest.Builder(RestScan2dService.class).build();
+//                WorkManager
+//                        .getInstance(getApplicationContext())
+//                        .enqueue(scan2dWorkRequest);
+//
+//
+//                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(RestCtrlActivity.this);
+//                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+//                taskStackBuilder.addNextIntentWithParentStack(intent);
+//                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//                taskStackBuilder.startActivities();
 
             }
         });

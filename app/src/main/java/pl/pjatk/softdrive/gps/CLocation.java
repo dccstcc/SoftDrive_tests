@@ -12,11 +12,9 @@ public class CLocation extends Location {
     }
 
     public CLocation(Location location, boolean bUseMetricUnits) {
-        // TODO Auto-generated constructor stub
         super(location);
         this.bUseMetricUnits = bUseMetricUnits;
     }
-
 
     public boolean getUseMetricUnits()
     {
@@ -30,7 +28,6 @@ public class CLocation extends Location {
 
     @Override
     public float distanceTo(Location dest) {
-        // TODO Auto-generated method stub
         float nDistance = super.distanceTo(dest);
         if(!this.getUseMetricUnits())
         {
@@ -42,7 +39,6 @@ public class CLocation extends Location {
 
     @Override
     public float getAccuracy() {
-        // TODO Auto-generated method stub
         float nAccuracy = super.getAccuracy();
         if(!this.getUseMetricUnits())
         {
@@ -54,7 +50,6 @@ public class CLocation extends Location {
 
     @Override
     public double getAltitude() {
-        // TODO Auto-generated method stub
         double nAltitude = super.getAltitude();
         if(!this.getUseMetricUnits())
         {
@@ -66,8 +61,6 @@ public class CLocation extends Location {
 
     @Override
     public float getSpeed() {
-        // TODO Auto-generated method stub
-//        float nSpeed = super.getSpeed() * 3.6f;
         float nSpeed = super.getSpeed();
         if(!this.getUseMetricUnits())
         {
@@ -76,7 +69,4 @@ public class CLocation extends Location {
         }
         return nSpeed;
     }
-
-
-
 }
