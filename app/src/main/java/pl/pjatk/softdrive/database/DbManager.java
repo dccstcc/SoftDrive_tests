@@ -8,7 +8,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,10 +15,14 @@ public class DbManager extends DbHelper{
 
     public static final long MAX_ROW_COUNT = 200;
 
-    ExecutorService ex;
+    private ExecutorService ex;
+
+    private DbHelper dbHelper;
+
+    private int distance;
+    private String scan2d;
 
     public DbManager(Context context) {
-        //this.dbHelper = new DbHelper(context);
         super(context);
 
         dbHelper  = this;
@@ -29,11 +32,6 @@ public class DbManager extends DbHelper{
 
         ex = Executors.newCachedThreadPool();
     }
-
-    DbHelper dbHelper;
-
-    int distance;
-    String scan2d;
 
     public int getDistance() {
         return distance;
@@ -51,14 +49,10 @@ public class DbManager extends DbHelper{
         this.scan2d = scan2d;
     }
 
-    public boolean dbCommit() throws ExecutionException, InterruptedException {
-        System.out.println("rowval");
-
-//        Callable<Long> ctask = () -> {
+    public boolean dbCommit() {
 
             // Gets the data repository in write mode
             SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
-
 
             // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
@@ -67,6 +61,7 @@ public class DbManager extends DbHelper{
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, values);
+            Log.v("database", "insert new row");
 
             // clear database for more efficiency
             if (getRowCount(dbWrite) > MAX_ROW_COUNT) {
@@ -78,34 +73,9 @@ public class DbManager extends DbHelper{
             }
 
             dbWrite.close();
-//            return newRowId;
-
-//        };
-
-//        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-//
-//        ScheduledFuture<Long> sf = ses.schedule(ctask, 50, TimeUnit.MILLISECONDS);
-
-
-//        boolean ret = false;
-//        if (sf.isDone()) {
-//            if(sf.get() > 0) {
-//                ret = true;
-//            }
-//        }
-//        return ret;
-
-//        int count = 0;
-//        while(! sf.isDone()) {
-//            Thread.sleep(50);
-//            ++count;
-//            if(count>20) return false;
-//        }
 
         return true;
     }
-
-
 
     private void clearDb(SQLiteDatabase dbWritable) {
         dbWritable.execSQL("delete from " + CreateTable.TableSensorData.TABLE_NAME);
@@ -116,12 +86,7 @@ public class DbManager extends DbHelper{
         return count;
     }
 
-
-    public int getDbDistance() throws ExecutionException, InterruptedException {
-
-//        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-
-//        Callable<Integer> ctask = () -> {
+    public int getDbDistance() throws InterruptedException {
 
             SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
 
@@ -129,10 +94,6 @@ public class DbManager extends DbHelper{
                     CreateTable.TableSensorData.COLUMN_NAME_DISTANCE
             };
 
-            String selection = CreateTable.TableSensorData.COLUMN_NAME_DISTANCE + " = ?";
-            String[] selectionArgs = {"120"};
-
-            //String sortOrder = CreateTable.TableSensorData._ID + " DESC";
             Cursor cursor = dbRead.query(
                     CreateTable.TableSensorData.TABLE_NAME,
                     projection,             // The array of columns to return (pass null to get all)
@@ -146,16 +107,19 @@ public class DbManager extends DbHelper{
             int distance = -2;
 
             try {
+                // retry cursor read data
                 int count = 0;
                 while(! cursor.moveToLast()) {
                     Thread.sleep(50);
                     count++;
                     if(count>20){
+                        // if to much retries
                         cursor.close();
                         dbRead.close();
                         return -4;
                     }
                 }
+                // read distance from db
                 distance = cursor.getInt(cursor.getColumnIndex(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE));
                 cursor.close();
             } catch (CursorIndexOutOfBoundsException e) {
@@ -165,18 +129,5 @@ public class DbManager extends DbHelper{
             dbRead.close();
 
             return distance;
-
-        };
-
-        //ScheduledFuture<Integer> sf = ses.scheduleAtFixedRate(ctask, 0, 250, TimeUnit.MILLISECONDS);
-
-//        int count = 0;
-//        while(! sf.isDone()) {
-//            Thread.sleep(100);
-//            ++count;
-//            if(count>20) return -4;
-//        }
-
-//        return sf.get();
-//    }
+        }
 }
