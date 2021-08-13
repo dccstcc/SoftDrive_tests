@@ -8,7 +8,7 @@ public class SOUND extends GameElement {
    // constructor
    public SOUND(TrafficView view, int color, int hitReward, int x, int y,
                 int width, int length, float velocityY) {
-      super(view, color, TrafficView.TARGET_SOUND_ID, x, y, width, length, 0,
+      super(view, color, 0, x, y, width, length, 0,
          velocityY);
       this.hitReward = hitReward;
    }

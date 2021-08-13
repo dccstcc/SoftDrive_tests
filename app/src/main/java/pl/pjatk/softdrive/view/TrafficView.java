@@ -10,8 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +17,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -35,183 +32,109 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import pl.pjatk.softdrive.Exit;
-import pl.pjatk.softdrive.R;
 import pl.pjatk.softdrive.database.DbManager;
 import pl.pjatk.softdrive.gps.CLocation;
 import pl.pjatk.softdrive.gps.IBaseGpsListener;
 
 public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final String TAG = "trafficView"; // for logging errors
+    private static final String TAG = "SurfaceView"; // for logging errors
 
+    private CannonThread cannonThread; // controls the UI loop
 
-    // text size 1/18 of screen width
-    public static final double TEXT_SIZE_PERCENT = 1.0 / 23;
-
-    private CannonThread cannonThread; // controls the game loop
     private Activity activity; // to display Game Over dialog in GUI thread
-//    private boolean dialogIsDisplayed = false;
 
     // dimension variables
     private int screenWidth;
     private int screenHeight;
-
-//    // variables for the game loop and tracking statistics
-//    private double timeLeft; // time remaining in seconds
-//    private int shotsFired; // shots the user has fired
-//    private double totalElapsedTime; // elapsed seconds
-
-    // constants and variables for managing sounds
-    public static final int TARGET_SOUND_ID = 0;
-    public static final int CANNON_SOUND_ID = 1;
-    public static final int BLOCKER_SOUND_ID = 2;
-    private SoundPool soundPool; // plays sound effects
-    private SparseIntArray soundMap; // maps IDs to SoundPool
+    private Display display;
+    private int displayWidth;
+    private int displayHeight;
+    private int width;
+    private int height;
 
     // Paint variables used when drawing each item on the screen
     private Paint textPaint; // Paint used to draw text
     private Paint backgroundPaint; // Paint used to clear the drawing area
+    private Paint tooFastAlarmPaint; // Paint used to draw speed alert
+    private Paint ptConnAlert; // Paint used to draw connection alert
 
-
-    /////////////////////////////my constant
-    protected Motorcycle motor;
+    // Vehicles classes
+    private Motorcycle motor;
     private ForwardVehicle forwardVehicle;
-    private Display display;
-    private int displayWidth;
-    private int displayHeight;
 
     // constants for the forward vehicle
-    public static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
-    public static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
-    public static final double FORWARD_VEHICLE_SPEED_PERCENT = 0.2;
+    private static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
+    private static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
+    private static final double FORWARD_VEHICLE_SPEED_PERCENT = 0.2;
 
-    public static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
-    public static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
+    // constants for the motorcycle
+    private static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
+    private static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
 
+    // meters text size 1/23 of screen width
+    private static final double TEXT_SIZE_PERCENT = 1.0 / 23;
+
+    // database
     private DbManager db;
-    ExecutorService executor;
-    int forwardDistance = 0;
 
-    int motorHeight = 0;
+    // threads
+    private ExecutorService executor;
+    private ScheduledExecutorService schedExecutor;
 
-    public String motorcycleSpeed = "none";
+    // helpers and temporary
+    private int forwardDistance = 0;
+    private String motorcycleSpeed = "none";
+    private float speed = 0f;
+    private int distRegulator;
+    private int motorHeight = 0;
+    private int count;
 
-    float speed = 0f;
 
-//    HashMap<Integer, Integer> speedTable;
-
-    Paint tooFastAlarmPaint;
-
-    ScheduledExecutorService schedExecutor;
-
-//    int counterplus;
-
-    int distRegulator;
-
-    int count;
-    Paint ptConnAlert;
-
-    protected int width;
-    protected int height;
-
-    // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TrafficView(Context context, AttributeSet attrs) {
-        super(context, attrs); // call superclass constructor
+        super(context, attrs);
+
         activity = (Activity) context; // store reference to MainViewActivity
 
-        // register SurfaceHolder.Callback listener
-        getHolder().addCallback(this);
-
-        // configure audio attributes for game audio
-        AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
-        attrBuilder.setUsage(AudioAttributes.USAGE_GAME);
-
-        // initialize SoundPool to play the app's three sound effects
-        SoundPool.Builder builder = new SoundPool.Builder();
-        builder.setMaxStreams(1);
-        builder.setAudioAttributes(attrBuilder.build());
-        soundPool = builder.build();
-
-        // create Map of sounds and pre-load sounds
-        soundMap = new SparseIntArray(3); // create new SparseIntArray
-        soundMap.put(TARGET_SOUND_ID,
-                soundPool.load(context, R.raw.target_hit, 1));
-        soundMap.put(CANNON_SOUND_ID,
-                soundPool.load(context, R.raw.cannon_fire, 1));
-        soundMap.put(BLOCKER_SOUND_ID,
-                soundPool.load(context, R.raw.blocker_hit, 1));
+        getHolder().addCallback(this); // register SurfaceHolder.Callback listener
 
         textPaint = new Paint();
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.WHITE);
+        tooFastAlarmPaint = new Paint();
+        ptConnAlert = new Paint();
 
-
-        //////////////////my own
         db = new DbManager(getContext());
+
         executor = Executors.newFixedThreadPool(7);
 
         display = new Display(getContext());
         displayWidth = display.getDisplayWidth();
         displayHeight = display.getDisplayHeight();
 
-        motorcycleSpeed = "from constructor";
-
-        //speedTable = initSpeedTable();
-        tooFastAlarmPaint = new Paint();
-        tooFastAlarmPaint.setColor(Color.RED);
-
+        motorcycleSpeed = "none";
 
         distRegulator = 1;
 
         count = 0;
-        ptConnAlert = new Paint();
-        ptConnAlert.setColor(Color.argb(255, 200, 50, 200));
-        ptConnAlert.setTextSize(120);
-
     }
 
 
-    // called when the size of the SurfaceView changes,
-    // such as when it's first added to the View hierarchy
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        screenWidth = w; // store CannonView's width
-        screenHeight = h; // store CannonView's height
-
-        // configure text properties
-        textPaint.setTextSize((int) (TEXT_SIZE_PERCENT * screenHeight));
-        textPaint.setAntiAlias(true); // smoothes the text
+        screenWidth = w; // store view width
+        screenHeight = h; // store view height
     }
 
-    // get width of the game screen
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    // get height of the game screen
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    // plays a sound with the given soundId in soundMap
-    public void playSound(int soundId) {
-        soundPool.play(soundMap.get(soundId), 1, 1, 1, 0, 1f);
-    }
-
-    // called repeatedly by the CannonThread to update game elements
     private void updateActualDistance() throws ExecutionException, InterruptedException {
-
-        //forwardDistance = db.getDbDistance();
 
         distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
 
         forwardDistance = distRegulator;
 
-
-        System.out.println("distance from view: " + forwardDistance);
+        Log.v("car distance regulate", forwardDistance/100 + " meter");
     }
 
     protected void drawPositionMeter(Canvas canvas) throws ExecutionException, InterruptedException {
@@ -227,90 +150,34 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         } else {
             count = 0;
         }
-
     }
 
-    // aligns the barrel and fires a Cannonball if a Cannonball is not
-    // already on the screen
     public void ExitApp(MotionEvent event) {
+        executor.shutdownNow();
+        schedExecutor.shutdownNow();
 
-        /////////////////////////////on touch exit app
-        cannonThread.setRunning(false);
         Intent i = new Intent(getContext(), Exit.class);
         i.putExtra("EXTRA_EXIT", true);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getContext().startActivity(i);
-
-
     }
 
     public void drawSpeedMeter(Canvas canvas, String text) {
-
         canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
-
     }
 
     protected void drawBackground(Canvas canvas) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
     }
 
-
-    // draws the game to the given Canvas
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateCarPosition(Canvas canvas) throws InterruptedException, ExecutionException {
-        // clear the background
-
-//        new TrafficView(getContext(), null);
-
-//        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
-//        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
-//
-//        int x = displayWidth / 2 - width / 2;
-//
-//        forwardVehicle = new ForwardVehicle(
-//                getContext(),
-//                TrafficView.this,
-//                Color.GREEN,
-//                TARGET_SOUND_ID,
-//                x,
-//                10,
-//                width,
-//                height,
-//                0,
-//                (float) FORWARD_VEHICLE_SPEED_PERCENT * displayHeight
-//        );
-
-//        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),
-//                backgroundPaint);
-
-
-
-//        speedRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : speedRegulator;
-//        if(db.getDbDistance() < 0) {
-//            ++count;
-//            if(count>15) {
-//                canvas.drawText("..car detection..", 120, 300, ptConnAlert);
-//            }
-//        } else {
-//            count = 0;
-//        }
-//        forwardDistance = db.getDbDistance();
-//        if(forwardDistance > 0) {
-//            speedRegulator = forwardDistance;
-//        }
-        //forwardDistance = ++counterplus;
-        //Thread.sleep(150);
-
-        System.out.println("distance from view: " + forwardDistance);
-//        canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
-
-
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
-
         forwardVehicle.draw(canvas);
 
+        Log.v("car distance: ", forwardDistance/100 + " meter");
     }
 
     protected void drawSpeedAlert(Canvas canvas) {
@@ -367,41 +234,30 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void updateActualSpeed(float motorcycleSpeed) {
         this.speed = motorcycleSpeed;
-        Log.v("processed speed ", String.valueOf(speed));
-
-    }
-
-    // stops the game: called by CannonGameFragment's onPause method
-    public void stopGame() {
-        if (cannonThread != null)
-            cannonThread.setRunning(false); // tell thread to terminate
-    }
-
-    // release resources: called by CannonGame's onDestroy method
-    public void releaseResources() {
-        soundPool.release(); // release all resources used by the SoundPool
-        soundPool = null;
+        Log.v("actual speed", speed + " m/s");
     }
 
     protected void initConstant() {
         this.width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
         this.motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
+        textPaint.setTextSize((int) (TEXT_SIZE_PERCENT * screenHeight));
+        textPaint.setAntiAlias(true); // smoothes the text
+        backgroundPaint.setColor(Color.WHITE);
+        tooFastAlarmPaint.setColor(Color.RED);
+        ptConnAlert.setColor(Color.argb(255, 200, 50, 200));
+        ptConnAlert.setTextSize(120);
     }
 
     protected void initForwardVehicle() {
-
-//        int width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
-//        int height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
-
-        int x = displayWidth / 2 - width / 2;
+        int xCenter = displayWidth / 2 - width / 2;
 
         forwardVehicle = new ForwardVehicle(
                 getContext(),
                 this,
                 Color.GREEN,
-                TARGET_SOUND_ID,
-                x,
+                0,
+                xCenter,
                 10,
                 width,
                 height,
@@ -410,12 +266,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         );
     }
 
-
     // called when surface changes size
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format,
-                               int width, int height) {
-    }
+                               int width, int height) {}
 
     // called when surface is first created
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -427,7 +281,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             @Override
             public void handleMessage(Message message) {
                 hideSystemBars();
-                //TrafficView trvi = new TrafficView(getContext(), null);
                 cannonThread = new CannonThread(holder); // create thread
                 cannonThread.start(); // start the game loop thread
             }
@@ -446,27 +299,20 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     // called when the surface is destroyed
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        executor.shutdownNow();
-        schedExecutor.shutdownNow();
-    }
+    public void surfaceDestroyed(SurfaceHolder holder) {}
 
     // called when the user touches the screen in this activity
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        executor.shutdownNow();
-        schedExecutor.shutdownNow();
-
-        Intent i = new Intent(getContext(), Exit.class);
-        getContext().startActivity(i);
         ExitApp(e);
         return true;
     }
 
-    // Thread subclass to control the game loop
+    private int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
+
+    // Thread subclass to control the UI loop
     private class CannonThread implements IBaseGpsListener {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
-        private boolean threadIsRunning = true; // running by default
 
         ExecutorService es;
         CLocation myGpsLocation;
@@ -476,21 +322,12 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
-            //setName("CannonThread");
 
             initCLocation();
 
-            executor = Executors.newCachedThreadPool();
             schedExecutor = Executors.newScheduledThreadPool(5);
             es = Executors.newCachedThreadPool();
         }
-
-        // changes running state
-        public void setRunning(boolean running) {
-            threadIsRunning = running;
-        }
-
-        private int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
 
         public void start() {
 
@@ -502,19 +339,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                     Canvas canvas = null; // used for drawing
 
-                    int clock = 1000;
-
-//                    while (true) {
-
                         try {
                             // get Canvas for exclusive drawing from this thread
                             canvas = surfaceHolder.lockCanvas(null);
 
-                            // lock the surfaceHolder for drawing
                         synchronized(surfaceHolder) {
                             initConstant();
 
-                            updateActualDistance(); // update game state
+                            updateActualDistance();
                             updateActualSpeed(nCurrentSpeed);
 
                             drawBackground(canvas);
@@ -523,29 +355,23 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                             drawSpeedAlert(canvas);
 
-                            updateCarPosition(canvas); // draw using the canvas
+                            updateCarPosition(canvas);
 
                             drawSpeedMeter(canvas, String.valueOf(toKmh(nCurrentSpeed)));
                             drawPositionMeter(canvas);
 
-                            Thread.sleep(1);
-                            System.out.println("threadlooper");
+                            Thread.sleep(1); // threads deadlock control
                         }
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         } finally {
-                            // display canvas's contents on the CannonView
-                            // and enable other threads to use the Canvas
                             if (canvas != null)
                                 surfaceHolder.unlockCanvasAndPost(canvas);
                         }
                     }
-
-//                }
             };
 
             schedExecutor.scheduleAtFixedRate(rtask,0, 250, TimeUnit.MILLISECONDS);
-
         }
 
 
@@ -557,7 +383,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             && ActivityCompat.checkSelfPermission(getContext(),
                             Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                        System.out.println("! NO GPS PERMISSION !");
+                        Log.v("GPS", "! NO GPS PERMISSION !");
 
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
@@ -574,12 +400,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         location.setUseMetricunits(true);
                         nCurrentSpeed = location.getSpeed();
                     }
-
-//                    int speedKmh = (int) (nCurrentSpeed *= (0.001f / (1f/3600f)));
-
-                    System.out.println("SPEED " + nCurrentSpeed);
-//                    nCurrentSpeed *= (0.001f / (1f/3600f));
-//                    System.out.println("SPEED km/h" + nCurrentSpeed);
 
             return nCurrentSpeed;
         }
@@ -599,13 +419,10 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
                     myGpsLocation = new CLocation(location, true);
                     nCurrentSpeed = updateSpeed(myGpsLocation);
-
                 }
             });
 
             es.shutdown();
-
-
         }
 
         @Override

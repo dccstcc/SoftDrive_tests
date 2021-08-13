@@ -46,9 +46,9 @@ public class GameElement {
    }
 
    // plays the sound that corresponds to this type of GameElement
-   public void playSound() {
-      view.playSound(soundId);
-   }
+//   public void playSound() {
+//      view.playSound(soundId);
+//   }
 
    public int getX() {
       return x;
