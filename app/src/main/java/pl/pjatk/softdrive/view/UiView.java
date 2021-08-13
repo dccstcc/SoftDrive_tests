@@ -69,8 +69,8 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     private static final double FORWARD_VEHICLE_SPEED_PERCENT = 0.2;
 
     // constants for the motorcycle
-    private static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 9;
-    private static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 11;
+    private static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 7;
+    private static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 9;
 
     // meters text size 1/23 of screen width
     private static final double TEXT_SIZE_PERCENT = 1.0 / 23;
@@ -134,9 +134,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         this.motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
         textPaint.setTextSize((int) (TEXT_SIZE_PERCENT * screenHeight));
         textPaint.setAntiAlias(true); // smoothes the text
-        backgroundPaint.setColor(Color.WHITE);
-        tooFastAlarmPaint.setColor(Color.RED);
-        ptConnAlert.setColor(Color.argb(255, 200, 50, 200));
+        backgroundPaint.setColor(Color.GRAY);
+        tooFastAlarmPaint.setColor(Color.YELLOW);
+        ptConnAlert.setColor(Color.WHITE);
         ptConnAlert.setTextSize(120);
     }
 

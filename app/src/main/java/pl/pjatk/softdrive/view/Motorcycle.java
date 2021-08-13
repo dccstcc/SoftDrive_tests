@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+
+import pl.pjatk.softdrive.R;
 
 public class Motorcycle {
 
@@ -32,7 +35,11 @@ public class Motorcycle {
         motor = new Rect(xCoord, yCoord, xCoord + width, yCoord + height);
         paint.setColor(Color.BLUE);
 
-        canvas.drawRect(motor, paint);
+        Drawable motorPng = context.getResources().getDrawable(R.drawable.motorcycle_top);
+        motorPng.setBounds(motor);
+        motorPng.draw(canvas);
+
+        //canvas.drawRect(motor, paint);
     }
 
     public Rect getMotor() {
