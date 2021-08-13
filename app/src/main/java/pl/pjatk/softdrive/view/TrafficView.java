@@ -47,7 +47,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // text size 1/18 of screen width
-    public static final double TEXT_SIZE_PERCENT = 1.0 / 18;
+    public static final double TEXT_SIZE_PERCENT = 1.0 / 23;
 
     private CannonThread cannonThread; // controls the game loop
     private Activity activity; // to display Game Over dialog in GUI thread
@@ -105,9 +105,12 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     ScheduledExecutorService schedExecutor;
 
-    int counterplus;
+//    int counterplus;
 
     int speedRegulator;
+
+    int count;
+    Paint ptConnAlert;
 
     // constructor
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -156,9 +159,13 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         tooFastAlarmPaint = new Paint();
         tooFastAlarmPaint.setColor(Color.RED);
 
-        counterplus = 0;
 
         speedRegulator = 1;
+
+        count = 0;
+        ptConnAlert = new Paint();
+        ptConnAlert.setColor(Color.argb(255, 200, 50, 200));
+        ptConnAlert.setTextSize(120);
 
     }
 
@@ -223,7 +230,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawText(Canvas canvas, String text) {
 
-        canvas.drawText("V:  " + text, 50, 100, textPaint);
+        canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
 
     }
 
@@ -264,6 +271,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
 
         speedRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : speedRegulator;
+        if(db.getDbDistance() < 0) {
+            ++count;
+            if(count>15) {
+                canvas.drawText("connection fail", 120, 300, ptConnAlert);
+            }
+        } else {
+            count = 0;
+        }
 //        forwardDistance = db.getDbDistance();
 //        if(forwardDistance > 0) {
 //            speedRegulator = forwardDistance;
@@ -272,14 +287,14 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         //Thread.sleep(150);
 
         System.out.println("distance from view: " + forwardDistance);
-        canvas.drawText("dist: " + forwardDistance, 500, 100, textPaint);
+        canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
 
 
         if(isTooFast(speed, forwardDistance)) {
             int safeSpeed = getSafeSpeed(speed, forwardDistance);
             safeSpeed *= (0.001f / (1f/3600f));
-            tooFastAlarmPaint.setTextSize(100);
-            canvas.drawText("reduce: " + safeSpeed, 200, 300, tooFastAlarmPaint);
+            tooFastAlarmPaint.setTextSize(140);
+            canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
             forwardVehicle.paint.setColor(Color.RED);
         } else {
             forwardVehicle.paint.setColor(Color.GREEN);
@@ -410,6 +425,9 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent e) {
         executor.shutdownNow();
         schedExecutor.shutdownNow();
+
+        Intent i = new Intent(getContext(), Exit.class);
+        getContext().startActivity(i);
         ExitApp(e);
         return true;
     }
@@ -441,6 +459,8 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             threadIsRunning = running;
         }
 
+        private int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
+
         public void start() {
 
             Runnable rtask = new Runnable() {
@@ -464,7 +484,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             drawGameElements(canvas); // draw using the canvas
                             updatePositions(++clock); // update game state
                             Thread.sleep(1);
-                            drawText(canvas, String.valueOf(nCurrentSpeed));
+                            drawText(canvas, String.valueOf(toKmh(nCurrentSpeed)));
                             setSpeed(nCurrentSpeed);
                             System.out.println("threadlooper");
                         }
@@ -512,9 +532,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                         nCurrentSpeed = location.getSpeed();
                     }
 
-            System.out.println("SPEED " + nCurrentSpeed);
+//                    int speedKmh = (int) (nCurrentSpeed *= (0.001f / (1f/3600f)));
+
+                    System.out.println("SPEED " + nCurrentSpeed);
 //                    nCurrentSpeed *= (0.001f / (1f/3600f));
-//            System.out.println("SPEED km/h" + nCurrentSpeed);
+//                    System.out.println("SPEED km/h" + nCurrentSpeed);
 
             return nCurrentSpeed;
         }

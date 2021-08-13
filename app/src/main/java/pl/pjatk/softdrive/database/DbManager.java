@@ -71,7 +71,7 @@ public class DbManager extends DbHelper{
             if (getRowCount(dbWrite) > MAX_ROW_COUNT) {
                 clearDb(dbWrite);
             ContentValues valuesDel = new ContentValues();
-            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, 2000);
+            values.put(CreateTable.TableSensorData.COLUMN_NAME_DISTANCE, -1);
             dbWrite.insert(CreateTable.TableSensorData.TABLE_NAME, null, valuesDel);
 //            setDistance(1);
 //            ContentValues v = new ContentValues();
