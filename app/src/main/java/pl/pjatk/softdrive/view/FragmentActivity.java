@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import pl.pjatk.softdrive.R;
 
 public class FragmentActivity extends Fragment {
-    private UiView uiView;    // custom view to display the game
+    private UiView uiView;    // custom view to display the UI
 
     ExecutorService executorService;
 
@@ -28,55 +28,26 @@ public class FragmentActivity extends Fragment {
         View view =
                 inflater.inflate(R.layout.fragment_main, container, false);
 
-        // get a reference to the TrafficView
+        // get a reference to the UiView
         uiView = (UiView) view.findViewById(R.id.uiView);
         return view;
-
-//        // inflate the fragment_main.xml layout
-//        View view =
-//                inflater.inflate(R.layout.fragment_main, container, false);
-//
-//        // get a reference to the TrafficView
-//        trafficView = (TrafficView) view.findViewById(R.id.trafficView);
-//        return view;
     }
 
-    // set up volume control once Activity is created
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // allow volume buttons to set game volume
-        //getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
-    // when MainActivity is paused, terminate the game
     @Override
     public void onPause() {
         super.onPause();
-        //trafficView.stopGame(); // terminates the game
     }
 
-    // when MainActivity is paused, MainActivityFragment releases resources
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //trafficView.releaseResources();
     }
 }
-
-/*********************************************************************************
- * (C) Copyright 1992-2016 by Deitel & Associates, Inc. and * Pearson Education, *
- * Inc. All Rights Reserved. * * DISCLAIMER: The authors and publisher of this   *
- * book have used their * best efforts in preparing the book. These efforts      *
- * include the * development, research, and testing of the theories and programs *
- * * to determine their effectiveness. The authors and publisher make * no       *
- * warranty of any kind, expressed or implied, with regard to these * programs   *
- * or to the documentation contained in these books. The authors * and publisher *
- * shall not be liable in any event for incidental or * consequential damages in *
- * connection with, or arising out of, the * furnishing, performance, or use of  *
- * these programs.                                                               *
- *********************************************************************************/
 
 
 

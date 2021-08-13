@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+// display dimensions getter
 public class Display {
 
     public int displayWidth;
@@ -19,7 +20,6 @@ public class Display {
     public int getDisplayWidth() {
         return displayWidth;
     }
-
 
     public int getDisplayHeight() {
         return displayHeight;
