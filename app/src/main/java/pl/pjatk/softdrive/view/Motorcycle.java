@@ -38,8 +38,6 @@ public class Motorcycle {
         Drawable motorPng = context.getResources().getDrawable(R.drawable.motorcycle_top);
         motorPng.setBounds(motor);
         motorPng.draw(canvas);
-
-        //canvas.drawRect(motor, paint);
     }
 
     public Rect getMotor() {

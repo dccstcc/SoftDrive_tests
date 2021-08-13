@@ -67,4 +67,8 @@ public class UiElement {
    public void setHeight(int height) {
       this.height = height;
    }
+
+   public Rect getShape() {return shape;}
+
+   public void setShape(Rect shape) {this.shape = shape;}
 }

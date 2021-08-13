@@ -1,15 +1,21 @@
 package pl.pjatk.softdrive.view;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+
+import pl.pjatk.softdrive.R;
 
 public class ForwardVehicle extends UiElement {
 
-    int displayWidth;
-    int displayHeight;
-    int xCoord;
-    int yCoord;
+    private int displayWidth;
+    private int displayHeight;
+    private int xCoord;
+    private int yCoord;
 
-    int height;
+    private int height;
+
+    private Context context;
 
     // maximum distance read by senor
     private final int maxDistance = 4000;
@@ -17,6 +23,7 @@ public class ForwardVehicle extends UiElement {
     public ForwardVehicle(Context context, UiView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
         super(view, color, soundId, x, y, width, height, velocityX, velocityY);
         this.height = height;
+        this.context = context;
     }
 
     public void updateForwardVehiclePosition(int restDistance, int motorcyclePositionY, int distanceOffset) {
@@ -27,6 +34,15 @@ public class ForwardVehicle extends UiElement {
         int revertDistance = (int) (motorcyclePositionY - distance);
         revertDistance -= height;
         update(0, revertDistance);
+    }
+
+    public void draw(Canvas canvas) {
+
+        Drawable carPng = context.getResources().getDrawable(R.drawable.car_top);
+        carPng.setBounds(super.getShape());
+        carPng.draw(canvas);
+        
+        //canvas.drawRect(shape, paint);
     }
 
     public double getDisplayWidth() {
