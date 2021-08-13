@@ -64,13 +64,13 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     private ForwardVehicle forwardVehicle;
 
     // constants for the forward vehicle
-    private static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 6;
-    private static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 8;
+    private static final double FORWARD_VEHICLE_WIDTH_PERCENT = 1.0 / 5;
+    private static final double FORWARD_VEHICLE_HEIGHT_PERCENT = 1.0 / 7;
     private static final double FORWARD_VEHICLE_SPEED_PERCENT = 0.2;
 
     // constants for the motorcycle
-    private static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 7;
-    private static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 9;
+    private static final double MOTORCYCLE_WIDTH_PERCENT = 1.0 / 6;
+    private static final double MOTORCYCLE_HEIGHT_PERCENT = 1.0 / 8;
 
     // meters text size 1/23 of screen width
     private static final double TEXT_SIZE_PERCENT = 1.0 / 23;

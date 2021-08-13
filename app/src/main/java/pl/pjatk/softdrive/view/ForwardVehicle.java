@@ -41,8 +41,6 @@ public class ForwardVehicle extends UiElement {
         Drawable carPng = context.getResources().getDrawable(R.drawable.car_top);
         carPng.setBounds(super.getShape());
         carPng.draw(canvas);
-        
-        //canvas.drawRect(shape, paint);
     }
 
     public double getDisplayWidth() {
