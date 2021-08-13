@@ -5,8 +5,8 @@
     tools:context="pl.pjatk.softdrive.view.FragmentActivity">
 
 
-    <pl.pjatk.softdrive.view.TrafficView
+    <pl.pjatk.softdrive.view.UiView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/trafficView"/>
+        android:id="@+id/uiView"/>
 </FrameLayout>

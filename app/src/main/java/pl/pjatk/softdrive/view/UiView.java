@@ -36,7 +36,7 @@ import pl.pjatk.softdrive.database.DbManager;
 import pl.pjatk.softdrive.gps.CLocation;
 import pl.pjatk.softdrive.gps.IBaseGpsListener;
 
-public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
+public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "SurfaceView"; // for logging errors
 
@@ -92,7 +92,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public TrafficView(Context context, AttributeSet attrs) {
+    public UiView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         activity = (Activity) context; // store reference to MainViewActivity

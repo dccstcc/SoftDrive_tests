@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class GameElement {
-   protected TrafficView view; // the view that contains this GameElement
+   protected UiView view; // the view that contains this GameElement
    protected Paint paint = new Paint(); // Paint to draw this GameElement
    protected Rect shape; // the GameElement's rectangular bounds
    private float velocityY; // the vertical velocity of this GameElement
@@ -19,7 +19,7 @@ public class GameElement {
    private int height;
 
    // public constructor
-   public GameElement(TrafficView view, int color, int soundId, int x,
+   public GameElement(UiView view, int color, int soundId, int x,
       int y, int width, int height, float velocityX, float velocityY) {
       this.view = view;
       paint.setColor(color);

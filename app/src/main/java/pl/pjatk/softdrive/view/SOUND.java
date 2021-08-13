@@ -6,7 +6,7 @@ public class SOUND extends GameElement {
    private int hitReward; // the hit reward for this target
 
    // constructor
-   public SOUND(TrafficView view, int color, int hitReward, int x, int y,
+   public SOUND(UiView view, int color, int hitReward, int x, int y,
                 int width, int length, float velocityY) {
       super(view, color, 0, x, y, width, length, 0,
          velocityY);

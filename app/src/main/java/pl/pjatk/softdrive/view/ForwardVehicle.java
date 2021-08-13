@@ -18,7 +18,7 @@ public class ForwardVehicle extends GameElement{
     private final int maxDistance = 4000;
 
 
-    public ForwardVehicle(Context context, TrafficView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
+    public ForwardVehicle(Context context, UiView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
         super(view, color, soundId, x, y, width, height, velocityX, velocityY);
         this.height = height;
     }

@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import pl.pjatk.softdrive.R;
 
 public class FragmentActivity extends Fragment {
-    private TrafficView trafficView;    // custom view to display the game
+    private UiView uiView;    // custom view to display the game
 
     ExecutorService executorService;
 
@@ -29,7 +29,7 @@ public class FragmentActivity extends Fragment {
                 inflater.inflate(R.layout.fragment_main, container, false);
 
         // get a reference to the TrafficView
-        trafficView = (TrafficView) view.findViewById(R.id.trafficView);
+        uiView = (UiView) view.findViewById(R.id.uiView);
         return view;
 
 //        // inflate the fragment_main.xml layout
