@@ -224,7 +224,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         if (breakTime == 0) breakTime = 1;
         int safeSpeed = breakDistanceInt / Math.round(breakTime);
 
-        return safeSpeed;
+        return toKmh(safeSpeed);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -364,8 +364,8 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                             updateActualSpeed(nCurrentSpeed);
 
                             drawBackground(canvas);
-                            drawMotorcycle(canvas);
                             initForwardVehicle();
+                            drawMotorcycle(canvas);
 
                             drawSpeedAlert(canvas);
 
