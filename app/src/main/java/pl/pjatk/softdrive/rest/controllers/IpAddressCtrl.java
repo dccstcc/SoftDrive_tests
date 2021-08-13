@@ -22,13 +22,23 @@ public class IpAddressCtrl extends Application {
     boolean isDone;
     DbManager db;
 
+//    ScheduledExecutorService schedExecutor;
+
     private static IpAddressCtrl singleton;
 
     @Override
     public void onCreate() {
         super.onCreate();
         singleton = this;
+
+//        ScheduledExecutorService schedExecutor = Executors.newScheduledThreadPool(3);
     }
+
+//    public void onTerminate() {
+//        super.onTerminate();
+//        System.out.println("onterminate");
+//        schedExecutor.shutdownNow();
+//    }
 
     public static synchronized IpAddressCtrl getInstance() {return singleton;}
 
@@ -126,7 +136,6 @@ public class IpAddressCtrl extends Application {
             if (startIp > 254) startIp = 254;
         }
     }
-
 
 
     //    Distance distance;

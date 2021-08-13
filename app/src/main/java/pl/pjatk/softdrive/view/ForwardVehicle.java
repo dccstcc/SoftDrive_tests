@@ -1,6 +1,10 @@
 package pl.pjatk.softdrive.view;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+
+import pl.pjatk.softdrive.R;
 
 public class ForwardVehicle extends GameElement{
 
@@ -13,10 +17,16 @@ public class ForwardVehicle extends GameElement{
 
     private final int maxDistance = 4000;
 
+
     public ForwardVehicle(Context context, TrafficView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
         super(view, color, soundId, x, y, width, height, velocityX, velocityY);
         this.height = height;
     }
+
+//    @Override
+//    public void draw(Canvas canvas, Context context) {
+//        Drawable mCustomImage = context.getResources().getDrawable(1, R.drawable.my_image);
+//    }
 
     ///////////////////////////////////my update method
     // update GameElement position and check for wall collisions
