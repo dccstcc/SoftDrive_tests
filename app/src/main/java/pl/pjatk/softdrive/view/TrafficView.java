@@ -128,115 +128,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         screenHeight = h; // store view height
     }
 
-    private void updateActualDistance() throws ExecutionException, InterruptedException {
-
-        distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
-
-        forwardDistance = distRegulator;
-
-        Log.v("car distance regulate", forwardDistance/100 + " meter");
-    }
-
-    protected void drawPositionMeter(Canvas canvas) throws ExecutionException, InterruptedException {
-
-        canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
-
-        if(db.getDbDistance() < 0 || true) {
-            ++count;
-            if(count>15 || true) {
-                canvas.drawText("..car detection..", 120, 300, ptConnAlert);
-                forwardVehicle.draw(canvas);
-            }
-        } else {
-            count = 0;
-        }
-    }
-
-    public void ExitApp(MotionEvent event) {
-        executor.shutdownNow();
-        schedExecutor.shutdownNow();
-
-        Intent i = new Intent(getContext(), Exit.class);
-        i.putExtra("EXTRA_EXIT", true);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        getContext().startActivity(i);
-    }
-
-    public void drawSpeedMeter(Canvas canvas, String text) {
-        canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
-    }
-
-    protected void drawBackground(Canvas canvas) {
-        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void updateCarPosition(Canvas canvas) throws InterruptedException, ExecutionException {
-        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
-        forwardVehicle.draw(canvas);
-
-        Log.v("car distance: ", forwardDistance/100 + " meter");
-    }
-
-    protected void drawSpeedAlert(Canvas canvas) {
-        int fwDistMetric = forwardDistance / 100;
-
-        if(isTooFast(speed, fwDistMetric) || true) {
-            int safeSpeed = getSafeSpeed(speed, fwDistMetric);
-            safeSpeed *= (0.001f / (1f/3600f));
-            tooFastAlarmPaint.setTextSize(140);
-            canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
-            forwardVehicle.paint.setColor(Color.RED);
-        } else {
-            forwardVehicle.paint.setColor(Color.GREEN);
-        }
-    }
-
-    protected void drawMotorcycle(Canvas canvas) {
-        motor = new Motorcycle(getContext(),
-                canvas,
-                (int) (MOTORCYCLE_WIDTH_PERCENT * displayWidth),
-                (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight));
-    }
-
-    public boolean isTooFast(float speed, int distance) {
-        boolean isTooFast = false;
-
-        // 9 m/s^2
-        float breakLatency = 9f;
-        // V = at
-        float breakTime = speed / breakLatency;
-        // S = at^2 / 2
-        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        int breakDistanceInt = Math.round(breakDistance);
-
-        if(breakDistanceInt >= distance) isTooFast = true;
-
-        return isTooFast;
-    }
-
-    public int getSafeSpeed(float speed, int distance) {
-        // 9 m/s^2
-        float breakLatency = 9f;
-        // V = at
-        float breakTime = speed / breakLatency;
-        // S = at^2 / 2
-        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        int breakDistanceInt = Math.round(breakDistance);
-        // V = s/t
-        if (breakTime == 0) breakTime = 1;
-        int safeSpeed = breakDistanceInt / Math.round(breakTime);
-
-        return safeSpeed;
-    }
-
-    public void updateActualSpeed(float motorcycleSpeed) {
-        this.speed = motorcycleSpeed;
-        Log.v("actual speed", speed + " m/s");
-    }
-
     protected void initConstant() {
         this.width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
@@ -247,6 +138,31 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         tooFastAlarmPaint.setColor(Color.RED);
         ptConnAlert.setColor(Color.argb(255, 200, 50, 200));
         ptConnAlert.setTextSize(120);
+    }
+
+    protected void updateActualDistance() throws ExecutionException, InterruptedException {
+
+        distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
+
+        forwardDistance = distRegulator;
+
+        Log.v("car distance regulate", forwardDistance/100 + " meter");
+    }
+
+    protected void updateActualSpeed(float motorcycleSpeed) {
+        this.speed = motorcycleSpeed;
+        Log.v("actual speed", speed + " m/s");
+    }
+
+    protected void drawBackground(Canvas canvas) {
+        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
+    }
+
+    protected void drawMotorcycle(Canvas canvas) {
+        motor = new Motorcycle(getContext(),
+                canvas,
+                (int) (MOTORCYCLE_WIDTH_PERCENT * displayWidth),
+                (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight));
     }
 
     protected void initForwardVehicle() {
@@ -266,10 +182,77 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         );
     }
 
-    // called when surface changes size
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format,
-                               int width, int height) {}
+    protected void drawSpeedAlert(Canvas canvas) {
+        int fwDistMetric = forwardDistance / 100;
+
+        if(isTooFast(speed, fwDistMetric) || true) {
+            int safeSpeed = getSafeSpeed(speed, fwDistMetric);
+            safeSpeed *= (0.001f / (1f/3600f));
+            tooFastAlarmPaint.setTextSize(140);
+            canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
+            forwardVehicle.paint.setColor(Color.RED);
+        } else {
+            forwardVehicle.paint.setColor(Color.GREEN);
+        }
+    }
+
+    protected boolean isTooFast(float speed, int distance) {
+        boolean isTooFast = false;
+
+        // 9 m/s^2
+        float breakLatency = 9f;
+        // V = at
+        float breakTime = speed / breakLatency;
+        // S = at^2 / 2
+        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+        int breakDistanceInt = Math.round(breakDistance);
+
+        if(breakDistanceInt >= distance) isTooFast = true;
+
+        return isTooFast;
+    }
+
+    protected int getSafeSpeed(float speed, int distance) {
+        // 9 m/s^2
+        float breakLatency = 9f;
+        // V = at
+        float breakTime = speed / breakLatency;
+        // S = at^2 / 2
+        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+        int breakDistanceInt = Math.round(breakDistance);
+        // V = s/t
+        if (breakTime == 0) breakTime = 1;
+        int safeSpeed = breakDistanceInt / Math.round(breakTime);
+
+        return safeSpeed;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected void updateCarPosition(Canvas canvas) throws InterruptedException, ExecutionException {
+        forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
+        forwardVehicle.draw(canvas);
+
+        Log.v("car distance: ", forwardDistance/100 + " meter");
+    }
+
+    protected void drawSpeedMeter(Canvas canvas, String text) {
+        canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
+    }
+
+    protected void drawPositionMeter(Canvas canvas) throws ExecutionException, InterruptedException {
+
+        canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
+
+        if(db.getDbDistance() < 0 || true) {
+            ++count;
+            if(count>15 || true) {
+                canvas.drawText("..car detection..", 120, 300, ptConnAlert);
+                forwardVehicle.draw(canvas);
+            }
+        } else {
+            count = 0;
+        }
+    }
 
     // called when surface is first created
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -297,6 +280,11 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    // called when surface changes size
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format,
+                               int width, int height) {}
+
     // called when the surface is destroyed
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {}
@@ -308,15 +296,41 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    private int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
+    protected int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
+
+    // hide system bars and app bar
+    protected void hideSystemBars() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                            View.SYSTEM_UI_FLAG_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_IMMERSIVE);
+    }
+
+    protected void ExitApp(MotionEvent event) {
+        executor.shutdownNow();
+        schedExecutor.shutdownNow();
+
+        Intent i = new Intent(getContext(), Exit.class);
+        i.putExtra("EXTRA_EXIT", true);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        getContext().startActivity(i);
+    }
+
 
     // Thread subclass to control the UI loop
     private class CannonThread implements IBaseGpsListener {
+
         private SurfaceHolder surfaceHolder; // for manipulating canvas
 
-        ExecutorService es;
-        CLocation myGpsLocation;
-        float nCurrentSpeed;
+        private ExecutorService es;
+        private CLocation myGpsLocation;
+        private float nCurrentSpeed;
 
         // initializes the surface holder
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -374,6 +388,18 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
             schedExecutor.scheduleAtFixedRate(rtask,0, 250, TimeUnit.MILLISECONDS);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private float updateSpeed(CLocation location) {
+
+            nCurrentSpeed = 9999;
+
+            if (location != null) {
+                location.setUseMetricunits(true);
+                nCurrentSpeed = location.getSpeed();
+            }
+
+            return nCurrentSpeed;
+        }
 
         private void initCLocation() {
 
@@ -390,20 +416,6 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        private float updateSpeed(CLocation location) {
-
-                    nCurrentSpeed = 9999;
-
-                    if (location != null) {
-                        location.setUseMetricunits(true);
-                        nCurrentSpeed = location.getSpeed();
-                    }
-
-            return nCurrentSpeed;
-        }
-
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -437,34 +449,4 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
-
-    // hide system bars and app bar
-    private void hideSystemBars() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_IMMERSIVE);
-
-    }
 }
-
-
-/*********************************************************************************
- * (C) Copyright 1992-2016 by Deitel & Associates, Inc. and * Pearson Education, *
- * Inc. All Rights Reserved. * * DISCLAIMER: The authors and publisher of this   *
- * book have used their * best efforts in preparing the book. These efforts      *
- * include the * development, research, and testing of the theories and programs *
- * * to determine their effectiveness. The authors and publisher make * no       *
- * warranty of any kind, expressed or implied, with regard to these * programs   *
- * or to the documentation contained in these books. The authors * and publisher *
- * shall not be liable in any event for incidental or * consequential damages in *
- * connection with, or arising out of, the * furnishing, performance, or use of  *
- * these programs.                                                               *
- *********************************************************************************/
-
-
-
