@@ -16,12 +16,12 @@ public class Motorcycle {
     private int xCoord;
     private int yCoord;
 
-    Display display;
-    public int displayWidth;
-    public int displayHeight;
+    private Display display;
+    private int displayWidth;
+    private int displayHeight;
 
     private Rect motor;
-    Paint paint = new Paint();
+    private Paint paint = new Paint();
 
     public Motorcycle(Context context, Canvas canvas, int width, int height) {
 

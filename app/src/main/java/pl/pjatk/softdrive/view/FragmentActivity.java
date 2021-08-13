@@ -14,9 +14,9 @@ import pl.pjatk.softdrive.R;
 public class FragmentActivity extends Fragment {
     private UiView uiView;    // custom view to display the UI
 
-    ExecutorService executorService;
+    private ExecutorService executorService;
 
-    View viewRet;
+    private View viewRet;
 
     // called when Fragment's view needs to be created
     @Override

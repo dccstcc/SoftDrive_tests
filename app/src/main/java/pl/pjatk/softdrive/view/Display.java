@@ -7,8 +7,8 @@ import android.util.DisplayMetrics;
 // display dimensions getter
 public class Display {
 
-    public int displayWidth;
-    public int displayHeight;
+    private int displayWidth;
+    private int displayHeight;
 
     public Display(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
