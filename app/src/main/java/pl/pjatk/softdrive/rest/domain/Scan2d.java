@@ -9,7 +9,7 @@ public class Scan2d implements Serializable {
 
     @SerializedName("")
     @Expose
-    Float[] scan2d;
+    public Float[] scan2d;
 
     public Float[] getScan2d() {
         return scan2d;

@@ -9,7 +9,7 @@ public class Distance implements Serializable {
 
     @SerializedName("distance")
     @Expose
-    int distance;
+    public int distance;
 
     public int getDistance() {
         return distance;

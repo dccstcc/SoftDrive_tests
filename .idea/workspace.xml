@@ -32,9 +32,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Display.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/FragmentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/FragmentActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Motorcycle.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Motorcycle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Distance.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Distance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Scan2d.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Scan2d.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
