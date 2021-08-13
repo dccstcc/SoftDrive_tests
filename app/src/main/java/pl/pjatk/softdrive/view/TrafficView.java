@@ -28,7 +28,6 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,16 +50,16 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     private CannonThread cannonThread; // controls the game loop
     private Activity activity; // to display Game Over dialog in GUI thread
-    private boolean dialogIsDisplayed = false;
+//    private boolean dialogIsDisplayed = false;
 
     // dimension variables
     private int screenWidth;
     private int screenHeight;
 
-    // variables for the game loop and tracking statistics
-    private double timeLeft; // time remaining in seconds
-    private int shotsFired; // shots the user has fired
-    private double totalElapsedTime; // elapsed seconds
+//    // variables for the game loop and tracking statistics
+//    private double timeLeft; // time remaining in seconds
+//    private int shotsFired; // shots the user has fired
+//    private double totalElapsedTime; // elapsed seconds
 
     // constants and variables for managing sounds
     public static final int TARGET_SOUND_ID = 0;
@@ -99,7 +98,7 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
 
     float speed = 0f;
 
-    HashMap<Integer, Integer> speedTable;
+//    HashMap<Integer, Integer> speedTable;
 
     Paint tooFastAlarmPaint;
 
@@ -522,12 +521,12 @@ public class TrafficView extends SurfaceView implements SurfaceHolder.Callback {
                             drawMotorcycle(canvas);
                             initForwardVehicle();
 
+                            drawSpeedAlert(canvas);
+
                             updateCarPosition(canvas); // draw using the canvas
 
                             drawSpeedMeter(canvas, String.valueOf(toKmh(nCurrentSpeed)));
                             drawPositionMeter(canvas);
-
-                            drawSpeedAlert(canvas);
 
                             Thread.sleep(1);
                             System.out.println("threadlooper");
