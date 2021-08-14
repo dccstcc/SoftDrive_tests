@@ -6,9 +6,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +23,6 @@ import pl.pjatk.softdrive.view.MainViewActivity;
 
 public class RestCtrlActivity extends AppCompatActivity {
 
-    Button btnHitDist;
-    TextView txtJsonDist;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -37,7 +34,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            System.out.println("! NO GPS PERMISSION Rest CTRL !");
+            Log.e("GPS","NO GPS PERMISSION");
 
             ActivityCompat.requestPermissions(RestCtrlActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
         }
@@ -86,20 +83,6 @@ public class RestCtrlActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-//        //https://developer.android.com/training/system-ui/navigation
-//        View decorView = getWindow().getDecorView();
-//        // Hide both the navigation bar and the status bar.
-//        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-//        // a general rule, you should design your app to hide the status bar whenever you
-//        // hide the navigation bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-    }
 }
 
 
