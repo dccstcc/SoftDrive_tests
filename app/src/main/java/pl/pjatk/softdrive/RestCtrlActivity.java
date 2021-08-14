@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 import pl.pjatk.softdrive.rest.controllers.GetDistanceCtrl;
 import pl.pjatk.softdrive.view.MainViewActivity;
 
-//import pl.pjatk.softdrive.rest.services.RestScan2dService;
 
 public class RestCtrlActivity extends AppCompatActivity {
 
@@ -28,6 +27,7 @@ public class RestCtrlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ctrl_rest);
 
         if (ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -73,7 +73,6 @@ public class RestCtrlActivity extends AppCompatActivity {
         ex.execute(new Runnable() {
             @Override
             public void run() {
-                setContentView(R.layout.activity_ctrl_rest);
                 FrameLayout layout = findViewById(R.id.logo_anim_layout);
                 layout.animate().translationYBy(-1000f).setDuration(10000L);
                 layout.animate().rotationYBy(1000f).setDuration(10000L);
