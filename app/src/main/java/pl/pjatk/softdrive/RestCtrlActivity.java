@@ -3,10 +3,11 @@ package pl.pjatk.softdrive;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -26,6 +27,7 @@ public class RestCtrlActivity extends AppCompatActivity {
     Button btnHitDist;
     TextView txtJsonDist;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +42,7 @@ public class RestCtrlActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(RestCtrlActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
         }
 
-
-        setContentView(R.layout.activity_ctrl_rest);
-
-        ViewGroup sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
-
+        logoAnimation();
 
         ExecutorService e1 = Executors.newCachedThreadPool();
                 Runnable rRest = new Runnable() {
@@ -71,6 +69,21 @@ public class RestCtrlActivity extends AppCompatActivity {
 
         e1.execute(rRest);
         e2.execute(rView);
+    }
+
+    private void logoAnimation() {
+        ExecutorService ex = Executors.newCachedThreadPool();
+        ex.execute(new Runnable() {
+            @Override
+            public void run() {
+                setContentView(R.layout.activity_ctrl_rest);
+                FrameLayout layout = findViewById(R.id.logo_anim_layout);
+                layout.animate().translationYBy(-1000f).setDuration(10000L);
+                layout.animate().rotationYBy(1000f).setDuration(10000L);
+                layout.setBackgroundColor(Color.BLACK);
+            }
+        });
+
     }
 
     @Override
