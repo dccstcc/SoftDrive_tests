@@ -6,71 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/light">
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/logo_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Front car distance:"
-        android:textColor="@color/dark"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="36dp" />
-
-    <Button
-        android:id="@+id/btnHitDist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:text="get JSON distance"
-        android:textColor="@color/light"
-        app:backgroundTint="@color/dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/JsonDistTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHitDist" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back cars map coordinates:"
-        android:textColor="@color/light"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JsonDistTxt" />
-
-    <Button
-        android:id="@+id/btnHitSpace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="get JSON space metrics"
-        android:textColor="@color/light"
-        app:backgroundTint="@color/dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/JsonSpaceTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHitSpace" />
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_transparent"
+        tools:layout_editor_absoluteX="5dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
