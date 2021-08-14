@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 public class EnableRouterActivity extends AppCompatActivity {
 
-    WifiManager wifiManager;
+    private WifiManager wifiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +60,12 @@ public class EnableRouterActivity extends AppCompatActivity {
         });
     }
 
-
     private boolean isApEnable() {
         WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
         boolean ret = false;
         try{
-            Method isWifiApEnabledmethod = wifiManager.getClass().getMethod("isWifiApEnabled");
-            boolean isApEnable = (Boolean) isWifiApEnabledmethod.invoke(wifiManager);
+            Method isWifiApEnabledMethod = wifiManager.getClass().getMethod("isWifiApEnabled");
+            boolean isApEnable = (Boolean) isWifiApEnabledMethod.invoke(wifiManager);
             ret = isApEnable;
         } catch (Exception e) {
             e.printStackTrace();

@@ -12,7 +12,6 @@ public class Exit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        IpAddressCtrl.getInstance().getSchedExecutor().shutdownNow();
         finishAndRemoveTask();
     }
 }

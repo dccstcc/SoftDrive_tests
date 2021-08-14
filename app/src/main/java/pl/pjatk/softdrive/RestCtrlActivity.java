@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import pl.pjatk.softdrive.rest.controllers.IpAddressCtrl;
+import pl.pjatk.softdrive.rest.controllers.GetDistanceCtrl;
 import pl.pjatk.softdrive.view.MainViewActivity;
 
 //import pl.pjatk.softdrive.rest.services.RestScan2dService;
@@ -24,9 +24,7 @@ import pl.pjatk.softdrive.view.MainViewActivity;
 public class RestCtrlActivity extends AppCompatActivity {
 
     Button btnHitDist;
-    Button btnHitSpace;
     TextView txtJsonDist;
-    TextView txtJsonSpace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +32,7 @@ public class RestCtrlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ctrl_rest);
 
         btnHitDist = (Button) findViewById(R.id.btnHitDist);
-        btnHitSpace = (Button) findViewById(R.id.btnHitSpace);
         txtJsonDist = (TextView) findViewById(R.id.JsonDistTxt);
-        txtJsonSpace = (TextView) findViewById(R.id.JsonSpaceTxt);
 
         if (ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -46,8 +42,10 @@ public class RestCtrlActivity extends AppCompatActivity {
             System.out.println("! NO GPS PERMISSION Rest CTRL !");
 
             ActivityCompat.requestPermissions(RestCtrlActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-
         }
+
+
+        setContentView(R.layout.activity_main);
 
 
         btnHitDist.setOnClickListener(new View.OnClickListener() {
@@ -55,16 +53,13 @@ public class RestCtrlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //new DbManager(RestCtrlActivity.this)
-
                 ExecutorService e1 = Executors.newCachedThreadPool();
                 e1.execute(new Runnable() {
                     @Override
                     public void run() {
-                        new IpAddressCtrl().findRtrIpB4(1);
+                        new GetDistanceCtrl().findRtrIpB4(1);
                     }
                 });
-//                new IpAddressCtrl().findRtrIpB4(1);
 
                 ExecutorService e2 = Executors.newCachedThreadPool();
                 e2.execute(new Runnable() {
@@ -83,50 +78,28 @@ public class RestCtrlActivity extends AppCompatActivity {
             }
         });
 
-        btnHitSpace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                WorkRequest distanceWorkRequest =
-//                        new OneTimeWorkRequest.Builder(RestDistanceService.class).build();
-//                WorkManager
-//                        .getInstance(getApplicationContext())
-//                        .enqueue(distanceWorkRequest);
-
-//                WorkRequest scan2dWorkRequest =
-//                        new OneTimeWorkRequest.Builder(RestScan2dService.class).build();
-//                WorkManager
-//                        .getInstance(getApplicationContext())
-//                        .enqueue(scan2dWorkRequest);
-//
-//
-//                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(RestCtrlActivity.this);
-//                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
-//                taskStackBuilder.addNextIntentWithParentStack(intent);
-//                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//                taskStackBuilder.startActivities();
-
-            }
-        });
-
+        try {
+            Thread.sleep(10000);
+            btnHitDist.callOnClick();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        //https://developer.android.com/training/system-ui/navigation
-        View decorView = getWindow().getDecorView();
-        // Hide both the navigation bar and the status bar.
-        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-        // a general rule, you should design your app to hide the status bar whenever you
-        // hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+//        //https://developer.android.com/training/system-ui/navigation
+//        View decorView = getWindow().getDecorView();
+//        // Hide both the navigation bar and the status bar.
+//        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+//        // a general rule, you should design your app to hide the status bar whenever you
+//        // hide the navigation bar.
+//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
     }
-
-
 }
 
 
