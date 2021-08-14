@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -29,10 +28,6 @@ public class RestCtrlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ctrl_rest);
-
-        btnHitDist = (Button) findViewById(R.id.btnHitDist);
-        txtJsonDist = (TextView) findViewById(R.id.JsonDistTxt);
 
         if (ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -45,45 +40,34 @@ public class RestCtrlActivity extends AppCompatActivity {
         }
 
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ctrl_rest);
 
-
-        btnHitDist.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
 
                 ExecutorService e1 = Executors.newCachedThreadPool();
-                e1.execute(new Runnable() {
+                Runnable rRest = new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void run() {
                         new GetDistanceCtrl().findRtrIpB4(1);
                     }
-                });
+                };
 
                 ExecutorService e2 = Executors.newCachedThreadPool();
-                e2.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(7000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-            }
-        });
-
-        try {
-            Thread.sleep(10000);
-            btnHitDist.callOnClick();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+                Runnable rView = new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(10000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+                                startActivity(intent);
+                            }
+                        };
+                
+        e1.execute(rRest);
+        e2.execute(rView);
     }
 
     @Override
