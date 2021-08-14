@@ -77,7 +77,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
     @Override
     public void onResponse(Call<Distance> call, Response<Distance> response) {
 
-        System.out.println("Response callback - OK\n");
+        Log.v("Response callback", "call callback");
 
         getGson().toJson(response.body());
 
@@ -122,26 +122,18 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                 return;
 
             }
-
-
-
-
-
-
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onFailure(Call<Distance> call, Throwable t){
-        Log.e("REST error for Distance", "onFailure method - error Distance. IP addr is not exist");
+        Log.e("try find IP", "IP not exist");
 
         call = call.clone();
 
-
                 setDistancePartialUrl(String.valueOf(fourthIp));
                 updateDistanceRetrofit();
-
 
         fourthIp++;
 
@@ -150,9 +142,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
             return;
         }
 
-//        this.prepareIp(fourthIp).prepareCall().call();
         this.prepareIp(fourthIp).prepareCall().call();
-
     }
 }
 
