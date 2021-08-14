@@ -110,7 +110,6 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
                 String ip3b = prepareIp(fourthIp).ip.getIp();
 
                 IFromRestCallback.getDistanceRouterIp(fourthIp);
-                System.out.print("response");
 
                 try {
                     IFromRestCallback.getDistanceResponse(response.body());
