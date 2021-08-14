@@ -185,7 +185,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     protected void drawSpeedAlert(Canvas canvas) {
         int fwDistMetric = forwardDistance / 100;
 
-        if(isTooFast(speed, fwDistMetric)) {
+        if(isTooFast(speed, fwDistMetric) && speed > 0) {
             int safeSpeed = getSafeSpeed(speed, fwDistMetric);
             safeSpeed *= (0.001f / (1f/3600f));
             tooFastAlarmPaint.setTextSize(140);
