@@ -38,7 +38,7 @@ import pl.pjatk.softdrive.gps.IBaseGpsListener;
 
 public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final String TAG = "SurfaceView"; // for logging errors
+    private static final String TAG = "UiView"; // for logging errors
 
     private CannonThread cannonThread; // controls the UI loop
 
@@ -185,7 +185,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     protected void drawSpeedAlert(Canvas canvas) {
         int fwDistMetric = forwardDistance / 100;
 
-        if(isTooFast(speed, fwDistMetric) || true) {
+        if(isTooFast(speed, fwDistMetric)) {
             int safeSpeed = getSafeSpeed(speed, fwDistMetric);
             safeSpeed *= (0.001f / (1f/3600f));
             tooFastAlarmPaint.setTextSize(140);
@@ -243,9 +243,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
 
-        if(db.getDbDistance() < 0 || true) {
+        if(db.getDbDistance() < 0) {
             ++count;
-            if(count>15 || true) {
+            if(count>20) {
                 canvas.drawText("..car detection..", 120, 300, ptConnAlert);
                 forwardVehicle.draw(canvas);
             }
