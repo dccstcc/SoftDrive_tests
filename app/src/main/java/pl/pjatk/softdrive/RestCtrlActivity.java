@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -42,8 +43,10 @@ public class RestCtrlActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ctrl_rest);
 
+        ViewGroup sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
 
-                ExecutorService e1 = Executors.newCachedThreadPool();
+
+        ExecutorService e1 = Executors.newCachedThreadPool();
                 Runnable rRest = new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
@@ -65,7 +68,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         };
-                
+
         e1.execute(rRest);
         e2.execute(rView);
     }
