@@ -2,8 +2,6 @@ package pl.pjatk.softdrive.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
@@ -21,7 +19,7 @@ public class Motorcycle {
     private int displayHeight;
 
     private Rect motor;
-    private Paint paint = new Paint();
+    //private Paint paint = new Paint();
 
     public Motorcycle(Context context, Canvas canvas, int width, int height) {
 
@@ -33,7 +31,7 @@ public class Motorcycle {
         yCoord = (int) (displayHeight/2 - height/2);
 
         motor = new Rect(xCoord, yCoord, xCoord + width, yCoord + height);
-        paint.setColor(Color.BLUE);
+        //paint.setColor(Color.BLUE);
 
         Drawable motorPng = context.getResources().getDrawable(R.drawable.motorcycle_top);
         motorPng.setBounds(motor);

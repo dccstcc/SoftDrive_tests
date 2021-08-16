@@ -1,6 +1,6 @@
 package pl.pjatk.softdrive.view;
 
-import android.Manifest;
+import  android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -117,15 +117,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         distRegulator = 1;
 
         count = 0;
-    }
 
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenWidth = w; // store view width
-        screenHeight = h; // store view height
+        screenWidth = displayWidth; // store view width
+        screenHeight = displayHeight; // store view height
     }
 
     protected synchronized void initConstant() {
@@ -133,7 +127,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
         this.motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
         textPaint.setTextSize((int) (TEXT_SIZE_PERCENT * screenHeight));
-        textPaint.setAntiAlias(true); // smoothes the text
+        //textPaint.setAntiAlias(true); // smoothes the text
         backgroundPaint.setColor(Color.GRAY);
         tooFastAlarmPaint.setColor(Color.YELLOW);
         ptConnAlert.setColor(Color.WHITE);
@@ -227,7 +221,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void updateCarPosition(Canvas canvas) throws InterruptedException, ExecutionException {
+    protected void updateCarPosition(Canvas canvas)  {
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
         forwardVehicle.draw(canvas);
 
@@ -278,6 +272,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         });
 
     }
+
+    @Override
+    public void onSizeChanged(int w, int h, int oldw, int oldh) {}
 
     // called when surface changes size
     @Override
