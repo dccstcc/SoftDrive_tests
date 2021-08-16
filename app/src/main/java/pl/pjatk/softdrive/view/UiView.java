@@ -185,14 +185,14 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     protected void drawSpeedAlert(Canvas canvas) {
         int fwDistMetric = forwardDistance / 100;
 
-        if(isTooFast(speed, fwDistMetric) && speed > 0) {
+        boolean isTooFast = false;
+        if(speed>0) isTooFast = isTooFast(speed, fwDistMetric);
+
+        if(isTooFast) {
             int safeSpeed = getSafeSpeed(speed, fwDistMetric);
-            safeSpeed *= (0.001f / (1f/3600f));
+            //safeSpeed *= (0.001f / (1f / 3600f));
             tooFastAlarmPaint.setTextSize(140);
             canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
-            forwardVehicle.paint.setColor(Color.RED);
-        } else {
-            forwardVehicle.paint.setColor(Color.GREEN);
         }
     }
 
@@ -339,8 +339,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
             initCLocation();
 
-            schedExecutor = Executors.newScheduledThreadPool(5);
+            schedExecutor = Executors.newScheduledThreadPool(20);
             es = Executors.newCachedThreadPool();
+
+            nCurrentSpeed = -1f;
         }
 
         public void start() {
@@ -357,14 +359,17 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                             // get Canvas for exclusive drawing from this thread
                             canvas = surfaceHolder.lockCanvas(null);
 
-                        synchronized(surfaceHolder) {
+                        synchronized(canvas) {
                             initConstant();
 
                             updateActualDistance();
+
                             updateActualSpeed(nCurrentSpeed);
 
                             drawBackground(canvas);
+
                             initForwardVehicle();
+
                             drawMotorcycle(canvas);
 
                             drawSpeedAlert(canvas);
@@ -372,6 +377,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                             updateCarPosition(canvas);
 
                             drawSpeedMeter(canvas, String.valueOf(toKmh(nCurrentSpeed)));
+
                             drawPositionMeter(canvas);
 
                             Thread.sleep(1); // threads deadlock control
@@ -391,14 +397,14 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         private float updateSpeed(CLocation location) {
 
-            nCurrentSpeed = 9999;
+            nCurrentSpeed = -2f;
 
             if (location != null) {
                 location.setUseMetricunits(true);
                 nCurrentSpeed = location.getSpeed();
             }
 
-            return nCurrentSpeed;
+            return nCurrentSpeed > 0 ? nCurrentSpeed : -3f;
         }
 
         private void initCLocation() {
@@ -421,7 +427,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void onLocationChanged(Location location) {
 
-            es = Executors.newCachedThreadPool();
 
             es.execute(new Runnable() {
                 @Override
@@ -434,7 +439,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             });
 
-            es.shutdown();
+            //es.shutdown();
         }
 
         @Override
