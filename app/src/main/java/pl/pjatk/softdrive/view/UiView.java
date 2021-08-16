@@ -128,7 +128,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         screenHeight = h; // store view height
     }
 
-    protected void initConstant() {
+    protected synchronized void initConstant() {
         this.width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
         this.motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
@@ -140,7 +140,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         ptConnAlert.setTextSize(120);
     }
 
-    protected void updateActualDistance() throws ExecutionException, InterruptedException {
+    protected synchronized void updateActualDistance() throws ExecutionException, InterruptedException {
 
         distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
 
@@ -149,7 +149,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("car distance regulate", forwardDistance/100 + " meter");
     }
 
-    protected void updateActualSpeed(float motorcycleSpeed) {
+    protected synchronized void updateActualSpeed(float motorcycleSpeed) {
         this.speed = motorcycleSpeed;
         Log.v("actual speed", speed + " m/s");
     }
@@ -165,7 +165,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                 (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight));
     }
 
-    protected void initForwardVehicle() {
+    protected synchronized void initForwardVehicle() {
         int xCenter = displayWidth / 2 - width / 2;
 
         forwardVehicle = new ForwardVehicle(
@@ -235,7 +235,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("car distance: ", forwardDistance/100 + " meter");
     }
 
-    protected void drawSpeedMeter(Canvas canvas, String text) {
+    protected synchronized void drawSpeedMeter(Canvas canvas, String text) {
         canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
     }
 
