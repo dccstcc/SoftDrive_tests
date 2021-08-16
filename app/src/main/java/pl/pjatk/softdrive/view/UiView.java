@@ -189,8 +189,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         if(speed>0) isTooFast = isTooFast(speed, fwDistMetric);
 
         if(isTooFast) {
-            int safeSpeed = getSafeSpeed(speed, fwDistMetric);
-            //safeSpeed *= (0.001f / (1f / 3600f));
+            int safeSpeed = getSafeSpeed(speed);
             tooFastAlarmPaint.setTextSize(140);
             canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
         }
@@ -212,7 +211,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return isTooFast;
     }
 
-    protected int getSafeSpeed(float speed, int distance) {
+    protected int getSafeSpeed(float speed) {
         // 9 m/s^2
         float breakLatency = 9f;
         // V = at
@@ -296,7 +295,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    protected int toKmh(float speed) {return (int) (speed *= (0.001f / (1f/3600f)));}
+    protected int toKmh(float speed) {return speed > 0 ? (int) (speed *= (0.001f / (1f/3600f))) : (int) speed;}
 
     // hide system bars and app bar
     protected void hideSystemBars() {
@@ -342,7 +341,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             schedExecutor = Executors.newScheduledThreadPool(20);
             es = Executors.newCachedThreadPool();
 
-            nCurrentSpeed = -1f;
+            nCurrentSpeed = -10f;
         }
 
         public void start() {
@@ -397,14 +396,14 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         private float updateSpeed(CLocation location) {
 
-            nCurrentSpeed = -2f;
+            nCurrentSpeed = -20f;
 
             if (location != null) {
                 location.setUseMetricunits(true);
                 nCurrentSpeed = location.getSpeed();
             }
 
-            return nCurrentSpeed > 0 ? nCurrentSpeed : -3f;
+            return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
         }
 
         private void initCLocation() {
