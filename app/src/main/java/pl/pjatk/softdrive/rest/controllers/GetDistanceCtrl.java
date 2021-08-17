@@ -5,7 +5,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,7 +75,7 @@ public class GetDistanceCtrl extends Application {
                                     public void getScan2dResponse(Float[] value) {}
 
                                     @Override
-                                    public void getDistanceResponse(Distance value) throws InterruptedException, ExecutionException {
+                                    public void getDistanceResponse(Distance value) {
 
                                         db = new DbManager(getInstance());
 

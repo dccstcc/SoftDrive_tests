@@ -141,7 +141,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
 
-        forwardDist = distRegulator;
+        forwardDist = distRegulator < 4000 ? distRegulator : 4000;
 
         Log.v("car distance regulate", forwardDist + " meter");
     }
