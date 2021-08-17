@@ -333,7 +333,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // Thread subclass to control the UI loop
-    private class CannonThread {
+    private class CannonThread implements IBaseGpsListener{
 
         private SurfaceHolder surfaceHolder; // for manipulating canvas
 
@@ -346,7 +346,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
 
-//            initCLocation();
+            initCLocation();
 
             schedExecutor = Executors.newScheduledThreadPool(20);
             es = Executors.newCachedThreadPool();
@@ -370,7 +370,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                         synchronized (canvas) {
 
-                            nCurrentSpeed++;
+//                            nCurrentSpeed++;
 //                            if(nCurrentSpeed==0) nCurrentSpeed =1;
 
                             initConstant();
@@ -407,150 +407,150 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             schedExecutor.scheduleAtFixedRate(rtask, 0, 250, TimeUnit.MILLISECONDS);
         }
 
-//        @RequiresApi(api = Build.VERSION_CODES.O)
-//        private synchronized float updateSpeed(CLocation location) {
-//
-//            nCurrentSpeed = -20f;
-//
-//            if (location != null) {
-//                location.setUseMetricunits(true);
-//                nCurrentSpeed = location.getSpeed();
-//            }
-//
-//            return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
-//        }
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private synchronized float updateSpeed(CLocation location) {
 
-//        private void initCLocation() {
-//
-//                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-//                    if (ActivityCompat.checkSelfPermission(getContext(),
-//                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                            && ActivityCompat.checkSelfPermission(getContext(),
-//                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                        Log.v("GPS", "! NO GPS PERMISSION !");
-//
-//                    }
-//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-//
-//        }
+            nCurrentSpeed = -20f;
 
-//        @RequiresApi(api = Build.VERSION_CODES.O)
-//        @Override
-//        public synchronized void onLocationChanged(Location location) {
-
-
-//            es.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    synchronized(location) {
-//                        Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
-//                        Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
-
-//                        myGpsLocation = new CLocation(location, true);
-//                        nCurrentSpeed = updateSpeed(myGpsLocation);
-//                        nCurrentSpeed = location.getSpeed();
-
-//                    }
-
-//                }
-//            });
-
-        //es.shutdown();
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String provider) {}
-//
-//        @Override
-//        public void onProviderEnabled(String provider) {}
-//
-//        @Override
-//        public void onGpsStatusChanged(int event) {}
-//
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {}
-//    }
-
-        private class GpsCallback implements IBaseGpsListener {
-            //private float nCurrentSpeed;
-            private CLocation myGpsLocation;
-            ExecutorService es = Executors.newCachedThreadPool();
-
-            public GpsCallback() {
-                //nCurrentSpeed = -10f;
-
-//            initCLocation();
+            if (location != null) {
+                location.setUseMetricunits(true);
+                nCurrentSpeed = location.getSpeed();
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            private synchronized float updateSpeed(CLocation location) {
+            return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
+        }
 
-                nCurrentSpeed = -20f;
+        private void initCLocation() {
 
-                if (location != null) {
-                    location.setUseMetricunits(true);
-                    nCurrentSpeed = location.getSpeed();
-                }
+                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                    if (ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
-            }
-
-            private void initCLocation() {
-
-                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-                if (ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    Log.v("GPS", "! NO GPS PERMISSION !");
-
-                }
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public synchronized void onLocationChanged(Location location) {
-
-                initCLocation();
-
-                es.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (location) {
-                            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
-                            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
-
-                            myGpsLocation = new CLocation(location, true);
-                            nCurrentSpeed = updateSpeed(myGpsLocation);
-                        }
+                        Log.v("GPS", "! NO GPS PERMISSION !");
 
                     }
-                });
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
-                //es.shutdown();
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onGpsStatusChanged(int event) {
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
         }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public synchronized void onLocationChanged(Location location) {
+
+
+            es.execute(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized(location) {
+                        Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+                        Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
+
+                        myGpsLocation = new CLocation(location, true);
+                        nCurrentSpeed = updateSpeed(myGpsLocation);
+                        nCurrentSpeed = location.getSpeed();
+
+                    }
+
+                }
+            });
+
+//        es.shutdown();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onGpsStatusChanged(int event) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
+
+//        private class GpsCallback implements IBaseGpsListener {
+//            //private float nCurrentSpeed;
+//            private CLocation myGpsLocation;
+//            ExecutorService es = Executors.newCachedThreadPool();
+//
+//            public GpsCallback() {
+//                //nCurrentSpeed = -10f;
+//
+////            initCLocation();
+//            }
+//
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            private synchronized float updateSpeed(CLocation location) {
+//
+//                nCurrentSpeed = -20f;
+//
+//                if (location != null) {
+//                    location.setUseMetricunits(true);
+//                    nCurrentSpeed = location.getSpeed();
+//                }
+//
+//                return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
+//            }
+//
+//            private void initCLocation() {
+//
+//                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+//                if (ActivityCompat.checkSelfPermission(getContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                        && ActivityCompat.checkSelfPermission(getContext(),
+//                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                    Log.v("GPS", "! NO GPS PERMISSION !");
+//
+//                }
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+//
+//            }
+//
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public synchronized void onLocationChanged(Location location) {
+//
+//                initCLocation();
+//
+//                es.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        synchronized (location) {
+//                            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+//                            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
+//
+//                            myGpsLocation = new CLocation(location, true);
+//                            nCurrentSpeed = updateSpeed(myGpsLocation);
+//                        }
+//
+//                    }
+//                });
+//
+//                //es.shutdown();
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//            }
+//
+//            @Override
+//            public void onGpsStatusChanged(int event) {
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//            }
+//        }
+//    }
 }
