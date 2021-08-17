@@ -1,6 +1,6 @@
 package pl.pjatk.softdrive.view;
 
-import  android.Manifest;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -85,10 +85,12 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     // helpers and temporary
     private int forwardDistance = 0;
     private String motorcycleSpeed = "none";
-    private float speed = 0f;
+    private static float speed = 0f;
     private int distRegulator;
     private int motorHeight = 0;
     private int count;
+
+    private static float nCurrentSpeed;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -120,6 +122,8 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         screenWidth = displayWidth; // store view width
         screenHeight = displayHeight; // store view height
+
+        nCurrentSpeed = 0.4f;
     }
 
     protected synchronized void initConstant() {
@@ -132,7 +136,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         tooFastAlarmPaint.setColor(Color.YELLOW);
         ptConnAlert.setColor(Color.WHITE);
         ptConnAlert.setTextSize(120);
+//        nCurrentSpeed = 0.3f;
     }
+
 
     protected synchronized void updateActualDistance() throws ExecutionException, InterruptedException {
 
@@ -140,7 +146,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         forwardDistance = distRegulator;
 
-        Log.v("car distance regulate", forwardDistance/100 + " meter");
+        Log.v("car distance regulate", forwardDistance / 100 + " meter");
     }
 
     protected synchronized void updateActualSpeed(float motorcycleSpeed) {
@@ -180,9 +186,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         int fwDistMetric = forwardDistance / 100;
 
         boolean isTooFast = false;
-        if(speed>0) isTooFast = isTooFast(speed, fwDistMetric);
+        if (speed > 0) isTooFast = isTooFast(speed, fwDistMetric);
 
-        if(isTooFast) {
+        if (isTooFast) {
             int safeSpeed = getSafeSpeed(speed);
             tooFastAlarmPaint.setTextSize(140);
             canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
@@ -200,7 +206,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         float breakDistance = (breakLatency * breakTime * breakTime) / 2;
         int breakDistanceInt = Math.round(breakDistance);
 
-        if(breakDistanceInt >= distance) isTooFast = true;
+        if (breakDistanceInt >= distance) isTooFast = true;
 
         return isTooFast;
     }
@@ -212,20 +218,21 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         float breakTime = speed / breakLatency;
         // S = at^2 / 2
         float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        int breakDistanceInt = Math.round(breakDistance);
+        //int breakDistanceInt = Math.round(breakDistance);
         // V = s/t
-        if (breakTime == 0) breakTime = 1;
-        int safeSpeed = breakDistanceInt / Math.round(breakTime);
+        //if (breakTime == 0) breakTime = 1;
+//        int safeSpeed = breakDistanceInt / Math.round(breakTime);
+        float safeSpeed = breakDistance / breakTime;
 
         return toKmh(safeSpeed);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void updateCarPosition(Canvas canvas)  {
+    protected void updateCarPosition(Canvas canvas) {
         forwardVehicle.updateForwardVehiclePosition(forwardDistance, motor.getyCoord(), motor.getHeight());
         forwardVehicle.draw(canvas);
 
-        Log.v("car distance: ", forwardDistance/100 + " meter");
+        Log.v("car distance: ", forwardDistance / 100 + " meter");
     }
 
     protected synchronized void drawSpeedMeter(Canvas canvas, String text) {
@@ -236,9 +243,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawText("dist: " + forwardDistance, 600, 100, textPaint);
 
-        if(db.getDbDistance() < 0) {
+        if (db.getDbDistance() < 0) {
             ++count;
-            if(count>20) {
+            if (count > 20) {
                 canvas.drawText("..car detection..", 120, 300, ptConnAlert);
                 forwardVehicle.draw(canvas);
             }
@@ -274,16 +281,20 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {}
+    public void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        super.onSizeChanged(w,h,oldw,oldh);
+    }
 
     // called when surface changes size
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format,
-                               int width, int height) {}
+                               int width, int height) {
+    }
 
     // called when the surface is destroyed
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {}
+    public void surfaceDestroyed(SurfaceHolder holder) {
+    }
 
     // called when the user touches the screen in this activity
     @Override
@@ -292,7 +303,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    protected int toKmh(float speed) {return speed > 0 ? (int) (speed *= (0.001f / (1f/3600f))) : (int) speed;}
+    protected int toKmh(float speed) {
+        return speed > 0 ? (int) (speed *= (0.001f / (1f / 3600f))) : (int) speed;
+    }
 
     // hide system bars and app bar
     protected void hideSystemBars() {
@@ -320,20 +333,20 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // Thread subclass to control the UI loop
-    private class CannonThread implements IBaseGpsListener {
+    private class CannonThread {
 
         private SurfaceHolder surfaceHolder; // for manipulating canvas
 
         private ExecutorService es;
         private CLocation myGpsLocation;
-        private float nCurrentSpeed;
+        //private float nCurrentSpeed;
 
         // initializes the surface holder
         @RequiresApi(api = Build.VERSION_CODES.O)
         public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
 
-            initCLocation();
+//            initCLocation();
 
             schedExecutor = Executors.newScheduledThreadPool(20);
             es = Executors.newCachedThreadPool();
@@ -351,17 +364,21 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                     Canvas canvas = null; // used for drawing
 
-                        try {
-                            // get Canvas for exclusive drawing from this thread
-                            canvas = surfaceHolder.lockCanvas(null);
+                    try {
+                        // get Canvas for exclusive drawing from this thread
+                        canvas = surfaceHolder.lockCanvas(null);
 
-                        synchronized(canvas) {
+                        synchronized (canvas) {
+
+                            nCurrentSpeed++;
+//                            if(nCurrentSpeed==0) nCurrentSpeed =1;
+
                             initConstant();
 
                             updateActualDistance();
 
                             updateActualSpeed(nCurrentSpeed);
-
+//
                             drawBackground(canvas);
 
                             initForwardVehicle();
@@ -378,76 +395,162 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                             Thread.sleep(1); // threads deadlock control
                         }
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (canvas != null)
-                                surfaceHolder.unlockCanvasAndPost(canvas);
-                        }
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (canvas != null)
+                            surfaceHolder.unlockCanvasAndPost(canvas);
                     }
+                }
             };
 
-            schedExecutor.scheduleAtFixedRate(rtask,0, 250, TimeUnit.MILLISECONDS);
+            schedExecutor.scheduleAtFixedRate(rtask, 0, 250, TimeUnit.MILLISECONDS);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        private float updateSpeed(CLocation location) {
+//        @RequiresApi(api = Build.VERSION_CODES.O)
+//        private synchronized float updateSpeed(CLocation location) {
+//
+//            nCurrentSpeed = -20f;
+//
+//            if (location != null) {
+//                location.setUseMetricunits(true);
+//                nCurrentSpeed = location.getSpeed();
+//            }
+//
+//            return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
+//        }
 
-            nCurrentSpeed = -20f;
+//        private void initCLocation() {
+//
+//                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+//                    if (ActivityCompat.checkSelfPermission(getContext(),
+//                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && ActivityCompat.checkSelfPermission(getContext(),
+//                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                        Log.v("GPS", "! NO GPS PERMISSION !");
+//
+//                    }
+//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+//
+//        }
 
-            if (location != null) {
-                location.setUseMetricunits(true);
-                nCurrentSpeed = location.getSpeed();
+//        @RequiresApi(api = Build.VERSION_CODES.O)
+//        @Override
+//        public synchronized void onLocationChanged(Location location) {
+
+
+//            es.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    synchronized(location) {
+//                        Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+//                        Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
+
+//                        myGpsLocation = new CLocation(location, true);
+//                        nCurrentSpeed = updateSpeed(myGpsLocation);
+//                        nCurrentSpeed = location.getSpeed();
+
+//                    }
+
+//                }
+//            });
+
+        //es.shutdown();
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String provider) {}
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {}
+//
+//        @Override
+//        public void onGpsStatusChanged(int event) {}
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) {}
+//    }
+
+        private class GpsCallback implements IBaseGpsListener {
+            //private float nCurrentSpeed;
+            private CLocation myGpsLocation;
+            ExecutorService es = Executors.newCachedThreadPool();
+
+            public GpsCallback() {
+                //nCurrentSpeed = -10f;
+
+//            initCLocation();
             }
 
-            return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
-        }
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            private synchronized float updateSpeed(CLocation location) {
 
-        private void initCLocation() {
+                nCurrentSpeed = -20f;
 
-                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-                    if (ActivityCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                            && ActivityCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (location != null) {
+                    location.setUseMetricunits(true);
+                    nCurrentSpeed = location.getSpeed();
+                }
 
-                        Log.v("GPS", "! NO GPS PERMISSION !");
+                return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
+            }
+
+            private void initCLocation() {
+
+                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.v("GPS", "! NO GPS PERMISSION !");
+
+                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public synchronized void onLocationChanged(Location location) {
+
+                initCLocation();
+
+                es.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (location) {
+                            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
+                            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
+
+                            myGpsLocation = new CLocation(location, true);
+                            nCurrentSpeed = updateSpeed(myGpsLocation);
+                        }
 
                     }
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+                });
 
+                //es.shutdown();
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onGpsStatusChanged(int event) {
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
         }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void onLocationChanged(Location location) {
-
-
-            es.execute(new Runnable() {
-                @Override
-                public void run() {
-                    Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
-                    Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
-
-                    myGpsLocation = new CLocation(location, true);
-                    nCurrentSpeed = updateSpeed(myGpsLocation);
-                }
-            });
-
-            //es.shutdown();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onGpsStatusChanged(int event) {}
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 }

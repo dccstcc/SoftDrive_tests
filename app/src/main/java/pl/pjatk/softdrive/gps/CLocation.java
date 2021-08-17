@@ -60,7 +60,7 @@ public class CLocation extends Location {
     }
 
     @Override
-    public float getSpeed() {
+    public synchronized float getSpeed() {
         float nSpeed = super.getSpeed();
         if(!this.getUseMetricUnits())
         {
