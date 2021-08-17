@@ -152,11 +152,11 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("actual speed", speed + " m/s");
     }
 
-    protected void drawBackground(Canvas canvas) {
+    protected synchronized void drawBackground(Canvas canvas) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
     }
 
-    protected void drawMotorcycle(Canvas canvas) {
+    protected synchronized void drawMotorcycle(Canvas canvas) {
         motor = new Motorcycle(getContext(),
                 canvas,
                 (int) (MOTORCYCLE_WIDTH_PERCENT * displayWidth),
@@ -180,7 +180,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         );
     }
 
-    protected void drawSpeedAlert(Canvas canvas) {
+    protected synchronized void drawSpeedAlert(Canvas canvas) {
 //        int fwDistMetric = forwardDistance / 100;
 
         boolean isTooFast = false;
@@ -189,7 +189,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         if (isTooFast) {
             int safeSpeed = getSafeSpeed(forwardDistMetric);
             tooFastAlarmPaint.setTextSize(140);
-            if(safeSpeed > 0) canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
+            if(safeSpeed > 0 && speed - safeSpeed > 5) canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
         }
     }
 
@@ -200,11 +200,12 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         float breakLatency = 9f;
         // V = at
         float breakTime = speed / breakLatency;
-        // S = at^2 / 2
-        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        int breakDistanceInt = Math.round(breakDistance);
-
-        if (breakDistanceInt > distance) isTooFast = true;
+//        // S = at^2 / 2
+//        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+//        int breakDistanceInt = Math.round(breakDistance);
+        // S = Vt
+        int breakDistance = (int) (speed * breakTime);
+        if (breakDistance > distance) isTooFast = true;
 
         return isTooFast;
     }
@@ -233,7 +234,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void updateCarPosition(Canvas canvas) {
+    protected synchronized void updateCarPosition(Canvas canvas) {
         forwardVehicle.updateForwardVehiclePosition(forwardDistMetric*100, motor.getyCoord(), motor.getHeight());
         forwardVehicle.draw(canvas);
 
@@ -244,7 +245,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
     }
 
-    protected void drawPositionMeter(Canvas canvas) throws InterruptedException {
+    protected synchronized void drawPositionMeter(Canvas canvas) throws InterruptedException {
 
         canvas.drawText("dist: " + forwardDistMetric*100, 600, 100, textPaint);
 
