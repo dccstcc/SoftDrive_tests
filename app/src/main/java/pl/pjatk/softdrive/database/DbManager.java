@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 /**
  * Customization of database middleware DbHelper
  * @see DbHelper
+ * @author Dominik Stec
  */
 public class DbManager extends DbHelper{
 
@@ -76,6 +77,10 @@ public class DbManager extends DbHelper{
         this.scan2d = scan2d;
     }
 
+    /**
+     * Commit values from buffer into database
+     * @return true if commit succeed
+     */
     public boolean dbCommit() {
 
             // Gets the data repository in write mode
@@ -104,15 +109,29 @@ public class DbManager extends DbHelper{
         return true;
     }
 
+    /**
+     * Clear database commit entries
+     * @param dbWritable SQLite database object
+     */
     private void clearDb(SQLiteDatabase dbWritable) {
         dbWritable.execSQL("delete from " + CreateTable.TableSensorData.TABLE_NAME);
     }
 
+    /**
+     * Numbers of inserted rows getter
+     * @param dbWritable SQLite database object
+     * @return Actual number of rows
+     */
     public long getRowCount(SQLiteDatabase dbWritable) {
         long count = DatabaseUtils.queryNumEntries(dbWritable, CreateTable.TableSensorData.TABLE_NAME);
         return count;
     }
 
+    /**
+     * Latest value of witten distance from table getter
+     * @return Newest value of distance
+     * @throws InterruptedException
+     */
     public int getDbDistance() throws InterruptedException {
 
             SQLiteDatabase dbRead = dbHelper.getReadableDatabase();
