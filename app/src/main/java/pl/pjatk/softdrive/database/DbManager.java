@@ -11,8 +11,15 @@ import android.util.Log;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Customization of database middleware DbHelper
+ * @see DbHelper
+ */
 public class DbManager extends DbHelper{
 
+    /**
+     * Clear database after MAX_ROW_COUNT commits limit
+     */
     public static final long MAX_ROW_COUNT = 200;
 
     private ExecutorService ex;
@@ -22,6 +29,10 @@ public class DbManager extends DbHelper{
     private int distance;
     private String scan2d;
 
+    /**
+     *  Constructor of customized middleware helper class
+     *  @param context this Android application Context object
+     */
     public DbManager(Context context) {
         super(context);
 
@@ -33,18 +44,34 @@ public class DbManager extends DbHelper{
         ex = Executors.newCachedThreadPool();
     }
 
+    /**
+     * Get actual distance from buffer to commit
+     * @return actual set distance
+     */
     public int getDistance() {
         return distance;
     }
 
+    /**
+     * Set actual distance into buffer
+     * @param distance Distance to set
+     */
     public void setDistance(int distance) {
         this.distance = distance;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public String getScan2d() {
         return scan2d;
     }
 
+    /**
+     * TODO
+     * @param scan2d
+     */
     public void setScan2d(String scan2d) {
         this.scan2d = scan2d;
     }
