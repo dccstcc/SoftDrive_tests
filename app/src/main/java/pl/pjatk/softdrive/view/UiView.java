@@ -275,7 +275,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(w,h,oldw,oldh);
     }
 
     // called when surface changes size
