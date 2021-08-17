@@ -82,7 +82,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     private ScheduledExecutorService schedExecutor;
 
     // helpers and temporary
-    private int forwardDistMetric = 0;
+    private int forwardDist = 0;
     private String motorcycleSpeed = "none";
     private static float speed = 0f;
     private int distRegulator;
@@ -134,7 +134,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         tooFastAlarmPaint.setColor(Color.YELLOW);
         ptConnAlert.setColor(Color.WHITE);
         ptConnAlert.setTextSize(120);
-//        nCurrentSpeed = 0.3f;
     }
 
 
@@ -142,9 +141,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
 
-        forwardDistMetric = distRegulator/100;
+        forwardDist = distRegulator;
 
-        Log.v("car distance regulate", forwardDistMetric + " meter");
+        Log.v("car distance regulate", forwardDist + " meter");
     }
 
     protected synchronized void updateActualSpeed(float motorcycleSpeed) {
@@ -181,15 +180,14 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     protected synchronized void drawSpeedAlert(Canvas canvas) {
-//        int fwDistMetric = forwardDistance / 100;
 
         boolean isTooFast = false;
-        if (speed > 0) isTooFast = isTooFast(speed, forwardDistMetric);
+        if (speed > 0) isTooFast = isTooFast(speed, forwardDist/100);
 
         if (isTooFast) {
-            int safeSpeed = getSafeSpeed(forwardDistMetric);
+            int safeSpeed = getSafeSpeed(forwardDist/100);
             tooFastAlarmPaint.setTextSize(140);
-            if(safeSpeed > 0 && speed - safeSpeed > 5) canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
+            if(safeSpeed > 0 && toKmh(speed) - safeSpeed > 5) canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
         }
     }
 
@@ -200,9 +198,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         float breakLatency = 9f;
         // V = at
         float breakTime = speed / breakLatency;
-//        // S = at^2 / 2
-//        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-//        int breakDistanceInt = Math.round(breakDistance);
         // S = Vt
         int breakDistance = (int) (speed * breakTime);
         if (breakDistance > distance) isTooFast = true;
@@ -221,24 +216,16 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         if(breakTime == 0) return 0;
         float safeSpeed = distance / breakTime;
         safeSpeed = Math.round(safeSpeed);
-//         V = at
-//        float breakTime = speed / breakLatency;
-//        // S = at^2 / 2
-//        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-//        // V = s/t
-//        if (breakTime == 0) breakTime = 1;
-//        float safeSpeed = breakDistance / breakTime;
-        // V= s/t
-//        float safeSpeed = distance / breakTime;
+
         return toKmh(safeSpeed);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected synchronized void updateCarPosition(Canvas canvas) {
-        forwardVehicle.updateForwardVehiclePosition(forwardDistMetric*100, motor.getyCoord(), motor.getHeight());
+        forwardVehicle.updateForwardVehiclePosition(forwardDist, motor.getyCoord(), motor.getHeight());
         forwardVehicle.draw(canvas);
 
-        Log.v("car distance: ", forwardDistMetric + " meter");
+        Log.v("car distance rest: ", forwardDist + " c_meter");
     }
 
     protected synchronized void drawSpeedMeter(Canvas canvas, String text) {
@@ -247,7 +234,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
     protected synchronized void drawPositionMeter(Canvas canvas) throws InterruptedException {
 
-        canvas.drawText("dist: " + forwardDistMetric*100, 600, 100, textPaint);
+        canvas.drawText("dist: " + forwardDist, 600, 100, textPaint);
 
         if (db.getDbDistance() < 0) {
             ++count;
@@ -412,8 +399,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         private synchronized float updateSpeed(CLocation location) {
 
-            //nCurrentSpeed = -20f;
-
             if (location != null) {
                 location.setUseMetricunits(true);
                 nCurrentSpeed = location.getSpeed();
@@ -451,7 +436,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                         myGpsLocation = new CLocation(location, true);
                         nCurrentSpeed = updateSpeed(myGpsLocation);
-                        //nCurrentSpeed = location.getSpeed();
                     }
 
                 }
