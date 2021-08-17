@@ -123,7 +123,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         screenWidth = displayWidth; // store view width
         screenHeight = displayHeight; // store view height
 
-        nCurrentSpeed = 0.4f;
+        nCurrentSpeed = 0.2f;
     }
 
     protected synchronized void initConstant() {
@@ -131,7 +131,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
         this.motorHeight = (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight);
         textPaint.setTextSize((int) (TEXT_SIZE_PERCENT * screenHeight));
-        //textPaint.setAntiAlias(true); // smoothes the text
         backgroundPaint.setColor(Color.GRAY);
         tooFastAlarmPaint.setColor(Color.YELLOW);
         ptConnAlert.setColor(Color.WHITE);
@@ -218,10 +217,8 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         float breakTime = speed / breakLatency;
         // S = at^2 / 2
         float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        //int breakDistanceInt = Math.round(breakDistance);
         // V = s/t
-        //if (breakTime == 0) breakTime = 1;
-//        int safeSpeed = breakDistanceInt / Math.round(breakTime);
+        if (breakTime == 0) breakTime = 1;
         float safeSpeed = breakDistance / breakTime;
 
         return toKmh(safeSpeed);
@@ -339,7 +336,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         private ExecutorService es;
         private CLocation myGpsLocation;
-        //private float nCurrentSpeed;
 
         // initializes the surface holder
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -370,15 +366,12 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                         synchronized (canvas) {
 
-//                            nCurrentSpeed++;
-//                            if(nCurrentSpeed==0) nCurrentSpeed =1;
-
                             initConstant();
 
                             updateActualDistance();
 
                             updateActualSpeed(nCurrentSpeed);
-//
+
                             drawBackground(canvas);
 
                             initForwardVehicle();
@@ -410,7 +403,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @RequiresApi(api = Build.VERSION_CODES.O)
         private synchronized float updateSpeed(CLocation location) {
 
-            nCurrentSpeed = -20f;
+            //nCurrentSpeed = -20f;
 
             if (location != null) {
                 location.setUseMetricunits(true);
@@ -440,7 +433,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public synchronized void onLocationChanged(Location location) {
 
-
             es.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -456,8 +448,6 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
                 }
             });
-
-//        es.shutdown();
         }
 
         @Override
@@ -472,85 +462,4 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
-
-//        private class GpsCallback implements IBaseGpsListener {
-//            //private float nCurrentSpeed;
-//            private CLocation myGpsLocation;
-//            ExecutorService es = Executors.newCachedThreadPool();
-//
-//            public GpsCallback() {
-//                //nCurrentSpeed = -10f;
-//
-////            initCLocation();
-//            }
-//
-//            @RequiresApi(api = Build.VERSION_CODES.O)
-//            private synchronized float updateSpeed(CLocation location) {
-//
-//                nCurrentSpeed = -20f;
-//
-//                if (location != null) {
-//                    location.setUseMetricunits(true);
-//                    nCurrentSpeed = location.getSpeed();
-//                }
-//
-//                return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
-//            }
-//
-//            private void initCLocation() {
-//
-//                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-//                if (ActivityCompat.checkSelfPermission(getContext(),
-//                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                        && ActivityCompat.checkSelfPermission(getContext(),
-//                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                    Log.v("GPS", "! NO GPS PERMISSION !");
-//
-//                }
-//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-//
-//            }
-//
-//            @RequiresApi(api = Build.VERSION_CODES.O)
-//            @Override
-//            public synchronized void onLocationChanged(Location location) {
-//
-//                initCLocation();
-//
-//                es.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        synchronized (location) {
-//                            Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location.getLongitude());
-//                            Log.v(TAG, "IN ON LOCATION CHANGE SPEED = " + location.getSpeed());
-//
-//                            myGpsLocation = new CLocation(location, true);
-//                            nCurrentSpeed = updateSpeed(myGpsLocation);
-//                        }
-//
-//                    }
-//                });
-//
-//                //es.shutdown();
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String provider) {
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String provider) {
-//            }
-//
-//            @Override
-//            public void onGpsStatusChanged(int event) {
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras) {
-//            }
-//        }
-//    }
 }
