@@ -188,7 +188,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         if (speed > 0) isTooFast = isTooFast(speed, fwDistMetric);
 
         if (isTooFast) {
-            int safeSpeed = getSafeSpeed(speed);
+            int safeSpeed = getSafeSpeed(fwDistMetric);
             tooFastAlarmPaint.setTextSize(140);
             canvas.drawText("reduce: " + safeSpeed + " km/h", 30, 1600, tooFastAlarmPaint);
         }
@@ -210,17 +210,26 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return isTooFast;
     }
 
-    protected int getSafeSpeed(float speed) {
+    protected int getSafeSpeed(int distance) {
         // 9 m/s^2
         float breakLatency = 9f;
-        // V = at
-        float breakTime = speed / breakLatency;
         // S = at^2 / 2
-        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
-        // V = s/t
-        if (breakTime == 0) breakTime = 1;
-        float safeSpeed = breakDistance / breakTime;
-
+        // 2S = at^2
+        // t = sqrt(2S / a)
+        float breakTime = (float) Math.sqrt((2*distance) / breakLatency);
+        // V = S/t
+        if(breakTime == 0) return 0;
+        float safeSpeed = distance / breakTime;
+        safeSpeed = Math.round(safeSpeed);
+//         V = at
+//        float breakTime = speed / breakLatency;
+//        // S = at^2 / 2
+//        float breakDistance = (breakLatency * breakTime * breakTime) / 2;
+//        // V = s/t
+//        if (breakTime == 0) breakTime = 1;
+//        float safeSpeed = breakDistance / breakTime;
+        // V= s/t
+//        float safeSpeed = distance / breakTime;
         return toKmh(safeSpeed);
     }
 
