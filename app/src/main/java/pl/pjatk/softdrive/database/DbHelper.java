@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Middleware class between custom database manager and DBMS
  * @author Dominik Stec
  * For see class pattern please visit
- * @link https://developer.android.com/training/data-storage/sqlite
+ * @link https://developer.android.com/training/data-storage/sqlite [17.08.2021]
  */
 public class DbHelper extends SQLiteOpenHelper {
 

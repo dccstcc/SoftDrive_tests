@@ -2,14 +2,15 @@ package pl.pjatk.softdrive.gps;
 
 import android.location.Location;
 
+/**
+ * Controller for Location object from GPS service
+ * @author Dominik Stec
+ * Customized by author version come from following link
+ * @link https://stackoverflow.com/questions/15570542/determining-the-speed-of-a-vehicle-using-gps-in-android [17.08.2021]
+ */
 public class CLocation extends Location {
 
     private boolean bUseMetricUnits = true;
-
-    public CLocation(Location location)
-    {
-        this(location, true);
-    }
 
     public CLocation(Location location, boolean bUseMetricUnits) {
         super(location);
@@ -59,6 +60,10 @@ public class CLocation extends Location {
         return nAltitude;
     }
 
+    /**
+     * Actual speed from super class getter with thread synchronization
+     * @return Actual speed based on GPS distance change
+     */
     @Override
     public synchronized float getSpeed() {
         float nSpeed = super.getSpeed();
