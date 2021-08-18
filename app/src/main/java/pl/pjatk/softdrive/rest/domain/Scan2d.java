@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * TODO for backward object scanner
+ * @author Dominik Stec
+ */
 public class Scan2d implements Serializable {
 
     @SerializedName("")

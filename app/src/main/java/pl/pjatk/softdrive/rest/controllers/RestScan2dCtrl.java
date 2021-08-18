@@ -6,12 +6,15 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import pl.pjatk.softdrive.rest.IFromRestCallback;
-import pl.pjatk.softdrive.rest.domain.Distance;
 import pl.pjatk.softdrive.rest.domain.Scan2d;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * TODO for backward object scanner
+ * @author Dominik Stec
+ */
 public class RestScan2dCtrl extends RestCtrl implements Callback<Float[]> {
 
     Scan2d scan2d;

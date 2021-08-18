@@ -33,9 +33,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/IFromRestCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/IFromRestCallback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Distance.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Distance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestScan2dCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestScan2dCtrl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Scan2d.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/domain/Scan2d.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/ForwardVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/ForwardVehicle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/FragmentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/FragmentActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

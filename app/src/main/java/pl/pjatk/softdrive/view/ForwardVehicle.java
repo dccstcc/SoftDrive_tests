@@ -6,6 +6,11 @@ import android.graphics.drawable.Drawable;
 
 import pl.pjatk.softdrive.R;
 
+/**
+ * Forward car specification
+ * @author Dominik Stec
+ * @see UiElement
+ */
 public class ForwardVehicle extends UiElement {
 
     private int displayWidth;
@@ -17,7 +22,9 @@ public class ForwardVehicle extends UiElement {
 
     private Context context;
 
-    // maximum distance read by senor
+    /**
+     * maximum distance read by sensor
+     */
     private final int maxDistance = 4000;
 
     public ForwardVehicle(Context context, UiView view, int color, int soundId, int x, int y, int width, int height, float velocityX, float velocityY) {
@@ -26,6 +33,12 @@ public class ForwardVehicle extends UiElement {
         this.context = context;
     }
 
+    /**
+     * Set and update actual forward car position according to motorcycle position
+     * @param restDistance Distance from sensor
+     * @param motorcyclePositionY Position of motorcycle
+     * @param distanceOffset TODO when motorcycle position changes
+     */
     public void updateForwardVehiclePosition(int restDistance, int motorcyclePositionY, int distanceOffset) {
         // update vertical position
         // scale sensor distance value to screen height
@@ -36,6 +49,10 @@ public class ForwardVehicle extends UiElement {
         update(0, revertDistance);
     }
 
+    /**
+     * Draw actual forward car position on screen
+     * @param canvas draw object space
+     */
     public void draw(Canvas canvas) {
 
         Drawable carPng = context.getResources().getDrawable(R.drawable.car_top);

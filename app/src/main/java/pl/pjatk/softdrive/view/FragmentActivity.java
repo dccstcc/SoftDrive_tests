@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 
 import pl.pjatk.softdrive.R;
 
+
 public class FragmentActivity extends Fragment {
     private UiView uiView;    // custom view to display the UI
 
