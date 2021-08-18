@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="javadoc_no_R_class" pattern="!pl.pjatk.softdrive.R" />
+</component>

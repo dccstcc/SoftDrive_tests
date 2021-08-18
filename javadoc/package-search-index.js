@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"pl.pjatk.softdrive"},{"l":"pl.pjatk.softdrive.database"},{"l":"pl.pjatk.softdrive.gps"},{"l":"pl.pjatk.softdrive.rest"},{"l":"pl.pjatk.softdrive.rest.controllers"},{"l":"pl.pjatk.softdrive.rest.domain"},{"l":"pl.pjatk.softdrive.view"}]
