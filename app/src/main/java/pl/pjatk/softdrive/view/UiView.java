@@ -35,11 +35,22 @@ import pl.pjatk.softdrive.database.DbManager;
 import pl.pjatk.softdrive.gps.CLocation;
 import pl.pjatk.softdrive.gps.IBaseGpsListener;
 
+/**
+ * View controller
+ * @author Dominik Stec
+ * @see SurfaceView
+ * @see SurfaceHolder.Callback
+ * @see Display
+ * @see ForwardVehicle
+ * @see Motorcycle
+ * configuration base come from following
+ * @link https://www.pearson.com/uk/educators/higher-education-educators/program/Deitel-Android-How-to-Program-International-Edition-With-an-Introduction-to-Java/PGM1022783.html?tab=contents [18.08.2021]
+ */
 public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "UiView"; // for logging errors
 
-    private CannonThread cannonThread; // controls the UI loop
+    private UiViewThread uiViewThread; // controls the UI loop
 
     private Activity activity; // to display Game Over dialog in GUI thread
 
@@ -91,7 +102,11 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static float nCurrentSpeed;
 
-
+    /**
+     * Main view initialization
+     * @param context this Android application Context object
+     * @param attrs TODO attributes of object state
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public UiView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -125,6 +140,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         nCurrentSpeed = 0.2f;
     }
 
+    /**
+     * Initialize object constants and values
+     */
     protected synchronized void initConstant() {
         this.width = (int) (FORWARD_VEHICLE_WIDTH_PERCENT * displayWidth);
         this.height = (int) (FORWARD_VEHICLE_HEIGHT_PERCENT * displayHeight);
@@ -136,7 +154,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         ptConnAlert.setTextSize(120);
     }
 
-
+    /**
+     * Set distance of forward vehicle read from database
+     * @throws InterruptedException
+     */
     protected synchronized void updateActualDistance() throws InterruptedException {
 
         distRegulator = db.getDbDistance() > 0 ? db.getDbDistance() : distRegulator;
@@ -146,15 +167,27 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("car distance regulate", forwardDist + " meter");
     }
 
+    /**
+     * Set actual motorcycle driver speed
+     * @param motorcycleSpeed speed of driver move
+     */
     protected synchronized void updateActualSpeed(float motorcycleSpeed) {
         this.speed = motorcycleSpeed;
         Log.v("actual speed", speed + " m/s");
     }
 
+    /**
+     * Set screen background for objects
+     * @param canvas draw object space
+     */
     protected synchronized void drawBackground(Canvas canvas) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
     }
 
+    /**
+     * Draw motorcycle object on canvas
+     * @param canvas draw object space
+     */
     protected synchronized void drawMotorcycle(Canvas canvas) {
         motor = new Motorcycle(getContext(),
                 canvas,
@@ -162,6 +195,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                 (int) (MOTORCYCLE_HEIGHT_PERCENT * displayHeight));
     }
 
+    /**
+     * Forward vehicle initialize configuration
+     */
     protected synchronized void initForwardVehicle() {
         int xCenter = displayWidth / 2 - width / 2;
 
@@ -179,6 +215,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         );
     }
 
+    /**
+     * Show to big speed or to low distance alert
+     * @param canvas draw object space
+     */
     protected synchronized void drawSpeedAlert(Canvas canvas) {
 
         boolean isTooFast = false;
@@ -191,6 +231,12 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Check if speed or distance is dangerous
+     * @param speed speed of driver move
+     * @param distance distance between driver and forward vehicle
+     * @return true if situation is risk or false if it is safe
+     */
     protected boolean isTooFast(float speed, int distance) {
         boolean isTooFast = false;
 
@@ -205,6 +251,11 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return isTooFast;
     }
 
+    /**
+     * Calculate safe speed of move according to forward vehicle distance
+     * @param distance distance between driver and forward vehicle
+     * @return safe speed value
+     */
     protected int getSafeSpeed(int distance) {
         // 9 m/s^2
         float breakLatency = 9f;
@@ -220,6 +271,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         return toKmh(safeSpeed);
     }
 
+    /**
+     * Set position and draw forward vehicle
+     * @param canvas draw object space
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected synchronized void updateCarPosition(Canvas canvas) {
         forwardVehicle.updateForwardVehiclePosition(forwardDist, motor.getyCoord(), motor.getHeight());
@@ -228,10 +283,20 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("car distance rest: ", forwardDist + " c_meter");
     }
 
+    /**
+     * Draw actual speed on screen
+     * @param canvas draw object space
+     * @param text speed value to draw
+     */
     protected synchronized void drawSpeedMeter(Canvas canvas, String text) {
         canvas.drawText("V:  " + text + " km/h", 50, 100, textPaint);
     }
 
+    /**
+     * Draw actual position between driver and forward vehicle
+     * @param canvas draw object space
+     * @throws InterruptedException
+     */
     protected synchronized void drawPositionMeter(Canvas canvas) throws InterruptedException {
 
         canvas.drawText("dist: " + forwardDist, 600, 100, textPaint);
@@ -247,7 +312,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    // called when surface is first created
+    /**
+     * Called when surface is first created and start user interface view thread
+     * @param holder surface object holder
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -257,8 +325,8 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             @Override
             public void handleMessage(Message message) {
                 hideSystemBars();
-                cannonThread = new CannonThread(holder); // create thread
-                cannonThread.start(); // start the game loop thread
+                uiViewThread = new UiViewThread(holder); // create thread
+                uiViewThread.start(); // start the game loop thread
             }
         };
 
@@ -288,18 +356,29 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
 
-    // called when the user touches the screen in this activity
+    /**
+     * Called when the user touches the screen in this activity and exit application
+     * @param e touch screen event handler
+     * @return true if detect touch screen
+     */
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         ExitApp(e);
         return true;
     }
 
+    /**
+     * Parse from m/s to km/h
+     * @param speed speed in m/s to parse
+     * @return parsed speed in km/h
+     */
     protected int toKmh(float speed) {
         return speed > 0 ? (int) (speed *= (0.001f / (1f / 3600f))) : (int) speed;
     }
 
-    // hide system bars and app bar
+    /**
+     * hide system bars and app bar
+     */
     protected void hideSystemBars() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             setSystemUiVisibility(
@@ -311,6 +390,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
                             View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
+    /**
+     * Close application preparation
+     * @param event touch screen event handler
+     */
     protected void ExitApp(MotionEvent event) {
         executor.shutdownNow();
         schedExecutor.shutdownNow();
@@ -323,18 +406,26 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         getContext().startActivity(i);
     }
 
-
-    // Thread subclass to control the UI loop
-    private class CannonThread implements IBaseGpsListener{
+    /**
+     * Thread subclass to control the UI view loop
+     * @author Dominik Stec
+     * @see IBaseGpsListener
+     * configuration base come from following
+     * @link https://www.pearson.com/uk/educators/higher-education-educators/program/Deitel-Android-How-to-Program-International-Edition-With-an-Introduction-to-Java/PGM1022783.html?tab=contents [18.08.2021]
+     */
+    private class UiViewThread implements IBaseGpsListener{
 
         private SurfaceHolder surfaceHolder; // for manipulating canvas
 
         private ExecutorService es;
         private CLocation myGpsLocation;
 
-        // initializes the surface holder
+        /**
+         * initializes the surface holder
+         * @param holder hold surface object
+         */
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public CannonThread(SurfaceHolder holder) {
+        public UiViewThread(SurfaceHolder holder) {
             surfaceHolder = holder;
 
             initCLocation();
@@ -345,6 +436,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             nCurrentSpeed = -10f;
         }
 
+        /**
+         * Run main UI view thread with synchronized methods for control UI states
+         */
         public void start() {
 
             Runnable rtask = new Runnable() {
@@ -395,6 +489,11 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             schedExecutor.scheduleAtFixedRate(rtask, 0, 250, TimeUnit.MILLISECONDS);
         }
 
+        /**
+         * Set actual speed of driver move
+         * @param location GPS state callback object
+         * @return actual river speed
+         */
         @RequiresApi(api = Build.VERSION_CODES.O)
         private synchronized float updateSpeed(CLocation location) {
 
@@ -406,6 +505,9 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
             return nCurrentSpeed > 0 ? nCurrentSpeed : -0.1f;
         }
 
+        /**
+         * Initialise GPS service
+         */
         private void initCLocation() {
 
                     LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -422,6 +524,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
+        /**
+         * GPS location change event listener
+         * @param location GPS state callback object
+         */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public synchronized void onLocationChanged(Location location) {

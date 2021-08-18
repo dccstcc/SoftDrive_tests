@@ -4,6 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+/**
+ * Base for object to draw on screen
+ * @author Dominik Stec
+ */
 public class UiElement {
    protected UiView view; // the view that contains this UiElement
    protected Paint paint = new Paint(); // Paint to draw this UiElement
@@ -16,6 +20,18 @@ public class UiElement {
    private int width;
    private int height;
 
+   /**
+    * Object to draw on screen configuration
+    * @param view context of view controller
+    * @param color TODO object color
+    * @param soundId TODO object sounds
+    * @param x x coordinate position
+    * @param y y coordinate position
+    * @param width object width
+    * @param height object height
+    * @param velocityX TODO object move velocity horizontal
+    * @param velocityY TODO object move valocity vertical
+    */
    public UiElement(UiView view, int color, int soundId, int x,
       int y, int width, int height, float velocityX, float velocityY) {
       this.view = view;
@@ -26,12 +42,19 @@ public class UiElement {
       this.velocityY = velocityY;
    }
 
+   /**
+    * Set actual position
+    * @param coordX x coordinate position
+    * @param coordY y coordinate position
+    */
    public void update(int coordX, int coordY) {
-      // update vertical and horizontal positions
       shape.offset(coordX, coordY);
    }
 
-   // draw rectangle with color on canvas
+   /**
+    * draw rectangle with color on canvas
+    * @param canvas draw object space
+    */
    public void draw(Canvas canvas) {
       canvas.drawRect(shape, paint);
    }

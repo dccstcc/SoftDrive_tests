@@ -7,8 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import pl.pjatk.softdrive.R;
 
+/**
+ * Set main view activity
+ * @author Dominik Stec
+ * @see AppCompatActivity
+ */
 public class MainViewActivity extends AppCompatActivity {
 
+    /**
+     * Run view activity in main thread loop
+     * @param savedInstanceState Android application Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +51,9 @@ public class MainViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Screen always on with maximum brightness when application is active
+     */
     private void setScreenOn() {
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;

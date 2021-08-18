@@ -7,6 +7,10 @@ import android.graphics.drawable.Drawable;
 
 import pl.pjatk.softdrive.R;
 
+/**
+ * Motorcycle object representation
+ * @author Dominik Stec
+ */
 public class Motorcycle {
 
     private int width;
@@ -19,8 +23,14 @@ public class Motorcycle {
     private int displayHeight;
 
     private Rect motor;
-    //private Paint paint = new Paint();
 
+    /**
+     * Draw motorcycle on given position with given size
+     * @param context this Android application Context object
+     * @param canvas draw object space
+     * @param width motorcycle object width
+     * @param height motorcycle object height
+     */
     public Motorcycle(Context context, Canvas canvas, int width, int height) {
 
         display = new Display(context);
@@ -30,9 +40,10 @@ public class Motorcycle {
         xCoord = (int) (displayWidth/2 - width/2);
         yCoord = (int) (displayHeight/2 - height/2);
 
+        // motorcycle size and position
         motor = new Rect(xCoord, yCoord, xCoord + width, yCoord + height);
-        //paint.setColor(Color.BLUE);
 
+        // draw motorcycle image
         Drawable motorPng = context.getResources().getDrawable(R.drawable.motorcycle_top);
         motorPng.setBounds(motor);
         motorPng.draw(canvas);
