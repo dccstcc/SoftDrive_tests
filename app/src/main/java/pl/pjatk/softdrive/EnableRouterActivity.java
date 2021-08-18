@@ -10,10 +10,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.lang.reflect.Method;
 
+/**
+ * Check if router access point is enabled
+ * @author Dominik Stec
+ * @see AppCompatActivity
+ */
 public class EnableRouterActivity extends AppCompatActivity {
 
     private WifiManager wifiManager;
 
+    /**
+     * Activity with layout for control router WiFi accessibility
+     * @param savedInstanceState Android application Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +69,10 @@ public class EnableRouterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Check if router WiFi is enable on device
+     * @return true if access point is enable
+     */
     private boolean isApEnable() {
         WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
         boolean ret = false;

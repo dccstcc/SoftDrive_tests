@@ -11,8 +11,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Start of application
+ * @author Dominik Stec
+ * @see AppCompatActivity
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Activity with layout for control mobile internet access accessibility
+     * @param savedInstanceState Android application Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            // https://stackoverflow.com/questions/26539445/the-setmobiledataenabled-method-is-no-longer-callable-as-of-android-l-and-later/50912113#50912113
             private boolean isMobileDataEnabledFromLollipop(Context context) {
                 boolean state = false;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -68,7 +76,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // https://stackoverflow.com/questions/26539445/the-setmobiledataenabled-method-is-no-longer-callable-as-of-android-l-and-later/50912113#50912113
+    /**
+     * @param context this Android application Context object
+     * @return true if mobile internet access is enable
+     * Based on following configuration
+     * @link https://stackoverflow.com/questions/26539445/the-setmobiledataenabled-method-is-no-longer-callable-as-of-android-l-and-later/50912113#50912113 [18.08.2021]
+     */
     private boolean isMobileDataEnabledFromLollipop(Context context) {
         boolean state = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

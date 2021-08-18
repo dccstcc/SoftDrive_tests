@@ -7,8 +7,17 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Exit application
+ * @author Dominik Stec
+ * @see AppCompatActivity
+ */
 public class Exit extends AppCompatActivity {
 
+    /**
+     * Disable screen always on option and restore screen brightness.
+     * @param savedInstanceState Android application Bundle
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

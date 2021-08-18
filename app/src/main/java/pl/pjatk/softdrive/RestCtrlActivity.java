@@ -19,10 +19,25 @@ import java.util.concurrent.Executors;
 import pl.pjatk.softdrive.rest.controllers.GetDistanceCtrl;
 import pl.pjatk.softdrive.view.MainViewActivity;
 
-
+/**
+ * Initialize rest and run view controller
+ * @author Dominik Stec
+ * @see AppCompatActivity
+ * @see RestCtrlActivity
+ */
 public class RestCtrlActivity extends AppCompatActivity {
 
+    ExecutorService e1;
+    ExecutorService e2;
 
+    /**
+     * Check GPS permissions.
+     * Initialize rest controller.
+     * Run logo animation.
+     * Run UI view
+     * Control threads
+     * @param savedInstanceState Android application Bundle
+     */
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +56,7 @@ public class RestCtrlActivity extends AppCompatActivity {
 
         logoAnimation();
 
-        ExecutorService e1 = Executors.newCachedThreadPool();
+        e1 = Executors.newCachedThreadPool();
                 Runnable rRest = new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
@@ -50,7 +65,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                     }
                 };
 
-                ExecutorService e2 = Executors.newCachedThreadPool();
+                e2 = Executors.newCachedThreadPool();
                 Runnable rView = new Runnable() {
                             @Override
                             public void run() {
@@ -68,6 +83,9 @@ public class RestCtrlActivity extends AppCompatActivity {
         e2.execute(rView);
     }
 
+    /**
+     * Animation introduce logo
+     */
     private void logoAnimation() {
         ExecutorService ex = Executors.newCachedThreadPool();
         ex.execute(new Runnable() {
@@ -79,9 +97,24 @@ public class RestCtrlActivity extends AppCompatActivity {
                 layout.setBackgroundColor(Color.BLACK);
             }
         });
-
     }
 
+    /**
+     * Clear tasks and exit application
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        e1.shutdownNow();
+        e2.shutdownNow();
+
+        Intent i = new Intent(this, Exit.class);
+        i.putExtra("EXTRA_EXIT", true);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+    }
 }
 
 
