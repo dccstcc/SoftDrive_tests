@@ -7,6 +7,7 @@ import pl.pjatk.softdrive.rest.domain.Distance;
 
 /**
  * Read data from rest as callbacks
+ * @author Dominik Stec
  */
 public interface IFromRestCallback {
 

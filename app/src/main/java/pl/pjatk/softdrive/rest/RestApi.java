@@ -7,6 +7,7 @@ import retrofit2.http.Header;
 
 /**
  * Rest controllers endpoints configuration
+ * @author Dominik Stec
  */
 public interface RestApi {
 

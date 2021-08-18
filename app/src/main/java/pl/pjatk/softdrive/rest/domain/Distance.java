@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 /**
  * Distance mapping value from rest API
+ * @author Dominik Stec
  */
 public class Distance implements Serializable {
 
