@@ -12,19 +12,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Try to find exist IP address for sensor data sender in local area network
+ * @author Dominik Stec
+ */
 public class FindAddressIp {
 
-    String ip = "192.168.";
+    /**
+     * Partial IP address belong to C class
+     */
+    private String ip = "192.168.";
 
+    /**
+     * Constructor concat partial bytes of I address value
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public FindAddressIp() {
         ip += get3rdPartOfIp();
     }
 
+    /**
+     * Three first bytes of remote host IP address getter
+     * @return Three first bytes of remote host IP address
+     */
     public String getIp() {
         return ip;
     }
 
+    /**
+     * Try to find third byte of sender distance host IP address by shell command and regex pattern
+     * @return Third byte from four of IP address
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private String get3rdPartOfIp() {
 
