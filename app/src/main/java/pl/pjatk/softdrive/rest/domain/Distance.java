@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * Distance mapping value from rest API
+ */
 public class Distance implements Serializable {
 
     @SerializedName("distance")
