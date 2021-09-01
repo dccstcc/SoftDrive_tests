@@ -55,6 +55,8 @@ public class RestCtrlActivity extends AppCompatActivity {
 
         logoAnimation();
 
+        ipCtrl = new RestSearchIpCtrl();
+
         String ip4Byte = searchByte4IpAddressParallelThread(6000);
 
         distCtrl = new RestGetDistanceCtrl();
@@ -82,7 +84,7 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
-                new RestSearchIpCtrl();
+                ipCtrl.startSearchIp();
             }
         };
         return rRest;
@@ -90,10 +92,8 @@ public class RestCtrlActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String searchByte4IpAddressParallelThread(int startDelayMilis) {
-//        setIpExec(getExecutor());
-//        getIpExec().execute(getIpSearchRunnable());
-        ipCtrl = new RestSearchIpCtrl();
-        ipCtrl.callInLoopThisObj();
+        setIpExec(getExecutor());
+        getIpExec().execute(getIpSearchRunnable());
         delay(startDelayMilis);
         return ipCtrl.getIp4Byte();
     }
