@@ -189,7 +189,7 @@ public class RestCtrlActivity extends AppCompatActivity {
     /**
      * Animation introduce logo
      */
-    private void logoAnimation() {
+    public void logoAnimation() {
         ExecutorService ex = Executors.newCachedThreadPool();
         ex.execute(new Runnable() {
             @Override
