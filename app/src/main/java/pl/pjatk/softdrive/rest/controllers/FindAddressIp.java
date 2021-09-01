@@ -3,6 +3,7 @@ package pl.pjatk.softdrive.rest.controllers;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
@@ -28,14 +29,14 @@ public class FindAddressIp {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public FindAddressIp() {
-        ip += get3rdPartOfIp();
+        ip += get3rdByteOfIp();
     }
 
     /**
      * Three first bytes of remote host IP address getter
      * @return Three first bytes of remote host IP address
      */
-    public String getIp() {
+    public String getNetworkIpWithoutHost() {
         return ip;
     }
 
@@ -44,38 +45,61 @@ public class FindAddressIp {
      * @return Third byte from four of IP address
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private String get3rdPartOfIp() {
+    private String get3rdByteOfIp() {
 
         String ip3Byte = "";
 
         try {
             //shell command for show ip
-            Process process = Runtime.getRuntime().exec("ip addr show swlan0");
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String result = in.lines().collect(Collectors.joining());
+            String result = getShellReply();
 
             //cut shell command show result
-            String subStr = "inet 192.168.";
-            int ipEnd = result.lastIndexOf(subStr);
-            String cutResult = result.substring(ipEnd + subStr.length());
+            String cutResult = shellReplyFilterByIp(result);
 
             //get ip from cut shell command
-            String regex = "^\\d{1,3}";
-            Pattern r = Pattern.compile(regex);
-            Matcher m = r.matcher(cutResult);
+            Matcher m = regexFilterResultByIp(cutResult);
 
             if(m.find()) {
-                ip3Byte = m.group(0);
-                ip3Byte += ".";
-                return ip3Byte;
+                return extractIpByteFromRegex(m);
             }
-
 
         } catch (IOException e) {
             Log.d("FinAddressIp", "ERROR ip3byte");
             e.printStackTrace();
         }
         return null;
+    }
+
+    @NonNull
+    private String extractIpByteFromRegex(Matcher m) {
+        String ip3Byte;
+        ip3Byte = m.group(0);
+        ip3Byte += ".";
+        return ip3Byte;
+    }
+
+    @NonNull
+    private Matcher regexFilterResultByIp(String cutResult) {
+        String regex = "^\\d{1,3}";
+        Pattern r = Pattern.compile(regex);
+        Matcher m = r.matcher(cutResult);
+        return m;
+    }
+
+    @NonNull
+    private String shellReplyFilterByIp(String result) {
+        String subStr = "inet 192.168.";
+        int ipEnd = result.lastIndexOf(subStr);
+        String cutResult = result.substring(ipEnd + subStr.length());
+        return cutResult;
+    }
+
+    @NonNull
+    private String getShellReply() throws IOException {
+        Process process = Runtime.getRuntime().exec("ip addr show swlan0");
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String result = in.lines().collect(Collectors.joining());
+        return result;
     }
 
 }

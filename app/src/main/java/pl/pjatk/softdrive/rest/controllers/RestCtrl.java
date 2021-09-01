@@ -43,7 +43,7 @@ public class RestCtrl {
     private OkHttpClient.Builder clientBuilder;
     private OkHttpClient httpHeaderConf;
 
-    protected RestApi restApiDistance;
+    protected RestApi restApi;
 
     /**
      * Initialize all setup of Retrofit by once
