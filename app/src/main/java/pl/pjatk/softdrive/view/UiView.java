@@ -140,6 +140,10 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
         nCurrentSpeed = 0.2f;
     }
 
+    public UiView(Context context) {
+        super(context);
+    }
+
     /**
      * Initialize object constants and values
      */
@@ -237,7 +241,7 @@ public class UiView extends SurfaceView implements SurfaceHolder.Callback {
      * @param distance distance between driver and forward vehicle
      * @return true if situation is risk or false if it is safe
      */
-    protected boolean isTooFast(float speed, int distance) {
+    public boolean isTooFast(Float speed, Integer distance) {
         boolean isTooFast = false;
 
         // 9 m/s^2
