@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -51,20 +52,29 @@ public class RestCtrlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctrl_rest);
 
-        manageLocationAccess();
+        getExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
 
-        logoAnimation();
+                manageLocationAccess();
 
-        ipCtrl = new RestSearchIpCtrl();
+                logoAnimation();
 
-        String ip4Byte = searchByte4IpAddressParallelThread(6000);
+                ipCtrl = new RestSearchIpCtrl();
 
-        distCtrl = new RestGetDistanceCtrl();
+                String ip4Byte = searchByte4IpAddressParallelThread(12000);
 
-        assert ip4Byte != null;
-        readDistanceParallelThread(Integer.parseInt(ip4Byte), distCtrl);
+                distCtrl = new RestGetDistanceCtrl();
 
-        startGuiParallelThread(10000);
+                assert ip4Byte != null;
+                readDistanceParallelThread(Integer.parseInt(ip4Byte), distCtrl);
+
+                startGuiParallelThread(12000);
+
+            }
+        });
+
+
     }
 
     @NonNull
@@ -84,7 +94,11 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
-                ipCtrl.startSearchIp();
+                try {
+                    ipCtrl.startSearchIp();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
         return rRest;
