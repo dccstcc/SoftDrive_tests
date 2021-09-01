@@ -38,8 +38,6 @@
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/pjatk/softdrive/ExampleUnitTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +162,7 @@
       <recent name="pl.pjatk.softdrive.rest" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2">
+  <component name="RunManager" selected="Gradle.DbManagerTest">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -288,12 +286,12 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestCtrlActivityTest.whenExecuteThread_givenThreadInBackground_thenWorkInBackground_v3_GUI" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DbManagerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.RestCtrlActivityTest.whenExecuteThread_givenThreadInBackground_thenWorkInBackground_v3_GUI&quot;" />
+        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.DbManagerTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -400,11 +398,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.DbManagerTest" />
         <item itemvalue="Gradle.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2" />
         <item itemvalue="Gradle.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange" />
         <item itemvalue="Gradle.RestSearchIpCtrlTest.sdsf" />
         <item itemvalue="Gradle.RestSearchIpCtrlTest" />
-        <item itemvalue="Gradle.RestCtrlActivityTest.whenExecuteThread_givenThreadInBackground_thenWorkInBackground_v3_GUI" />
       </list>
     </recent_temporary>
   </component>
