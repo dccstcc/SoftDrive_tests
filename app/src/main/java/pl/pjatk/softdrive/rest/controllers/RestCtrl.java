@@ -44,25 +44,6 @@ public class RestCtrl {
 
     protected RestApi restApi;
 
-    /**
-     * Initialize all setup of Retrofit by once
-     */
-//    public void initRetrofit() {
-//
-//        this.gson = initGson();
-//        this.clientBuilder = initLogBuilder();
-//        this.httpHeaderConf = initHttpHeader();
-//        this.restApiDistance = startRetrofit(httpHeaderConf, gson, clientBuilder);
-//    }
-
-//    public void updateRetrofit() {
-//        this.restApiDistance = initRetrofit(httpHeaderConf, gson, clientBuilder);
-//    }
-
-//    public static String getDistanceUrl() {
-//        return DISTANCE_URL;
-//    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String getPreparedUrl(int hostPartIp) {
         FindAddressIp ipCtrl = new FindAddressIp();
@@ -76,14 +57,6 @@ public class RestCtrl {
 
         return url;
     }
-
-//    /**
-//     * concat full version of remote sender host IP address
-//     * @param fourthPartIp Four byte of IP address
-//     */
-//    public void setUrl(String fourthPartIp) {
-//        DISTANCE_URL = protocol + thirdPartIp + fourthPartIp + portDistance;
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected RestApi initRetrofitByUrl(String url) {
