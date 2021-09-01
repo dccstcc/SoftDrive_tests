@@ -24,7 +24,7 @@
         android:theme="@style/HiddenTitleTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n"
-        android:name=".rest.controllers.GetDistanceCtrl">
+        android:name=".rest.controllers.ActivitySingleton">
 
         <activity android:name=".Exit"></activity>
         <activity android:name=".MainActivity">

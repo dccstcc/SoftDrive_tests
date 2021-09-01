@@ -64,16 +64,6 @@ public class RestCtrlActivity extends AppCompatActivity {
 
                 ipCtrl = new RestSearchIpCtrl();
 
-//                ip4Byte = "none";
-//                while(ip4Byte.equals("none")) {
-//                    try {
-//                        ipCtrl.startSearchIp();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    ip4Byte = searchByte4IpAddressParallelThread();
-//                }
-
                 try {
                     ipCtrl.startSearchIpLoop();
                 } catch (IOException e) {
@@ -81,7 +71,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                 }
 
                 try {
-                    Thread.sleep(15000);
+                    Thread.sleep(6000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -93,7 +83,7 @@ public class RestCtrlActivity extends AppCompatActivity {
                 assert ip4Byte != null;
                 readDistanceParallelThread(Integer.parseInt(ip4Byte), distCtrl);
 
-                startGuiParallelThread(15000);
+                startGuiParallelThread(8000);
 
             }
         });
