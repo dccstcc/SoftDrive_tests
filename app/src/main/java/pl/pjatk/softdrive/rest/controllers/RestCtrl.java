@@ -28,14 +28,13 @@ public class RestCtrl {
     /**
      * Web protocol configuration
      */
-    protected static final String protocol = "http://";
+    protected final String protocol = "http://";
     /**
      * Communication port
      */
-    protected static final String portDistance = ":8080";
-    protected static final String portScan2d = ":5000";
-    protected static String DISTANCE_URL = "";
-    protected static String thirdPartIp = "";
+    protected final String portDistance = ":8080";
+    protected String distanceUrl = "";
+    protected String thirdPartIp = "";
 
     protected FindAddressIp ip;
 
@@ -60,38 +59,46 @@ public class RestCtrl {
 //        this.restApiDistance = initRetrofit(httpHeaderConf, gson, clientBuilder);
 //    }
 
-    public static String getDistanceUrl() {
-        return DISTANCE_URL;
-    }
+//    public static String getDistanceUrl() {
+//        return DISTANCE_URL;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public String getPreparedUrl(int fourthIp) {
-        FindAddressIp ip3Byte = new FindAddressIp();
-        thirdPartIp = ip3Byte.getIp();
+    public String getPreparedUrl(int hostPartIp) {
+        FindAddressIp ipCtrl = new FindAddressIp();
+        String networkIp = ipCtrl.getNetworkIpWithoutHost();
 
         String url = "";
         url += protocol;
-        url += thirdPartIp;
-        url += String.valueOf(fourthIp);
+        url += networkIp;
+        url += String.valueOf(hostPartIp);
         url += portDistance;
 
         return url;
     }
 
-    /**
-     * concat full version of remote sender host IP address
-     * @param fourthPartIp Four byte of IP address
-     */
-    public void setUrl(String fourthPartIp) {
-        DISTANCE_URL = protocol + thirdPartIp + fourthPartIp + portDistance;
-    }
+//    /**
+//     * concat full version of remote sender host IP address
+//     * @param fourthPartIp Four byte of IP address
+//     */
+//    public void setUrl(String fourthPartIp) {
+//        DISTANCE_URL = protocol + thirdPartIp + fourthPartIp + portDistance;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    protected RestApi initRetrofitByIp(int ip4byte) {
+    protected RestApi initRetrofitByUrl(String url) {
         return initRetrofit(initHttpHeader(),
                 initGson(),
                 initLogBuilder(),
-                getPreparedUrl(ip4byte));
+                url);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected RestApi initRetrofitByIp(int ip4Byte) {
+        return initRetrofit(initHttpHeader(),
+                initGson(),
+                initLogBuilder(),
+                getPreparedUrl(ip4Byte));
     }
 
 

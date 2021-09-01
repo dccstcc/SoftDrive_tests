@@ -3,25 +3,21 @@ package pl.pjatk.softdrive.rest.controllers;
 import android.app.Application;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import pl.pjatk.softdrive.database.DbManager;
-import pl.pjatk.softdrive.rest.IFromRestCallback;
 import pl.pjatk.softdrive.rest.domain.Distance;
 
-/**
- * Get distance from remote sender with rest service and callbacks and commit into database
- * @author Dominik Stec
- * @see RestDistanceCtrl
- * @see IFromRestCallback
- * @see DbManager
- */
+///**
+// * Get distance from remote sender with rest service and callbacks and commit into database
+// * @author Dominik Stec
+// * @see RestDistanceCtrl
+// * @see IFromRestCallback
+// * @see DbManager
+// */
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GetDistanceCtrl extends Application {
 
@@ -54,14 +50,14 @@ public class GetDistanceCtrl extends Application {
     public GetDistanceCtrl() {}
 
     /**
-     * Try to find four byte of remote sender host IP address and execute rest controller
-     * for valid IP address
-     * @see RestDistanceCtrl
-     * @see IFromRestCallback
-     * @see DbManager
-     * @param ratio determine size of range IP address one byte to find from 1 to 255,
-     *              ex. ratio=5 gives offset of 5 tries to find proper IP in one iteration
-     */
+//     * Try to find four byte of remote sender host IP address and execute rest controller
+//     * for valid IP address
+//     * @see RestDistanceCtrl
+//     * @see IFromRestCallback
+//     * @see DbManager
+//     * @param ratio determine size of range IP address one byte to find from 1 to 255,
+//     *              ex. ratio=5 gives offset of 5 tries to find proper IP in one iteration
+//     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void findRtrIpB4(int ratio) {
 
@@ -78,7 +74,7 @@ public class GetDistanceCtrl extends Application {
         while (byte4Ip++ < 255) {
 
             // run rest controller
-            searchIpRunTask(executorService, byte4Ip, byte4Ip);
+        //    searchIpRunTask(executorService, byte4Ip, byte4Ip);
 
 //            // control main loop with ratio
 //            startIp += ratio;
@@ -88,70 +84,70 @@ public class GetDistanceCtrl extends Application {
         }
     }
 
-    public void searchIpRunTask(ExecutorService executorService, int startIp, int endIp) {
-        new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
-
-            @Override
-            public void getScan2dResponse(Float[] value) {}
-
-            @Override
-            public void getDistanceResponse(Distance value) {}
-
-            // Connected with remote distance sender, IP address found
-            @Override
-            public void getDistanceRouterIp(int ipAddress4Byte) {
-
-//                byteIp4 = ipAddress4Byte;
-                executorService.shutdownNow();
-
-                ScheduledExecutorService schedExecutor = Executors.newScheduledThreadPool(3);
-
-                // run in continues thread iteration read from rest and write into database
-                // distance value
-                Runnable readDistanceRunTask = getDistanceRunnable(ipAddress4Byte);
-
-                // Cyclic thread for distance rest read and database write
-                schedExecutor.scheduleAtFixedRate(readDistanceRunTask, 0, 250, TimeUnit.MILLISECONDS);
-//                isDone = true;
-            }
-
-            @Override
-            public void getScan2dRouterIp(int partIpAddress) {}
-
-        }).prepareCall().call();
-    }
-
-    @NonNull
-    public Runnable getDistanceRunnable(int IpAddress4Byte) {
-        Runnable rtask = new Runnable() {
-            @Override
-            public void run() {
-
-                    new RestDistanceCtrl(null, IpAddress4Byte, IpAddress4Byte, new IFromRestCallback() {
-
-                        @Override
-                        public void getScan2dResponse(Float[] value) {}
-
-                        // get distance from sensor rest callback
-                        // commit distance into database
-                        @Override
-                        public void getDistanceResponse(Distance dist) {
-
-                            commitDistanceDb(dist, getInstance());
-
-                        }
-
-                        @Override
-                        public void getDistanceRouterIp(int partIpAddress) {}
-
-                        @Override
-                        public void getScan2dRouterIp(int partIpAddress) {}
-
-                    }).prepareCall().call();
-            }
-        };
-        return rtask;
-    }
+//    public void searchIpRunTask(ExecutorService executorService, int startIp, int endIp) {
+//        new RestDistanceCtrl(executorService, startIp, endIp, new IFromRestCallback() {
+//
+//            @Override
+//            public void getScan2dResponse(Float[] value) {}
+//
+//            @Override
+//            public void getDistanceResponse(Distance value) {}
+//
+//            // Connected with remote distance sender, IP address found
+//            @Override
+//            public void getDistanceRouterIp(int ipAddress4Byte) {
+//
+////                byteIp4 = ipAddress4Byte;
+//                executorService.shutdownNow();
+//
+//                ScheduledExecutorService schedExecutor = Executors.newScheduledThreadPool(3);
+//
+//                // run in continues thread iteration read from rest and write into database
+//                // distance value
+//                Runnable readDistanceRunTask = getDistanceRunnable(ipAddress4Byte);
+//
+//                // Cyclic thread for distance rest read and database write
+//                schedExecutor.scheduleAtFixedRate(readDistanceRunTask, 0, 250, TimeUnit.MILLISECONDS);
+////                isDone = true;
+//            }
+//
+//            @Override
+//            public void getScan2dRouterIp(int partIpAddress) {}
+//
+//        }).prepareCall().call();
+//    }
+//
+//    @NonNull
+//    public Runnable getDistanceRunnable(int IpAddress4Byte) {
+//        Runnable rtask = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                    new RestDistanceCtrl(null, IpAddress4Byte, IpAddress4Byte, new IFromRestCallback() {
+//
+//                        @Override
+//                        public void getScan2dResponse(Float[] value) {}
+//
+//                        // get distance from sensor rest callback
+//                        // commit distance into database
+//                        @Override
+//                        public void getDistanceResponse(Distance dist) {
+//
+//                            commitDistanceDb(dist, getInstance());
+//
+//                        }
+//
+//                        @Override
+//                        public void getDistanceRouterIp(int partIpAddress) {}
+//
+//                        @Override
+//                        public void getScan2dRouterIp(int partIpAddress) {}
+//
+//                    }).prepareCall().call();
+//            }
+//        };
+//        return rtask;
+//    }
 
     public DbManager getDb() {
         return db;
