@@ -17,7 +17,8 @@ import androidx.core.app.ActivityCompat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import pl.pjatk.softdrive.rest.controllers.GetDistanceCtrl;
+import pl.pjatk.softdrive.rest.controllers.RestDistanceCtrl;
+import pl.pjatk.softdrive.rest.controllers.RestSearchIpCtrl;
 import pl.pjatk.softdrive.view.MainViewActivity;
 
 /**
@@ -29,7 +30,10 @@ import pl.pjatk.softdrive.view.MainViewActivity;
 public class RestCtrlActivity extends AppCompatActivity {
 
     private ExecutorService ipExec;
+    private ExecutorService distanceExec;
     private ExecutorService guiExec;
+
+    private RestSearchIpCtrl ipCtrl;
     /**
      * Check GPS permissions.
      * Initialize rest controller.
@@ -48,7 +52,9 @@ public class RestCtrlActivity extends AppCompatActivity {
 
         logoAnimation();
 
-        searchIpAddressParallelThread();
+        searchByte4IpAddressParallelThread(6000);
+
+        readDistanceParallelThread(8000);
 
         startGuiParallelThread(10000);
     }
@@ -64,15 +70,37 @@ public class RestCtrlActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
-                new GetDistanceCtrl().findRtrIpB4(1);
+                new RestSearchIpCtrl();
             }
         };
         return rRest;
     }
 
-    public void searchIpAddressParallelThread() {
-        setIpExec(getExecutor());
-        getIpExec().execute(getIpSearchRunnable());
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String searchByte4IpAddressParallelThread(int startDelayMilis) {
+//        setIpExec(getExecutor());
+//        getIpExec().execute(getIpSearchRunnable());
+        ipCtrl = new RestSearchIpCtrl();
+        ipCtrl.callInLoopThisObj();
+        delay(startDelayMilis);
+        return ipCtrl.getIp4Byte();
+    }
+
+    public Runnable getDistanceReadRunnable(int startDelayMilis) {
+        Runnable rView = new Runnable() {
+            @Override
+            public void run() {
+                delay(startDelayMilis);
+                Intent intent = new Intent(RestCtrlActivity.this, RestDistanceCtrl.class);
+                startActivity(intent);
+            }
+        };
+        return rView;
+    }
+
+    public void readDistanceParallelThread(int startDelayMilis) {
+        setDistanceExec(getExecutor());
+        getDistanceExec().execute(getDistanceReadRunnable(startDelayMilis));
     }
 
     public Runnable getGuiRunnable(int startDelayMilis) {
@@ -150,6 +178,14 @@ public class RestCtrlActivity extends AppCompatActivity {
 
     public void setGuiExec(ExecutorService guiExec) {
         this.guiExec = guiExec;
+    }
+
+    public ExecutorService getDistanceExec() {
+        return distanceExec;
+    }
+
+    public void setDistanceExec(ExecutorService distanceExec) {
+        this.distanceExec = distanceExec;
     }
 
     /**
