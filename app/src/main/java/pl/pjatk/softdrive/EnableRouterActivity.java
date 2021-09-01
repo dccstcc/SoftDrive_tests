@@ -1,6 +1,5 @@
 package pl.pjatk.softdrive;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Method;
@@ -19,7 +19,9 @@ import java.lang.reflect.Method;
  */
 public class EnableRouterActivity extends AppCompatActivity {
 
-    private WifiManager wifiManager;
+    public String instructionTxt;
+    private Button enRouterActBtn;
+    String mobileDataDisableAlert;
 
     /**
      * Activity with layout for control router WiFi accessibility
@@ -30,12 +32,55 @@ public class EnableRouterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_router_enable);
 
-        boolean wifiApEnable = isApEnable();
-        if(wifiApEnable) {
-            Intent enRestAct = new Intent(getApplicationContext(), RestCtrlActivity.class);
-            startActivity(enRestAct);
+        if(isApEnable()) {
+            startNextActivity();
+        } else {
+            showInstruction(getInstructionDefault());
+            confBtnListener(getInfoAlertDefault());
         }
+    }
 
+    public void confBtnListener(String btnInfoOnClick) {
+        enRouterActBtn = (Button) findViewById(R.id.ap_enable_btn);
+        enRouterActBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (isApEnable()) {
+                    startNextActivity();
+                } else {
+                    showInfoAlert(btnInfoOnClick);
+                }
+            }
+        });
+    }
+
+    public void startNextActivity() {
+        Intent enRestAct = new Intent(getApplicationContext(), RestCtrlActivity.class);
+        startActivity(enRestAct);
+    }
+
+    public void showInfoAlert(String alertTxt) {
+        mobileDataDisableAlert = alertTxt;
+        TextView apRouterAlertTxtView = (TextView) findViewById(R.id.ap_data_dis);
+        apRouterAlertTxtView.setText(mobileDataDisableAlert);
+    }
+
+    @NonNull
+    public String getInfoAlertDefault() {
+        String mobileDataDisableAlert = "Wifi router is disable\n" +
+                "Please follow instruction note";
+        return mobileDataDisableAlert;
+    }
+
+    public void showInstruction(String instruction) {
+        instructionTxt = instruction;
+        TextView instructionTxtView = (TextView) findViewById(R.id.instruction_str);
+        instructionTxtView.setText(instructionTxt);
+    }
+
+    @NonNull
+    public String getInstructionDefault() {
         String instructionTxt = "            Router Wifi enable is need:\n" +
                 "            1. Go to: \n" +
                 "               -> Settings\n" +
@@ -45,30 +90,7 @@ public class EnableRouterActivity extends AppCompatActivity {
                 "            3. Set SSID name:     safedrivea\n" +
                 "            4. Set password:      safedrivea\n" +
                 "            5. Enter into SoftDrive application again";
-
-        TextView instructionTxtView = (TextView) findViewById(R.id.instruction_str);
-        instructionTxtView.setText(instructionTxt);
-
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        Button enRouterActBtn = (Button) findViewById(R.id.ap_enable_btn);
-        enRouterActBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                boolean wifiApEnable = isApEnable();
-
-                if (wifiApEnable) {
-                    Intent enRestAct = new Intent(getApplicationContext(), RestCtrlActivity.class);
-                    startActivity(enRestAct);
-                } else {
-                    String mobileDataDisableAlert = "Wifi router is disable\n" +
-                            "Please follow instruction note";
-                    TextView apRouterAlertTxtView = (TextView) findViewById(R.id.ap_data_dis);
-                    apRouterAlertTxtView.setText(mobileDataDisableAlert);
-                }
-            }
-        });
+        return instructionTxt;
     }
 
     /**
@@ -86,5 +108,21 @@ public class EnableRouterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    public String getInstructionTxt() {
+        return instructionTxt;
+    }
+
+    public void setInstructionTxt(String instructionTxt) {
+        this.instructionTxt = instructionTxt;
+    }
+
+    public String getInfoAlertTxt() {
+        return mobileDataDisableAlert;
+    }
+
+    public void setInfoAlertTxt(String mobileDataDisableAlert) {
+        this.mobileDataDisableAlert = mobileDataDisableAlert;
     }
 }

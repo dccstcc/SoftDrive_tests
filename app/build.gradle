@@ -23,8 +23,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility sourceCompatibility
-        targetCompatibility targetCompatibility
+        sourceCompatibility 1.11
+        targetCompatibility 1.11
     }
     testOptions {
         unitTests {
