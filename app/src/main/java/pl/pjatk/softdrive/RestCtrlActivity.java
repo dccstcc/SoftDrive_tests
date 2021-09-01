@@ -38,6 +38,8 @@ public class RestCtrlActivity extends AppCompatActivity {
 
     private RestSearchIpCtrl ipCtrl;
     private RestGetDistanceCtrl distCtrl;
+
+    String ip4Byte;
     /**
      * Check GPS permissions.
      * Initialize rest controller.
@@ -62,14 +64,36 @@ public class RestCtrlActivity extends AppCompatActivity {
 
                 ipCtrl = new RestSearchIpCtrl();
 
-                String ip4Byte = searchByte4IpAddressParallelThread(12000);
+//                ip4Byte = "none";
+//                while(ip4Byte.equals("none")) {
+//                    try {
+//                        ipCtrl.startSearchIp();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    ip4Byte = searchByte4IpAddressParallelThread();
+//                }
+
+                try {
+                    ipCtrl.startSearchIpLoop();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    Thread.sleep(15000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                ip4Byte = ipCtrl.getIp4Byte();
 
                 distCtrl = new RestGetDistanceCtrl();
 
                 assert ip4Byte != null;
                 readDistanceParallelThread(Integer.parseInt(ip4Byte), distCtrl);
 
-                startGuiParallelThread(12000);
+                startGuiParallelThread(15000);
 
             }
         });
@@ -105,10 +129,9 @@ public class RestCtrlActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public String searchByte4IpAddressParallelThread(int startDelayMilis) {
+    public String searchByte4IpAddressParallelThread() {
         setIpExec(getExecutor());
         getIpExec().execute(getIpSearchRunnable());
-        delay(startDelayMilis);
         return ipCtrl.getIp4Byte();
     }
 
