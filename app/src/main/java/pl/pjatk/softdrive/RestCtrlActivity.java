@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,9 +28,8 @@ import pl.pjatk.softdrive.view.MainViewActivity;
  */
 public class RestCtrlActivity extends AppCompatActivity {
 
-    ExecutorService e1;
-    ExecutorService e2;
-
+    private ExecutorService ipExec;
+    private ExecutorService guiExec;
     /**
      * Check GPS permissions.
      * Initialize rest controller.
@@ -44,43 +44,80 @@ public class RestCtrlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctrl_rest);
 
+        manageLocationAccess();
+
+        logoAnimation();
+
+        searchIpAddressParallelThread();
+
+        startGuiParallelThread(10000);
+    }
+
+    @NonNull
+    public ExecutorService getExecutor() {
+        ExecutorService e1 = Executors.newCachedThreadPool();
+        return e1;
+    }
+
+    public Runnable getIpSearchRunnable() {
+        Runnable rRest = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void run() {
+                new GetDistanceCtrl().findRtrIpB4(1);
+            }
+        };
+        return rRest;
+    }
+
+    public void searchIpAddressParallelThread() {
+        setIpExec(getExecutor());
+        getIpExec().execute(getIpSearchRunnable());
+    }
+
+    public Runnable getGuiRunnable(int startDelayMilis) {
+        Runnable rView = new Runnable() {
+            @Override
+            public void run() {
+                delay(startDelayMilis);
+                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
+                startActivity(intent);
+            }
+        };
+        return rView;
+    }
+
+    public void delay(int milis) {
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startGuiParallelThread(int delayMilis) {
+        setGuiExec(getExecutor());
+        getGuiExec().execute(getGuiRunnable(delayMilis));
+    }
+
+    public void manageLocationAccess() {
+
+        if( ! isLocationGrant()) {
+            Log.e("GPS","NO GPS PERMISSION");
+            ActivityCompat.requestPermissions(RestCtrlActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+        }
+
+    }
+
+    public boolean isLocationGrant() {
         if (ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(RestCtrlActivity.this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            Log.e("GPS","NO GPS PERMISSION");
-
-            ActivityCompat.requestPermissions(RestCtrlActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            return false;
+        } else {
+            return true;
         }
-
-        logoAnimation();
-
-        e1 = Executors.newCachedThreadPool();
-                Runnable rRest = new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void run() {
-                        new GetDistanceCtrl().findRtrIpB4(1);
-                    }
-                };
-
-                e2 = Executors.newCachedThreadPool();
-                Runnable rView = new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(10000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                Intent intent = new Intent(RestCtrlActivity.this, MainViewActivity.class);
-                                startActivity(intent);
-                            }
-                        };
-
-        e1.execute(rRest);
-        e2.execute(rView);
     }
 
     /**
@@ -99,14 +136,30 @@ public class RestCtrlActivity extends AppCompatActivity {
         });
     }
 
+    public ExecutorService getIpExec() {
+        return ipExec;
+    }
+
+    public void setIpExec(ExecutorService ipExec) {
+        this.ipExec = ipExec;
+    }
+
+    public ExecutorService getGuiExec() {
+        return guiExec;
+    }
+
+    public void setGuiExec(ExecutorService guiExec) {
+        this.guiExec = guiExec;
+    }
+
     /**
      * Clear tasks and exit application
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        e1.shutdownNow();
-        e2.shutdownNow();
+        getIpExec().shutdownNow();
+        getGuiExec().shutdownNow();
 
         Intent i = new Intent(this, Exit.class);
         i.putExtra("EXTRA_EXIT", true);
