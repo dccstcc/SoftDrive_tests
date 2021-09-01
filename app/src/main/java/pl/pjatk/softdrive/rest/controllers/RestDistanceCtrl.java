@@ -55,7 +55,7 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         this.ipAddrEnd = ipAddrEnd;
         fourthIp = ipAddrStart;
 
-                // full ip address preparation
+                // part 3 byte 123.123.123.fouthIp ip address preparation
                 prepareIp(fourthIp);
 
 
@@ -176,8 +176,8 @@ public class RestDistanceCtrl extends RestCtrl implements Callback<Distance> {
         call = call.clone();
 
         // prepare for call rest API
-        setDistancePartialUrl(String.valueOf(fourthIp));
-        updateDistanceRetrofit();
+        setUrl(String.valueOf(fourthIp));
+        updateRetrofit();
 
         // renew with new IP address value
         fourthIp++;

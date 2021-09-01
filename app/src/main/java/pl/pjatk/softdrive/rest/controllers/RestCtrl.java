@@ -1,5 +1,9 @@
 package pl.pjatk.softdrive.rest.controllers;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,7 +35,6 @@ public class RestCtrl {
     protected static final String portDistance = ":8080";
     protected static final String portScan2d = ":5000";
     protected static String DISTANCE_URL = "";
-    protected static String SCAN2D_URL = "";
     protected static String thirdPartIp = "";
 
     protected FindAddressIp ip;
@@ -40,86 +43,77 @@ public class RestCtrl {
     private OkHttpClient.Builder clientBuilder;
     private OkHttpClient httpHeaderConf;
 
-    protected RestApi restApiScan2d;
     protected RestApi restApiDistance;
 
     /**
      * Initialize all setup of Retrofit by once
      */
-    public void start() {
+//    public void initRetrofit() {
+//
+//        this.gson = initGson();
+//        this.clientBuilder = initLogBuilder();
+//        this.httpHeaderConf = initHttpHeader();
+//        this.restApiDistance = startRetrofit(httpHeaderConf, gson, clientBuilder);
+//    }
 
-        this.gson = initGson();
-        this.clientBuilder = initLogBuilder();
-        this.httpHeaderConf = initHttpHeader();
-        //this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
-        this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
-    }
-
-    public void updateDistanceRetrofit() {
-        this.restApiDistance = initRetrofitDistance(httpHeaderConf, gson, clientBuilder);
-    }
-
-    public void updateScan2dRetrofit() {
-        this.restApiScan2d = initRetrofitScan2d(httpHeaderConf, gson, clientBuilder);
-    }
+//    public void updateRetrofit() {
+//        this.restApiDistance = initRetrofit(httpHeaderConf, gson, clientBuilder);
+//    }
 
     public static String getDistanceUrl() {
         return DISTANCE_URL;
     }
 
-    public static String getScan2dUrl() {
-        return SCAN2D_URL;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getPreparedUrl(int fourthIp) {
+        FindAddressIp ip3Byte = new FindAddressIp();
+        thirdPartIp = ip3Byte.getIp();
+
+        String url = "";
+        url += protocol;
+        url += thirdPartIp;
+        url += String.valueOf(fourthIp);
+        url += portDistance;
+
+        return url;
     }
 
     /**
      * concat full version of remote sender host IP address
      * @param fourthPartIp Four byte of IP address
      */
-    public static void setDistancePartialUrl(String fourthPartIp) {
+    public void setUrl(String fourthPartIp) {
         DISTANCE_URL = protocol + thirdPartIp + fourthPartIp + portDistance;
     }
 
-    public static void setScan2dPartialUrl(String fourthPartIp) {
-        SCAN2D_URL = protocol + thirdPartIp + fourthPartIp + portScan2d;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected RestApi initRetrofitByIp(int ip4byte) {
+        return initRetrofit(initHttpHeader(),
+                initGson(),
+                initLogBuilder(),
+                getPreparedUrl(ip4byte));
     }
 
-    /**
-     * TODO
-     * @param httpHeaderConf
-     * @param gson
-     * @param clientBuilder
-     * @return
-     */
-    private RestApi initRetrofitScan2d(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {
+
+        /**
+         * read distance intializer by Retrofit
+         * @param httpHeaderConf Configuration of http header
+         * @param gson Configuration of JSON data flow
+         * @param clientBuilder Configuration of HTTP request receiver
+         * @see OkHttpClient
+         * @see Gson
+         * @see OkHttpClient.Builder
+         * @return API with object for distance read from rest service
+         */
+    protected RestApi initRetrofit(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder, String url) {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpHeaderConf)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(SCAN2D_URL)
+                .baseUrl(url)
                 .client(clientBuilder.build())
                 .build();
-        restApiScan2d = retrofit.create(RestApi.class);
-        return restApiScan2d;
-    }
-
-    /**
-     * read distance intializer by Retrofit
-     * @param httpHeaderConf Configuration of http header
-     * @param gson Configuration of JSON data flow
-     * @param clientBuilder Configuration of HTTP request receiver
-     * @see OkHttpClient
-     * @see Gson
-     * @see OkHttpClient.Builder
-     * @return API with object for distance read from rest service
-     */
-    private RestApi initRetrofitDistance(OkHttpClient httpHeaderConf, Gson gson, OkHttpClient.Builder clientBuilder) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(httpHeaderConf)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(DISTANCE_URL)
-                .client(clientBuilder.build())
-                .build();
-        restApiDistance = retrofit.create(RestApi.class);
-        return restApiDistance;
+        RestApi restApi = retrofit.create(RestApi.class);
+        return restApi;
     }
 
     /**
@@ -127,7 +121,7 @@ public class RestCtrl {
      * @see OkHttpClient
      * @return Configuration of HTTP request receiver
      */
-    private OkHttpClient initHttpHeader() {
+    protected OkHttpClient initHttpHeader() {
         OkHttpClient httpHeaderConf = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -145,7 +139,7 @@ public class RestCtrl {
      * @see OkHttpClient.Builder
      * @return Configuration of HTTP request receiver
      */
-    private OkHttpClient.Builder initLogBuilder() {
+    protected OkHttpClient.Builder initLogBuilder() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
