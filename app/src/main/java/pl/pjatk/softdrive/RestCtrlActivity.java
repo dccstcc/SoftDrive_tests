@@ -24,12 +24,6 @@ import pl.pjatk.softdrive.rest.controllers.RestGetDistanceCtrl;
 import pl.pjatk.softdrive.rest.controllers.RestSearchIpCtrl;
 import pl.pjatk.softdrive.view.MainViewActivity;
 
-/**
- * Initialize rest and run view controller
- * @author Dominik Stec
- * @see AppCompatActivity
- * @see RestCtrlActivity
- */
 public class RestCtrlActivity extends AppCompatActivity {
 
     private ExecutorService ipExec;
@@ -40,14 +34,8 @@ public class RestCtrlActivity extends AppCompatActivity {
     private RestGetDistanceCtrl distCtrl;
 
     String ip4Byte;
-    /**
-     * Check GPS permissions.
-     * Initialize rest controller.
-     * Run logo animation.
-     * Run UI view
-     * Control threads
-     * @param savedInstanceState Android application Bundle
-     */
+
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +72,6 @@ public class RestCtrlActivity extends AppCompatActivity {
                 readDistanceParallelThread(Integer.parseInt(ip4Byte), distCtrl);
 
                 startGuiParallelThread(8000);
-
             }
         });
 
@@ -186,9 +173,6 @@ public class RestCtrlActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Animation introduce logo
-     */
     public void logoAnimation() {
         ExecutorService ex = Executors.newCachedThreadPool();
         ex.execute(new Runnable() {
@@ -226,9 +210,6 @@ public class RestCtrlActivity extends AppCompatActivity {
         this.distanceExec = distanceExec;
     }
 
-    /**
-     * Clear tasks and exit application
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

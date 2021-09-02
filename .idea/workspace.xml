@@ -36,14 +36,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_mockito_mockito_core_1_10_19.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/SoftDrive.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/SoftDrive.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/UiView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/view/UiView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/EnableRouterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/EnableRouterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/Exit.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/Exit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/ActivitySingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/ActivitySingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/FindAddressIp.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/FindAddressIp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[RF8N327YW7E]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\domin\.android\avd\Pixel_4_XL_API_30_2.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -168,7 +169,7 @@
       <recent name="pl.pjatk.softdrive.rest" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.UiViewTest">
+  <component name="RunManager" selected="Gradle.Tests in 'pl.pjatk.softdrive'">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -314,12 +315,12 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange&quot;" />
+        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -336,12 +337,12 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Tests in 'pl.pjatk.softdrive'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2&quot;" />
+        <option name="scriptParameters" value="--tests &quot;pl.pjatk.softdrive.*&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -404,11 +405,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Tests in 'pl.pjatk.softdrive'" />
+        <item itemvalue="Gradle.DbManagerTest" />
         <item itemvalue="Gradle.UiViewTest" />
         <item itemvalue="Gradle.UiViewTest.whenNotUseMockAnnotation_thenCorrect" />
-        <item itemvalue="Gradle.DbManagerTest" />
         <item itemvalue="Gradle.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange2" />
-        <item itemvalue="Gradle.RestSearchIpCtrlTest.whenNoAction_givenDefaultValue_thenValueNotChange" />
       </list>
     </recent_temporary>
   </component>
