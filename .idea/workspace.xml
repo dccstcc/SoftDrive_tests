@@ -36,15 +36,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e727dc77-15a5-48c7-b683-38cd63f54836" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/EnableRouterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/EnableRouterActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/Exit.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/Exit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/RestCtrlActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/RestApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/ActivitySingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/ActivitySingleton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/FindAddressIp.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/FindAddressIp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/pjatk/softdrive/rest/controllers/RestCtrl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
